@@ -1,0 +1,47 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Custom styles for landing page */
+.landing-gradient {
+    background: linear-gradient(to bottom right, #dbeafe, #ffffff, #f0fdf4);
+}
+
+.landing-button {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.landing-button:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+}
+
+.landing-nav {
+    background: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.landing-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.landing-icon {
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 0.375rem;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
