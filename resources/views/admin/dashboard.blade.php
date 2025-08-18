@@ -334,16 +334,16 @@
             </div>
         </div>
 
-        <!-- Stats Cards with Modern Design -->
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+        <!-- Stats Cards with Enhanced Responsive Design -->
+        <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 mb-6 sm:mb-8">
             <!-- Total Kendaraan -->
-            <div class="group relative bg-white rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
-                <div class="p-6">
+            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
+                <div class="p-4 sm:p-6">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Kendaraan</p>
-                            <p class="text-3xl font-bold text-gray-900">{{ $data['total_vehicles'] }}</p>
-                            <p class="text-xs text-green-600 mt-1">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Total Kendaraan</p>
+                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['total_vehicles'] }}</p>
+                            <p class="text-xxs sm:text-xs text-green-600 mt-1 hidden sm:block">
                                 <span class="inline-flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
@@ -351,11 +351,15 @@
                                     Semua unit terdaftar
                                 </span>
                             </p>
+                            <!-- Mobile version - simplified -->
+                            <p class="text-xxs text-green-600 mt-1 sm:hidden">
+                                ✓ Terdaftar
+                            </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M19.449 8.448 16.388 11a4.52 4.52 0 0 1 0 2.002l3.061 2.55a8.275 8.275 0 0 0 0-7.103ZM15.552 19.45 13 16.388a4.52 4.52 0 0 1-2.002 0l-2.55 3.061a8.275 8.275 0 0 0 7.103 0ZM4.55 15.552 7.612 13a4.52 4.52 0 0 1 0-2.002L4.551 8.45a8.275 8.275 0 0 0 0 7.103ZM8.448 4.55 11 7.612a4.52 4.52 0 0 1 2.002 0l2.55-3.061a8.275 8.275 0 0 0-7.103 0Zm8.657-.86a9.776 9.776 0 0 1 1.79 1.415 9.776 9.776 0 0 1 1.414 1.788 9.764 9.764 0 0 1 0 10.211 9.777 9.777 0 0 1-1.415 1.79 9.777 9.777 0 0 1-1.788 1.414 9.764 9.764 0 0 1-10.212 0 9.776 9.776 0 0 1-1.788-1.415 9.776 9.776 0 0 1-1.415-1.788 9.764 9.764 0 0 1 0-10.212 9.774 9.774 0 0 1 1.415-1.788A9.774 9.774 0 0 1 6.894 3.69a9.764 9.764 0 0 1 10.211 0ZM14.121 9.88a2.985 2.985 0 0 0-1.11-.704 3.015 3.015 0 0 0-2.022 0 2.985 2.985 0 0 0-1.11.704c-.326.325-.56.705-.704 1.11a3.015 3.015 0 0 0 0 2.022c.144.405.378.785.704 1.11.325.326.705.56 1.11.704.652.233 1.37.233 2.022 0a2.985 2.985 0 0 0 1.11-.704c.326-.325.56-.705.704-1.11a3.016 3.016 0 0 0 0-2.022 2.985 2.985 0 0 0-.704-1.11Z" clip-rule="evenodd" />
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                 </svg>
                             </div>
                         </div>
@@ -364,13 +368,13 @@
             </div>
 
             <!-- Kendaraan Tersedia -->
-            <div class="group relative bg-white rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-green-200 transition-all duration-300">
-                <div class="p-6">
+            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-green-200 transition-all duration-300">
+                <div class="p-4 sm:p-6">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-600 mb-1">Kendaraan Tersedia</p>
-                            <p class="text-3xl font-bold text-gray-900">{{ $data['available_vehicles'] }}</p>
-                            <p class="text-xs text-green-600 mt-1">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Kendaraan Tersedia</p>
+                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['available_vehicles'] }}</p>
+                            <p class="text-xxs sm:text-xs text-green-600 mt-1 hidden sm:block">
                                 <span class="inline-flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
@@ -378,10 +382,13 @@
                                     Siap digunakan
                                 </span>
                             </p>
+                            <p class="text-xxs text-green-600 mt-1 sm:hidden">
+                                ✓ Siap pakai
+                            </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
@@ -391,13 +398,13 @@
             </div>
 
             <!-- Kendaraan Dipinjam -->
-            <div class="group relative bg-white rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-yellow-200 transition-all duration-300">
-                <div class="p-6">
+            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-yellow-200 transition-all duration-300">
+                <div class="p-4 sm:p-6">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-600 mb-1">Sedang Dipinjam</p>
-                            <p class="text-3xl font-bold text-gray-900">{{ $data['borrowed_vehicles'] }}</p>
-                            <p class="text-xs text-yellow-600 mt-1">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Sedang Dipinjam</p>
+                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['borrowed_vehicles'] }}</p>
+                            <p class="text-xxs sm:text-xs text-yellow-600 mt-1 hidden sm:block">
                                 <span class="inline-flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
@@ -405,10 +412,13 @@
                                     Dalam penggunaan
                                 </span>
                             </p>
+                            <p class="text-xxs text-yellow-600 mt-1 sm:hidden">
+                                ⏰ Digunakan
+                            </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <div class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
@@ -418,13 +428,13 @@
             </div>
 
             <!-- Total Operator -->
-            <div class="group relative bg-white rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-indigo-200 transition-all duration-300">
-                <div class="p-6">
+            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-indigo-200 transition-all duration-300">
+                <div class="p-4 sm:p-6">
                     <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-600 mb-1">Total Operator</p>
-                            <p class="text-3xl font-bold text-gray-900">{{ $data['total_operators'] }}</p>
-                            <p class="text-xs text-indigo-600 mt-1">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Total Operator</p>
+                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['total_operators'] }}</p>
+                            <p class="text-xxs sm:text-xs text-indigo-600 mt-1 hidden sm:block">
                                 <span class="inline-flex items-center">
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
@@ -432,10 +442,13 @@
                                     User aktif
                                 </span>
                             </p>
+                            <p class="text-xxs text-indigo-600 mt-1 sm:hidden">
+                                👥 Aktif
+                            </p>
                         </div>
                         <div class="flex-shrink-0">
-                            <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
                                 </svg>
                             </div>
@@ -445,24 +458,27 @@
             </div>
         </div>
 
-        <!-- Alert untuk Pajak Akan Habis -->
+        <!-- Alert untuk Pajak Akan Habis - Enhanced Responsive -->
         @if($data['vehicles_tax_expiring'] > 0)
-            <div class="mb-8">
-                <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-400 rounded-lg p-4 shadow-sm">
+            <div class="mb-6 sm:mb-8">
+                <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-400 rounded-lg p-3 sm:p-4 shadow-sm">
                     <div class="flex items-start">
                         <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
-                        <div class="ml-3">
-                            <h3 class="text-sm font-medium text-red-800">Peringatan Pajak Kendaraan!</h3>
-                            <div class="mt-1 text-sm text-red-700">
+                        <div class="ml-3 flex-1">
+                            <h3 class="text-xs sm:text-sm font-medium text-red-800">Peringatan Pajak Kendaraan!</h3>
+                            <div class="mt-1 text-xs sm:text-sm text-red-700">
                                 <p>Ada <strong>{{ $data['vehicles_tax_expiring'] }}</strong> kendaraan dengan pajak akan habis dalam 30 hari ke depan. Segera lakukan perpanjangan!</p>
                             </div>
-                            <div class="mt-3">
-                                <a href="#tax-expiring" class="text-sm font-medium text-red-800 hover:text-red-900">
-                                    Lihat detail →
+                            <div class="mt-2 sm:mt-3">
+                                <a href="#tax-expiring" class="text-xs sm:text-sm font-medium text-red-800 hover:text-red-900 inline-flex items-center">
+                                    Lihat detail
+                                    <svg class="ml-1 w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
                                 </a>
                             </div>
                         </div>
@@ -471,58 +487,58 @@
             </div>
         @endif
 
-        <!-- Quick Actions -->
-        <div class="mt-8 mb-8">
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-6 py-5 border-b border-gray-300">
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        <svg class="w-5 h-5 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Quick Actions - Enhanced Responsive -->
+        <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-300">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                         Aksi Cepat
                     </h3>
                 </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        <a href="{{ route('admin.vehicles.create') }}" class="group relative bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                <div class="p-4 sm:p-6">
+                    <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                        <a href="{{ route('admin.vehicles.create') }}" class="group relative bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                     </svg>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium">Tambah Kendaraan</p>
-                                    <p class="text-xs opacity-90">Daftarkan unit baru</p>
+                                <div class="ml-3 min-w-0 flex-1">
+                                    <p class="text-sm sm:text-base font-medium truncate">Tambah Kendaraan</p>
+                                    <p class="text-xs sm:text-sm opacity-90 hidden sm:block">Daftarkan unit baru</p>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.users.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        <a href="{{ route('admin.users.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                                     </svg>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium">Tambah Operator</p>
-                                    <p class="text-xs opacity-90">Daftarkan user baru</p>
+                                <div class="ml-3 min-w-0 flex-1">
+                                    <p class="text-sm sm:text-base font-medium truncate">Tambah Operator</p>
+                                    <p class="text-xs sm:text-sm opacity-90 hidden sm:block">Daftarkan user baru</p>
                                 </div>
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.vehicles.index') }}" class="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-xl p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        <a href="{{ route('admin.vehicles.index') }}" class="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg md:col-span-2 lg:col-span-1">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
                                 </div>
-                                <div class="ml-3">
-                                    <p class="text-sm font-medium">Kelola Kendaraan</p>
-                                    <p class="text-xs opacity-90">Manajemen unit</p>
+                                <div class="ml-3 min-w-0 flex-1">
+                                    <p class="text-sm sm:text-base font-medium truncate">Kelola Kendaraan</p>
+                                    <p class="text-xs sm:text-sm opacity-90 hidden sm:block">Manajemen unit</p>
                                 </div>
                             </div>
                         </a>
@@ -531,14 +547,14 @@
             </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 xl:grid-cols-3">
-            <!-- Kendaraan Terbaru - Takes 2 columns on large screens -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Main Content Grid - Enhanced Responsive -->
+        <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-3">
+            <!-- Kendaraan Terbaru - Enhanced Mobile Layout -->
+            <div class="lg:col-span-2 order-1">
+                <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                             </svg>
                             Kendaraan Terbaru
@@ -546,62 +562,110 @@
                     </div>
 
                     @if($vehicles->count() > 0)
-                        <div class="overflow-x-auto">
+                        <!-- Mobile Card Layout -->
+                        <div class="block sm:hidden">
+                            <div class="divide-y divide-gray-200">
+                                @foreach($vehicles as $vehicle)
+                                    <div class="p-4 hover:bg-gray-50 transition-colors duration-200">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                                                    <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="text-sm font-medium text-gray-900 truncate">
+                                                    {{ $vehicle->brand }} {{ $vehicle->model }}
+                                                </div>
+                                                <div class="text-xs text-gray-500">{{ $vehicle->license_plate }} • {{ $vehicle->year }}</div>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                @if($vehicle->availability_status == 'tersedia')
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        Tersedia
+                                                    </span>
+                                                @elseif($vehicle->availability_status == 'dipinjam')
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                        Dipinjam
+                                                    </span>
+                                                @elseif($vehicle->availability_status == 'service')
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                        Service
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                        {{ ucfirst($vehicle->availability_status) }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Desktop Table Layout -->
+                        <div class="hidden sm:block overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kendaraan</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Tahun</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kendaraan</th>
+                                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Tahun</th>
+                                        <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($vehicles as $vehicle)
                                         <tr class="hover:bg-gray-50 transition-colors duration-200">
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
-                                                    <div class="flex-shrink-0 h-10 w-10">
-                                                        <div class="h-10 w-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                                                            <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <div class="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
+                                                        <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                                                            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                                             </svg>
                                                         </div>
                                                     </div>
-                                                    <div class="ml-4">
-                                                        <div class="text-sm font-medium text-gray-900">
+                                                    <div class="ml-3 sm:ml-4">
+                                                        <div class="text-xs sm:text-sm font-medium text-gray-900">
                                                             {{ $vehicle->brand }} {{ $vehicle->model }}
                                                         </div>
-                                                        <div class="text-sm text-gray-500">{{ $vehicle->license_plate }}</div>
+                                                        <div class="text-xs text-gray-500">{{ $vehicle->license_plate }}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">
+                                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 hidden md:table-cell">
                                                 {{ $vehicle->year }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap">
                                                 @if($vehicle->availability_status == 'tersedia')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                         <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
                                                             <circle cx="4" cy="4" r="3"/>
                                                         </svg>
-                                                        Tersedia
+                                                        <span class="hidden sm:inline">Tersedia</span>
+                                                        <span class="sm:hidden">✓</span>
                                                     </span>
                                                 @elseif($vehicle->availability_status == 'dipinjam')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                                         <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
                                                             <circle cx="4" cy="4" r="3"/>
                                                         </svg>
-                                                        Dipinjam
+                                                        <span class="hidden sm:inline">Dipinjam</span>
+                                                        <span class="sm:hidden">⏰</span>
                                                     </span>
                                                 @elseif($vehicle->availability_status == 'service')
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                         <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
                                                             <circle cx="4" cy="4" r="3"/>
                                                         </svg>
-                                                        Service
+                                                        <span class="hidden sm:inline">Service</span>
+                                                        <span class="sm:hidden">🔧</span>
                                                     </span>
                                                 @else
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                         <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
                                                             <circle cx="4" cy="4" r="3"/>
                                                         </svg>
@@ -615,23 +679,23 @@
                             </table>
                         </div>
 
-                        <div class="px-6 py-4 bg-gray-50">
-                            <a href="{{ route('admin.vehicles.index') }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium flex items-center group">
+                        <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <a href="{{ route('admin.vehicles.index') }}" class="text-indigo-600 hover:text-indigo-900 text-xs sm:text-sm font-medium flex items-center group">
                                 Lihat semua kendaraan
-                                <svg class="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="ml-1 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </a>
                         </div>
                     @else
-                        <div class="px-6 py-12 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="px-4 sm:px-6 py-8 sm:py-12 text-center">
+                            <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                             </svg>
                             <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada kendaraan</h3>
-                            <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan kendaraan baru.</p>
-                            <div class="mt-6">
-                                <a href="{{ route('admin.vehicles.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                            <p class="mt-1 text-xs sm:text-sm text-gray-500">Mulai dengan menambahkan kendaraan baru.</p>
+                            <div class="mt-4 sm:mt-6">
+                                <a href="{{ route('admin.vehicles.create') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 border border-transparent shadow-sm text-xs sm:text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
                                     Tambah Kendaraan
                                 </a>
                             </div>
@@ -640,36 +704,38 @@
                 </div>
             </div>
 
-            <!-- Kendaraan Pajak Akan Habis -->
-            <div id="tax-expiring" class="lg:col-span-1">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                            <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Kendaraan Pajak Akan Habis - Enhanced Mobile Layout -->
+            <div id="tax-expiring" class="lg:col-span-1 order-2 lg:order-none">
+                <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Pajak Akan Habis
+                            <span class="hidden sm:inline">Pajak Akan Habis</span>
+                            <span class="sm:hidden">Pajak Expiry</span>
                         </h3>
                     </div>
 
                     @if($expiring_tax_vehicles->count() > 0)
                         <div class="divide-y divide-gray-200">
                             @foreach($expiring_tax_vehicles as $vehicle)
-                                <div class="px-6 py-4 hover:bg-red-50 transition-colors duration-200">
+                                <div class="px-4 sm:px-6 py-3 sm:py-4 hover:bg-red-50 transition-colors duration-200">
                                     <div class="flex items-center justify-between">
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 truncate">
+                                            <p class="text-xs sm:text-sm font-medium text-gray-900 truncate">
                                                 {{ $vehicle->brand }} {{ $vehicle->model }}
                                             </p>
-                                            <p class="text-sm text-gray-500">{{ $vehicle->license_plate }}</p>
+                                            <p class="text-xs text-gray-500">{{ $vehicle->license_plate }}</p>
                                         </div>
-                                        <div class="flex-shrink-0 ml-4">
+                                        <div class="flex-shrink-0 ml-2 sm:ml-4">
                                             <div class="text-right">
-                                                <p class="text-sm font-medium text-red-600">
+                                                <p class="text-xs sm:text-sm font-medium text-red-600">
                                                     {{ $vehicle->tax_expiry_date->format('d/m/Y') }}
                                                 </p>
                                                 <p class="text-xs text-red-500">
-                                                    {{ $vehicle->tax_expiry_date->diffInDays(now()) }} hari lagi
+                                                    <span class="hidden sm:inline">{{ $vehicle->tax_expiry_date->diffInDays(now()) }} hari lagi</span>
+                                                    <span class="sm:hidden">{{ $vehicle->tax_expiry_date->diffInDays(now()) }}d</span>
                                                 </p>
                                             </div>
                                         </div>
@@ -678,12 +744,18 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="px-6 py-12 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="px-4 sm:px-6 py-8 sm:py-12 text-center">
+                            <svg class="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">Semua pajak aman</h3>
-                            <p class="mt-1 text-sm text-gray-500">Tidak ada kendaraan dengan pajak akan habis.</p>
+                            <h3 class="mt-2 text-xs sm:text-sm font-medium text-gray-900">
+                                <span class="hidden sm:inline">Semua pajak aman</span>
+                                <span class="sm:hidden">Pajak aman</span>
+                            </h3>
+                            <p class="mt-1 text-xs sm:text-sm text-gray-500">
+                                <span class="hidden sm:inline">Tidak ada kendaraan dengan pajak akan habis.</span>
+                                <span class="sm:hidden">Tidak ada yang expired</span>
+                            </p>
                         </div>
                     @endif
                 </div>

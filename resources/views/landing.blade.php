@@ -58,7 +58,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center space-y-4 mb-16">
                 <h2 class="text-4xl lg:text-5xl font-bold text-gray-900">
-                    Fitur System
+                    Fitur Sistem
                 </h2>
             </div>
 
@@ -72,7 +72,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Manajemen Data Kendaraan</h3>
-                        <p class="text-gray-600 leading-relaxed">Kelola seluruh data kendaraan dinas dengan sistem CRUD yang lengkap, dokumentasi digital, dan foto kendaraan.</p>
+                        <p class="text-gray-600 leading-relaxed">Kelola Seluruh Data Kendaraan Dinas Dengan Sistem CRUD yang Lengkap, Dokumentasi Digital, dan Foto Kendaraan.</p>
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Tracking Service & Perbaikan</h3>
-                        <p class="text-gray-600 leading-relaxed">Pantau riwayat service dan maintenance dengan dokumentasi lengkap.</p>
+                        <p class="text-gray-600 leading-relaxed">Pantau Riwayat Service dan Maintenance Dengan Dokumentasi Lengkap.</p>
                     </div>
                 </div>
 
@@ -99,7 +99,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Manajemen Pembayaran</h3>
-                        <p class="text-gray-600 leading-relaxed">Kelola pembayaran service dan perbaikan dengan tracking sumber dana yang akurat dan transparan.</p>
+                        <p class="text-gray-600 leading-relaxed">Kelola Pembayaran Service dan Perbaikan dengan Tracking Sumber Dana yang Akurat.</p>
                     </div>
                 </div>
 
@@ -112,7 +112,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-semibold text-gray-900 mb-3">Sistem Peminjaman</h3>
-                        <p class="text-gray-600 leading-relaxed">Platform digital untuk peminjaman kendaraan dengan approval workflow dan tracking status real-time.</p>
+                        <p class="text-gray-600 leading-relaxed">Pencatatan Peminjaman Kendaraan dengan Approval Workflow dan Tracking Status Real - Time.</p>
                     </div>
                 </div>
 
@@ -124,8 +124,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
                            </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Notifikasi Smart</h3>
-                        <p class="text-gray-600 leading-relaxed">Sistem peringatan cerdas untuk pajak, service berkala, dan maintenance kendaraan.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Notifikasi</h3>
+                        <p class="text-gray-600 leading-relaxed">Sistem peringatan Pembayaran Pajak Kendaraan Dinas yang Mendekati Masa Habis.</p>
                     </div>
                 </div>
 
