@@ -500,7 +500,7 @@
                 </div>
                 <div class="p-4 sm:p-6">
                     <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                        <a href="{{ route('admin.vehicles.create') }}" class="group relative bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        <a href="{{ route('admin.vehicles.create') }}" class="group relative bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-100 hover:shadow-lg">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -514,7 +514,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.users.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                        <a href="{{ route('admin.users.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-100 hover:shadow-lg">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -528,7 +528,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.vehicles.index') }}" class="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-105 hover:shadow-lg md:col-span-2 lg:col-span-1">
+                        <a href="{{ route('admin.vehicles.index') }}" class="group relative bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-100 hover:shadow-lg md:col-span-2 lg:col-span-1">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
