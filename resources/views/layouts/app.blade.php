@@ -6,11 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kendaraan Dinas') - Kementerian Pemuda dan Olahraga</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Tailwind CSS CDN (Fallback) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -24,16 +22,64 @@
         }
     </script>
 
-    <!-- Vite Assets (Will load if available) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Custom CSS untuk styling yang tidak ada di Tailwind -->
+    <link rel="stylesheet" href="{{ asset('css/confirmations.css') }}">
+
     <style>
         .card {
             background: white;
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             border: 1px solid #f3f4f6;
+        }
+
+        /* Logout Confirmation Modal */
+        .logout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .logout-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .logout-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .logout-modal.show .logout-modal-content {
+            transform: scale(1);
+        }
+
+        .logout-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background-color: #fef2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn {
@@ -79,6 +125,18 @@
 
         .btn-success:hover {
             background: linear-gradient(to right, #4f46e5, #4338ca);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* PERUBAHAN: Menambahkan style untuk tombol logout (danger) */
+        .btn-danger {
+            background: linear-gradient(to right, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(to right, #dc2626, #b91c1c);
             transform: translateY(-1px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -211,23 +269,19 @@
         }
     </style>
 
-    <!-- Additional Styles -->
     @stack('styles')
 </head>
 <body style="background-color: #f9fafb;">
     <div style="min-height: 100vh;">
-        <!-- Navigation -->
         @if(auth()->check())
             <nav class="bg-white shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16 items-center">
                         <div class="flex items-center">
-                            <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
                                 <h1 class="text-lg font-bold text-gray-800">Kendaraan Dinas</h1>
                             </div>
                         </div>
-                        <!-- Hamburger menu for mobile -->
                         <div class="flex lg:hidden">
                             <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -235,7 +289,6 @@
                                 </svg>
                             </button>
                         </div>
-                        <!-- Navigation Links (Desktop) -->
                         <div class="hidden lg:flex items-center ml-10 space-x-8">
                             @if(auth()->user()->isAdmin())
                                 <a href="{{ route('admin.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Dashboard</a>
@@ -248,20 +301,23 @@
                                 <a href="{{ route('operator.payments.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Pembayaran</a>
                             @endif
                         </div>
-                        <!-- User Dropdown (Desktop) -->
                         <div class="hidden lg:flex items-center ml-6">
                             <span class="text-gray-700 mr-2">{{ auth()->user()->name }}</span>
                             <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-red-100 text-red-700 @else bg-blue-100 text-blue-700 @endif">
                                 {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
                             </span>
-                            <form method="POST" action="{{ route('logout') }}" class="ml-3">
+                            <form method="POST" action="{{ route('logout') }}" class="ml-4" id="logoutFormDesktop">
                                 @csrf
-                                <button type="submit" class="text-gray-500 hover:text-gray-700 transition-colors">Logout</button>
+                                <button type="button" onclick="showLogoutConfirmation()" class="btn btn-danger">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    Logout
+                                </button>
                             </form>
                         </div>
                     </div>
                 </div>
-                <!-- Mobile Menu -->
                 <div class="lg:hidden hidden" id="mobile-menu">
                     <div class="px-2 pt-2 pb-3 space-y-1">
                         @if(auth()->user()->isAdmin())
@@ -274,14 +330,21 @@
                             <a href="{{ route('operator.borrowings.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Peminjaman</a>
                             <a href="{{ route('operator.payments.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Pembayaran</a>
                         @endif
-                        <div class="flex items-center px-4 py-2">
-                            <span class="text-gray-700 mr-2">{{ auth()->user()->name }}</span>
-                            <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-red-100 text-red-700 @else bg-blue-100 text-blue-700 @endif">
-                                {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
-                            </span>
-                            <form method="POST" action="{{ route('logout') }}" class="ml-3">
+                        <div class="border-t border-gray-200 mt-3 pt-3">
+                            <div class="flex items-center px-4 py-2">
+                                <span class="text-gray-700 mr-2">{{ auth()->user()->name }}</span>
+                                <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-red-100 text-red-700 @else bg-blue-100 text-blue-700 @endif">
+                                    {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
+                                </span>
+                            </div>
+                            <form method="POST" action="{{ route('logout') }}" class="w-full px-4 py-2" id="logoutFormMobile">
                                 @csrf
-                                <button type="submit" class="text-gray-500 hover:text-gray-700 transition-colors">Logout</button>
+                                <button type="button" onclick="showLogoutConfirmation()" class="btn btn-danger w-full">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    Logout
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -289,9 +352,7 @@
             </nav>
         @endif
 
-        <!-- Page Content -->
         <main style="@if(auth()->check()) padding: 1.5rem 0; @endif">
-            <!-- Flash Messages -->
             @if(session('success'))
                 <div style="max-width: 80rem; margin: 0 auto; padding: 0 1rem; margin-bottom: 1.5rem;">
                     <div class="alert alert-success">
@@ -320,7 +381,69 @@
         </main>
     </div>
 
-    <!-- Additional Scripts -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <div class="logout-icon">
+                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 text-center mb-2">Konfirmasi Logout</h3>
+            <p class="text-gray-600 text-center mb-6">Apakah Anda yakin ingin keluar dari sistem?</p>
+            <div class="flex space-x-3 justify-center">
+                <button type="button"
+                        onclick="hideLogoutConfirmation()"
+                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                    Batal
+                </button>
+                <button type="button"
+                        onclick="confirmLogout()"
+                        class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                    Ya, Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLogoutConfirmation() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.add('show');
+        }
+
+        function hideLogoutConfirmation() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.remove('show');
+        }
+
+        function confirmLogout() {
+            // Submit form logout, coba cari desktop dulu, kalau tidak ada baru mobile
+            const desktopForm = document.getElementById('logoutFormDesktop');
+            const mobileForm = document.getElementById('logoutFormMobile');
+
+            // Cek visibilitas, hanya submit form yang terlihat
+            if (desktopForm && window.getComputedStyle(desktopForm).display !== 'none') {
+                desktopForm.submit();
+            } else if (mobileForm) {
+                mobileForm.submit();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('logoutModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideLogoutConfirmation();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideLogoutConfirmation();
+            }
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>

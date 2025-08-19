@@ -15,8 +15,12 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!auth()->check() || auth()->user()->role !== $role) {
-            abort(403, 'Unauthorized.');
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        if (auth()->user()->role !== $role) {
+            abort(403, 'Unauthorized. Required role: ' . $role . ', Your role: ' . auth()->user()->role);
         }
 
         return $next($request);

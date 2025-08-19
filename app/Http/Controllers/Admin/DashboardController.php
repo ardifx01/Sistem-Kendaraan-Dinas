@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Data untuk dashboard admin
         $data = [
@@ -26,17 +26,15 @@ class DashboardController extends Controller
             'vehicles_tax_expiring' => Vehicle::taxExpiringSoon()->count(),
         ];
 
-        // Data kendaraan untuk tabel
+        // Data kendaraan untuk tabel dengan pagination
         $vehicles = Vehicle::with(['latestService'])
             ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
+            ->paginate(10, ['*'], 'vehicles_page');
 
         // Kendaraan dengan pajak akan habis
         $expiring_tax_vehicles = Vehicle::taxExpiringSoon()
             ->orderBy('tax_expiry_date', 'asc')
-            ->take(5)
-            ->get();
+            ->paginate(10, ['*'], 'tax_page');
 
         return view('admin.dashboard', compact('data', 'vehicles', 'expiring_tax_vehicles'));
     }

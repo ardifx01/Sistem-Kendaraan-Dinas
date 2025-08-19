@@ -37,7 +37,12 @@ class VehicleController extends Controller
             $query->where('availability_status', $request->availability);
         }
 
-        $vehicles = $query->orderBy('created_at', 'desc')->paginate(15);
+        // Get per_page parameter, default to 10
+        $perPage = $request->get('per_page', 10);
+        $perPage = in_array($perPage, [10, 25, 50, 100]) ? $perPage : 10;
+
+        $vehicles = $query->orderBy('created_at', 'desc')->paginate($perPage);
+        $vehicles->appends($request->query());
 
         return view('admin.vehicles.index', compact('vehicles'));
     }
@@ -70,6 +75,11 @@ class VehicleController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
         ]);
 
+        // Set default values for fields not in form
+        $validated['status'] = 'tersedia'; // Default status
+        $validated['condition'] = 'baik'; // Default condition
+        $validated['availability_status'] = 'tersedia'; // Default availability
+
         // Handle photo upload
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('vehicles', 'public');
@@ -78,7 +88,7 @@ class VehicleController extends Controller
         Vehicle::create($validated);
 
         return redirect()->route('admin.vehicles.index')
-            ->with('success', 'Kendaraan berhasil ditambahkan.');
+            ->with('success', 'Data kendaraan berhasil ditambahkan.');
     }
 
     /**

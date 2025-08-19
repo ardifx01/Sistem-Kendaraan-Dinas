@@ -4,61 +4,65 @@
 
 @push('styles')
 <style>
-    /* Additional Tailwind utilities untuk dashboard */
-    .bg-gray-50 { background-color: #f9fafb; }
-    .bg-white { background-color: #ffffff; }
-    .text-gray-900 { color: #111827; }
-    .text-gray-600 { color: #4b5563; }
-    .text-gray-500 { color: #6b7280; }
-    .text-gray-400 { color: #9ca3af; }
-    .text-blue-500 { color: #3b82f6; }
-    .text-blue-600 { color: #2563eb; }
-    .text-green-600 { color: #16a34a; }
-    .text-green-800 { color: #166534; }
-    .text-yellow-600 { color: #ca8a04; }
-    .text-yellow-800 { color: #92400e; }
-    .text-red-600 { color: #dc2626; }
-    .text-red-800 { color: #991b1b; }
-    .text-red-400 { color: #f87171; }
-    .text-red-500 { color: #ef4444; }
-    .text-red-700 { color: #b91c1c; }
-    .text-indigo-600 { color: #4f46e5; }
-    .text-indigo-500 { color: #6366f1; }
-    .text-indigo-900 { color: #312e81; }
-
-    .bg-blue-500 { background-color: #3b82f6; }
-    .bg-blue-600 { background-color: #2563eb; }
-    .bg-blue-100 { background-color: #dbeafe; }
-    .bg-blue-200 { background-color: #bfdbfe; }
-    .bg-green-500 { background-color: #22c55e; }
-    .bg-green-600 { background-color: #16a34a; }
-    .bg-green-100 { background-color: #dcfce7; }
-    .bg-yellow-500 { background-color: #eab308; }
-    .bg-yellow-600 { background-color: #ca8a04; }
-    .bg-yellow-100 { background-color: #fef3c7; }
-    .bg-red-100 { background-color: #fee2e2; }
-    .bg-red-800 { background-color: #991b1b; }
-    .bg-red-50 { background-color: #fef2f2; }
-    .bg-indigo-500 { background-color: #6366f1; }
-    .bg-indigo-600 { background-color: #4f46e5; }
-    .bg-indigo-700 { background-color: #4338ca; }
+    /* Colors */
     .bg-gray-50 { background-color: #f9fafb; }
     .bg-gray-100 { background-color: #f3f4f6; }
     .bg-gray-200 { background-color: #e5e7eb; }
     .bg-gray-800 { background-color: #1f2937; }
+    .bg-white { background-color: #ffffff; }
+
+    .text-gray-900 { color: #111827; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-500 { color: #6b7280; }
+    .text-gray-400 { color: #9ca3af; }
+
+    .text-blue-500 { color: #3b82f6; }
+    .text-blue-600 { color: #2563eb; }
+    .bg-blue-100 { background-color: #dbeafe; }
+    .bg-blue-200 { background-color: #bfdbfe; }
+    .bg-blue-500 { background-color: #3b82f6; }
+    .bg-blue-600 { background-color: #2563eb; }
+    .border-blue-200 { border-color: #bfdbfe; }
+
+    .text-green-600 { color: #16a34a; }
+    .text-green-800 { color: #166534; }
+    .bg-green-100 { background-color: #dcfce7; }
+    .bg-green-500 { background-color: #22c55e; }
+    .bg-green-600 { background-color: #16a34a; }
+    .border-green-200 { border-color: #bbf7d0; }
+
+    .text-yellow-600 { color: #ca8a04; }
+    .text-yellow-800 { color: #92400e; }
+    .bg-yellow-100 { background-color: #fef3c7; }
+    .bg-yellow-500 { background-color: #eab308; }
+    .bg-yellow-600 { background-color: #ca8a04; }
+    .border-yellow-200 { border-color: #fef08a; }
+
+    .text-red-400 { color: #f87171; }
+    .text-red-500 { color: #ef4444; }
+    .text-red-600 { color: #dc2626; }
+    .text-red-700 { color: #b91c1c; }
+    .text-red-800 { color: #991b1b; }
+    .bg-red-50 { background-color: #fef2f2; }
+    .bg-red-100 { background-color: #fee2e2; }
+    .bg-red-800 { background-color: #991b1b; }
+    .border-red-400 { border-color: #f87171; }
+
+    .text-indigo-500 { color: #6366f1; }
+    .text-indigo-600 { color: #4f46e5; }
+    .text-indigo-900 { color: #312e81; }
+    .bg-indigo-500 { background-color: #6366f1; }
+    .bg-indigo-600 { background-color: #4f46e5; }
+    .bg-indigo-700 { background-color: #4338ca; }
+    .border-indigo-200 { border-color: #c7d2fe; }
 
     .border-gray-100 { border-color: #f3f4f6; }
     .border-gray-200 { border-color: #e5e7eb; }
-    .border-blue-200 { border-color: #bfdbfe; }
-    .border-green-200 { border-color: #bbf7d0; }
-    .border-yellow-200 { border-color: #fef08a; }
-    .border-indigo-200 { border-color: #c7d2fe; }
-    .border-red-400 { border-color: #f87171; }
 
+    /* Hover Effects */
     .hover\:shadow-lg:hover {
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     }
-
     .hover\:border-blue-200:hover { border-color: #bfdbfe; }
     .hover\:border-green-200:hover { border-color: #bbf7d0; }
     .hover\:border-yellow-200:hover { border-color: #fef08a; }
@@ -68,73 +72,207 @@
     .hover\:text-indigo-900:hover { color: #312e81; }
     .hover\:text-red-900:hover { color: #7f1d1d; }
     .hover\:scale-105:hover { transform: scale(1.05); }
-    .hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
 
+    /* Group Hover Effects */
     .group:hover .group-hover\:scale-110 { transform: scale(1.1); }
     .group:hover .group-hover\:translate-x-1 { transform: translateX(0.25rem); }
 
     /* Gradient backgrounds */
     .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
     .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+
     .from-blue-500 { --tw-gradient-from: #3b82f6; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(59, 130, 246, 0)); }
     .to-blue-600 { --tw-gradient-to: #2563eb; }
     .from-blue-600 { --tw-gradient-from: #2563eb; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(37, 99, 235, 0)); }
     .to-blue-700 { --tw-gradient-to: #1d4ed8; }
+
     .from-green-500 { --tw-gradient-from: #22c55e; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(34, 197, 94, 0)); }
     .to-green-600 { --tw-gradient-to: #16a34a; }
     .from-green-600 { --tw-gradient-from: #16a34a; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(22, 163, 74, 0)); }
     .to-green-700 { --tw-gradient-to: #15803d; }
+
     .from-yellow-500 { --tw-gradient-from: #eab308; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(234, 179, 8, 0)); }
     .to-yellow-600 { --tw-gradient-to: #ca8a04; }
+
     .from-indigo-500 { --tw-gradient-from: #6366f1; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(99, 102, 241, 0)); }
     .to-indigo-600 { --tw-gradient-to: #4f46e5; }
     .from-indigo-600 { --tw-gradient-from: #4f46e5; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(79, 70, 229, 0)); }
     .to-indigo-700 { --tw-gradient-to: #4338ca; }
+
     .from-red-50 { --tw-gradient-from: #fef2f2; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(254, 242, 242, 0)); }
     .to-red-100 { --tw-gradient-to: #fee2e2; }
 
-    /* Responsive grid */
+    .hover\:from-blue-600:hover { --tw-gradient-from: #2563eb; }
+    .hover\:to-blue-700:hover { --tw-gradient-to: #1d4ed8; }
+    .hover\:from-green-600:hover { --tw-gradient-from: #16a34a; }
+    .hover\:to-green-700:hover { --tw-gradient-to: #15803d; }
+    .hover\:from-indigo-600:hover { --tw-gradient-from: #4f46e5; }
+    .hover\:to-indigo-700:hover { --tw-gradient-to: #4338ca; }
+
+    /* Layout */
     .grid { display: grid; }
     .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .gap-3 { gap: 0.75rem; }
     .gap-4 { gap: 1rem; }
     .gap-6 { gap: 1.5rem; }
-    .mb-8 { margin-bottom: 2rem; }
 
-    /* Enhanced Responsive utilities */
-    /* Mobile First - 320px to 639px */
+    /* Spacing */
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
+    .m-1 { margin: 0.25rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mt-8 { margin-top: 2rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .ml-1 { margin-left: 0.25rem; }
+    .ml-2 { margin-left: 0.5rem; }
+    .ml-3 { margin-left: 0.75rem; }
+    .ml-4 { margin-left: 1rem; }
+    .mr-1 { margin-right: 0.25rem; }
+    .mr-2 { margin-right: 0.5rem; }
+
+    /* Sizing */
+    .w-2 { width: 0.5rem; }
+    .w-3 { width: 0.75rem; }
+    .w-4 { width: 1rem; }
+    .w-5 { width: 1.25rem; }
+    .w-7 { width: 1.75rem; }
+    .w-8 { width: 2rem; }
+    .w-10 { width: 2.5rem; }
+    .w-12 { width: 3rem; }
+    .w-14 { width: 3.5rem; }
+
+    .h-2 { height: 0.5rem; }
+    .h-3 { height: 0.75rem; }
+    .h-4 { height: 1rem; }
+    .h-5 { height: 1.25rem; }
+    .h-7 { height: 1.75rem; }
+    .h-8 { height: 2rem; }
+    .h-10 { height: 2.5rem; }
+    .h-12 { height: 3rem; }
+    .h-14 { height: 3.5rem; }
+
+    /* Typography */
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
     .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
     .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-    .gap-3 { gap: 0.75rem; }
-    .mb-6 { margin-bottom: 1.5rem; }
-    .mt-4 { margin-top: 1rem; }
-    .w-8 { width: 2rem; }
-    .h-8 { height: 2rem; }
-    .p-3 { padding: 0.75rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
     .text-xxs { font-size: 0.625rem; line-height: 0.75rem; }
 
-    /* Small devices - 640px and up */
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wider { letter-spacing: 0.05em; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+    .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .whitespace-nowrap { white-space: nowrap; }
+
+    /* Flexbox */
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .flex-1 { flex: 1 1 0%; }
+    .flex-shrink-0 { flex-shrink: 0; }
+    .min-w-0 { min-width: 0px; }
+    .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; }
+
+    /* Display */
+    .hidden { display: none; }
+    .inline-flex { display: inline-flex; }
+    .table { display: table; }
+    .table-cell { display: table-cell; }
+
+    /* Borders */
+    .border { border-width: 1px; }
+    .border-l-4 { border-left-width: 4px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-transparent { border-color: transparent; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+
+    /* Shadow */
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+    /* Layout utilities */
+    .min-h-screen { min-height: 100vh; }
+    .max-w-7xl { max-width: 80rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-x-auto { overflow-x: auto; }
+    .relative { position: relative; }
+    .min-w-full { min-width: 100%; }
+    .divide-y { border-top-width: 1px; }
+    .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+        border-top-color: #e5e7eb;
+        border-top-width: 1px;
+    }
+    .transform { transform: var(--tw-transform); }
+    .opacity-90 { opacity: 0.9; }
+    .group { position: relative; }
+
+    /* Badge specific styles */
+    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+
+    /* Responsive utilities */
     @media (min-width: 640px) {
         .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .sm\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
         .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
         .sm\:text-base { font-size: 1rem; line-height: 1.5rem; }
+        .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
         .sm\:flex-row { flex-direction: row; }
         .sm\:items-center { align-items: center; }
         .sm\:justify-between { justify-content: space-between; }
         .sm\:table-cell { display: table-cell; }
         .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
         .sm\:py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .sm\:py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
         .sm\:w-12 { width: 3rem; }
         .sm\:h-12 { height: 3rem; }
-        .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
         .sm\:gap-4 { gap: 1rem; }
         .sm\:mb-8 { margin-bottom: 2rem; }
         .sm\:p-6 { padding: 1.5rem; }
+        .sm\:rounded-2xl { border-radius: 1rem; }
+        .sm\:block { display: block; }
+        .sm\:hidden { display: none; }
+        .sm\:inline { display: inline; }
     }
 
-    /* Medium devices - 768px and up */
     @media (min-width: 768px) {
         .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -146,170 +284,52 @@
         .md\:items-center { align-items: center; }
         .md\:block { display: block; }
         .md\:hidden { display: none; }
+        .md\:table-cell { display: table-cell; }
+        .md\:col-span-2 { grid-column: span 2 / span 2; }
     }
 
-    /* Large devices - 1024px and up */
     @media (min-width: 1024px) {
-        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        .lg\:col-span-2 { grid-column: span 2 / span 2; }
+        .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .lg\:col-span-1 { grid-column: span 1 / span 1; }
+        .lg\:col-span-2 { grid-column: span 2 / span 2; }
         .lg\:text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .lg\:text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .lg\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
         .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
         .lg\:gap-8 { gap: 2rem; }
         .lg\:block { display: block; }
         .lg\:flex { display: flex; }
+        .lg\:w-14 { width: 3.5rem; }
+        .lg\:h-14 { height: 3.5rem; }
+        .lg\:w-8 { width: 2rem; }
+        .lg\:h-8 { height: 2rem; }
+        .lg\:w-7 { width: 1.75rem; }
+        .lg\:h-7 { height: 1.75rem; }
     }
 
-    /* Extra large devices - 1280px and up */
     @media (min-width: 1280px) {
         .xl\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .xl\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
         .xl\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .xl\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
     }
 
-    /* 2XL devices - 1536px and up */
     @media (min-width: 1536px) {
         .\32xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
         .\32xl\:px-12 { padding-left: 3rem; padding-right: 3rem; }
         .\32xl\:max-w-8xl { max-width: 88rem; }
     }
-
-    /* Border radius */
-    .rounded-2xl { border-radius: 1rem; }
-    .rounded-xl { border-radius: 0.75rem; }
-    .rounded-lg { border-radius: 0.5rem; }
-    .rounded-full { border-radius: 9999px; }
-
-    /* Shadow */
-    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-
-    /* Other utilities */
-    .min-h-screen { min-height: 100vh; }
-    .max-w-7xl { max-width: 80rem; }
-    .mx-auto { margin-left: auto; margin-right: auto; }
-    .px-4 { padding-left: 1rem; padding-right: 1rem; }
-    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-    .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
-    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
-    .p-6 { padding: 1.5rem; }
-    .p-4 { padding: 1rem; }
-    .mt-1 { margin-top: 0.25rem; }
-    .mt-2 { margin-top: 0.5rem; }
-    .mt-3 { margin-top: 0.75rem; }
-    .mt-4 { margin-top: 1rem; }
-    .mt-6 { margin-top: 1.5rem; }
-    .mt-8 { margin-top: 2rem; }
-    .mb-1 { margin-bottom: 0.25rem; }
-    .mb-4 { margin-bottom: 1rem; }
-    .ml-1 { margin-left: 0.25rem; }
-    .ml-2 { margin-left: 0.5rem; }
-    .ml-3 { margin-left: 0.75rem; }
-    .ml-4 { margin-left: 1rem; }
-    .mr-1 { margin-right: 0.25rem; }
-    .mr-2 { margin-right: 0.5rem; }
-
-    /* Flex utilities */
-    .flex { display: flex; }
-    .flex-col { flex-direction: column; }
-    .items-center { align-items: center; }
-    .items-start { align-items: flex-start; }
-    .justify-between { justify-content: space-between; }
-    .justify-center { align-items: center; }
-    .flex-1 { flex: 1 1 0%; }
-    .flex-shrink-0 { flex-shrink: 0; }
-    .min-w-0 { min-width: 0px; }
-    .space-x-2 > :not([hidden]) ~ :not([hidden]) { margin-left: 0.5rem; }
-
-    /* Typography */
-    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-    .text-xs { font-size: 0.75rem; line-height: 1rem; }
-    .font-bold { font-weight: 700; }
-    .font-semibold { font-weight: 600; }
-    .font-medium { font-weight: 500; }
-    .uppercase { text-transform: uppercase; }
-    .tracking-wider { letter-spacing: 0.05em; }
-    .truncate {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    /* Borders */
-    .border { border-width: 1px; }
-    .border-l-4 { border-left-width: 4px; }
-    .border-b { border-bottom-width: 1px; }
-    .border-transparent { border-color: transparent; }
-
-    /* Spacing and sizing */
-    .w-4 { width: 1rem; }
-    .w-5 { width: 1.25rem; }
-    .w-7 { width: 1.75rem; }
-    .w-14 { width: 3.5rem; }
-    .w-2 { width: 0.5rem; }
-    .h-4 { height: 1rem; }
-    .h-5 { height: 1.25rem; }
-    .h-7 { height: 1.75rem; }
-    .h-14 { height: 3.5rem; }
-    .h-2 { height: 0.5rem; }
-    .h-10 { width: 2.5rem; height: 2.5rem; }
-    .h-12 { width: 3rem; height: 3rem; }
-    .w-10 { width: 2.5rem; }
-    .w-12 { width: 3rem; }
-
-    /* Display */
-    .hidden { display: none; }
-    .inline-flex { display: inline-flex; }
-    .table { display: table; }
-    .table-cell { display: table-cell; }
-
-    /* Overflow */
-    .overflow-hidden { overflow: hidden; }
-    .overflow-x-auto { overflow-x: auto; }
-
-    /* Text decoration and cursor */
-    .text-center { text-align: center; }
-    .text-left { text-align: left; }
-    .text-right { text-align: right; }
-    .whitespace-nowrap { white-space: nowrap; }
-
-    /* Positioning */
-    .relative { position: relative; }
-
-    /* Table styles */
-    .min-w-full { min-width: 100%; }
-    .divide-y { border-top-width: 1px; }
-    .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-top-color: #e5e7eb; border-top-width: 1px; }
-
-    /* Transform */
-    .transform { transform: var(--tw-transform); }
-
-    /* Additional button styles */
-    .hover\:from-blue-600:hover { --tw-gradient-from: #2563eb; }
-    .hover\:to-blue-700:hover { --tw-gradient-to: #1d4ed8; }
-    .hover\:from-green-600:hover { --tw-gradient-from: #16a34a; }
-    .hover\:to-green-700:hover { --tw-gradient-to: #15803d; }
-    .hover\:from-indigo-600:hover { --tw-gradient-from: #4f46e5; }
-    .hover\:to-indigo-700:hover { --tw-gradient-to: #4338ca; }
-
-    .opacity-90 { opacity: 0.9; }
-
-    /* Specific badge styles */
-    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
-    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
-
-    .group { position: relative; }
 </style>
 @endpush
 
 @section('content')
+@php
+use Carbon\Carbon;
+// Set locale ke Indonesia
+Carbon::setLocale('id');
+@endphp
 <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 2xl:max-w-8xl py-4 sm:py-6">
         <!-- Header with Welcome Message - Enhanced Responsive -->
@@ -333,6 +353,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- Alert untuk Pajak Akan Habis - Enhanced Responsive -->
+        @if($data['vehicles_tax_expiring'] > 0)
+            <div class="mb-6 sm:mb-8">
+                <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-400 rounded-lg p-3 sm:p-4 shadow-sm">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <h3 class="text-xs sm:text-sm font-medium text-red-800">Peringatan Pajak Kendaraan!</h3>
+                            <div class="mt-1 text-xs sm:text-sm text-red-700">
+                                <p>Ada <strong>{{ $data['vehicles_tax_expiring'] }}</strong> kendaraan dengan pajak akan habis dalam 2 bulan ke depan atau sudah expired. Segera lakukan perpanjangan!</p>
+                            </div>
+                            <div class="mt-2 sm:mt-3">
+                                <a href="#tax-expiring" class="text-xs sm:text-sm font-medium text-red-800 hover:text-red-900 inline-flex items-center">
+                                    Lihat detail
+                                    <svg class="ml-1 w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- Stats Cards with Enhanced Responsive Design -->
         <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 mb-6 sm:mb-8">
@@ -458,35 +507,6 @@
             </div>
         </div>
 
-        <!-- Alert untuk Pajak Akan Habis - Enhanced Responsive -->
-        @if($data['vehicles_tax_expiring'] > 0)
-            <div class="mb-6 sm:mb-8">
-                <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-400 rounded-lg p-3 sm:p-4 shadow-sm">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <svg class="h-4 w-4 sm:h-5 sm:w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-3 flex-1">
-                            <h3 class="text-xs sm:text-sm font-medium text-red-800">Peringatan Pajak Kendaraan!</h3>
-                            <div class="mt-1 text-xs sm:text-sm text-red-700">
-                                <p>Ada <strong>{{ $data['vehicles_tax_expiring'] }}</strong> kendaraan dengan pajak akan habis dalam 30 hari ke depan. Segera lakukan perpanjangan!</p>
-                            </div>
-                            <div class="mt-2 sm:mt-3">
-                                <a href="#tax-expiring" class="text-xs sm:text-sm font-medium text-red-800 hover:text-red-900 inline-flex items-center">
-                                    Lihat detail
-                                    <svg class="ml-1 w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
         <!-- Quick Actions - Enhanced Responsive -->
         <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -594,6 +614,10 @@
                                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                         Service
                                                     </span>
+                                                @elseif($vehicle->availability_status == 'tidak_tersedia')
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                        Tidak Tersedia
+                                                    </span>
                                                 @else
                                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                         {{ ucfirst($vehicle->availability_status) }}
@@ -664,6 +688,14 @@
                                                         <span class="hidden sm:inline">Service</span>
                                                         <span class="sm:hidden">🔧</span>
                                                     </span>
+                                                @elseif($vehicle->availability_status == 'tidak_tersedia')
+                                                    <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                        <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
+                                                            <circle cx="4" cy="4" r="3"/>
+                                                        </svg>
+                                                        <span class="hidden sm:inline">Tidak Tersedia</span>
+                                                        <span class="sm:hidden">✖</span>
+                                                    </span>
                                                 @else
                                                     <span class="inline-flex items-center px-2 sm:px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                         <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
@@ -730,19 +762,93 @@
                                         </div>
                                         <div class="flex-shrink-0 ml-2 sm:ml-4">
                                             <div class="text-right">
-                                                <p class="text-xs sm:text-sm font-medium text-red-600">
-                                                    {{ $vehicle->tax_expiry_date->format('d/m/Y') }}
+                                                <p class="text-xs sm:text-sm font-medium {{ $vehicle->isTaxExpired() ? 'text-red-800' : 'text-red-600' }}">
+                                                    {{ $vehicle->tax_expiry_date->translatedFormat('d F Y') }}
                                                 </p>
-                                                <p class="text-xs text-red-500">
-                                                    <span class="hidden sm:inline">{{ $vehicle->tax_expiry_date->diffInDays(now()) }} hari lagi</span>
-                                                    <span class="sm:hidden">{{ $vehicle->tax_expiry_date->diffInDays(now()) }}d</span>
-                                                </p>
+                                                @if($vehicle->isTaxExpired())
+                                                    <p class="text-xs text-red-800 font-semibold">
+                                                        <span class="hidden sm:inline">Pajak Sudah Expired</span>
+                                                        <span class="sm:hidden">Expired</span>
+                                                    </p>
+                                                    <p class="text-xs text-red-600">
+                                                        <span class="hidden sm:inline">{{ abs($vehicle->days_until_tax_expiry) }} hari yang lalu</span>
+                                                        <span class="sm:hidden">-{{ abs($vehicle->days_until_tax_expiry) }}d</span>
+                                                    </p>
+                                                @else
+                                                    <p class="text-xs text-red-500">
+                                                        <span class="hidden sm:inline">{{ $vehicle->days_until_tax_expiry }} hari lagi</span>
+                                                        <span class="sm:hidden">{{ $vehicle->days_until_tax_expiry }}d</span>
+                                                    </p>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
+
+                        <!-- Pagination untuk Pajak Akan Habis -->
+                        @if($expiring_tax_vehicles->hasPages())
+                            <div class="bg-gray-50 px-3 py-3 border-t border-gray-200">
+                                <div class="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
+                                    <!-- Info Pagination -->
+                                    <div class="text-xs text-gray-600">
+                                        Menampilkan
+                                        <span class="font-medium">{{ $expiring_tax_vehicles->firstItem() ?? 0 }}</span>
+                                        sampai
+                                        <span class="font-medium">{{ $expiring_tax_vehicles->lastItem() ?? 0 }}</span>
+                                        dari
+                                        <span class="font-medium">{{ $expiring_tax_vehicles->total() }}</span>
+                                        kendaraan
+                                    </div>
+
+                                    <!-- Tombol Pagination -->
+                                    <div class="flex items-center space-x-1">
+                                        @if($expiring_tax_vehicles->onFirstPage())
+                                            <span class="px-2 py-1 text-xs text-gray-400 bg-gray-200 rounded cursor-not-allowed">
+                                                «
+                                            </span>
+                                        @else
+                                            <a href="{{ $expiring_tax_vehicles->previousPageUrl() }}"
+                                               class="px-2 py-1 text-xs text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                                «
+                                            </a>
+                                        @endif
+
+                                        @php
+                                            $currentPage = $expiring_tax_vehicles->currentPage();
+                                            $lastPage = $expiring_tax_vehicles->lastPage();
+                                            $start = max(1, $currentPage - 1);
+                                            $end = min($lastPage, $currentPage + 1);
+                                        @endphp
+
+                                        @for($page = $start; $page <= $end; $page++)
+                                            @if($page == $currentPage)
+                                                <span class="px-2 py-1 text-xs font-medium text-white bg-red-600 rounded">
+                                                    {{ $page }}
+                                                </span>
+                                            @else
+                                                <a href="{{ $expiring_tax_vehicles->url($page) }}"
+                                                   class="px-2 py-1 text-xs text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                                    {{ $page }}
+                                                </a>
+                                            @endif
+                                        @endfor
+
+                                        @if($expiring_tax_vehicles->hasMorePages())
+                                            <a href="{{ $expiring_tax_vehicles->nextPageUrl() }}"
+                                               class="px-2 py-1 text-xs text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                                                »
+                                            </a>
+                                        @else
+                                            <span class="px-2 py-1 text-xs text-gray-400 bg-gray-200 rounded cursor-not-allowed">
+                                                »
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @else
                         <div class="px-4 sm:px-6 py-8 sm:py-12 text-center">
                             <svg class="mx-auto h-8 w-8 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -761,8 +867,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
 @endsection

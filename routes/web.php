@@ -23,16 +23,18 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
 
     // Admin routes
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::middleware(['role:admin'])->group(function () {
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Vehicle management
-        Route::resource('vehicles', AdminVehicleController::class);
+            // Vehicle management
+            Route::resource('vehicles', AdminVehicleController::class);
 
-        // User management
-        Route::resource('users', AdminUserController::class);
-        Route::post('/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
-        Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+            // User management
+            Route::resource('users', AdminUserController::class);
+            Route::post('/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
+            Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+        });
     });
 
     // Operator routes
