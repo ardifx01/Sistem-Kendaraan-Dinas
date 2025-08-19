@@ -21,34 +21,34 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
-    
+
     // Admin routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        
+
         // Vehicle management
         Route::resource('vehicles', AdminVehicleController::class);
-        
+
         // User management
         Route::resource('users', AdminUserController::class);
         Route::post('/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
         Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
     });
-    
+
     // Operator routes
     Route::middleware(['role:operator', 'active'])->prefix('operator')->name('operator.')->group(function () {
         Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
-        
+
         // Service management
         Route::resource('services', ServiceController::class);
-        
+
         // Borrowing management
         Route::resource('borrowings', BorrowingController::class);
-        
+
         // Payment management
         Route::resource('payments', PaymentController::class);
     });
-    
+
     // Redirect based on role after login
     Route::get('/dashboard', function () {
         if (auth()->user()->isAdmin()) {
