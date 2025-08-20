@@ -6,6 +6,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\VehicleController as AdminVehicleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\OperatorController as AdminOperatorController;
 use App\Http\Controllers\Operator\DashboardController as OperatorDashboardController;
 use App\Http\Controllers\Operator\ServiceController;
 use App\Http\Controllers\Operator\BorrowingController;
@@ -34,6 +35,9 @@ Route::middleware(['auth'])->group(function () {
             Route::resource('users', AdminUserController::class);
             Route::post('/users/{user}/reset-password', [AdminUserController::class, 'resetPassword'])->name('users.reset-password');
             Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+
+            // Operator management
+            Route::resource('operators', AdminOperatorController::class);
         });
     });
 

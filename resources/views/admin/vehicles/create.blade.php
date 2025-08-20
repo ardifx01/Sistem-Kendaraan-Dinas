@@ -31,7 +31,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Type -->
                     <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kendaraan *</label>
+                        <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kendaraan</label>
                         <select name="type" id="type" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('type') border-red-500 @enderror">
                             <option value="">Pilih Jenis</option>
@@ -45,7 +45,7 @@
 
                     <!-- Brand -->
                     <div>
-                        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Merk *</label>
+                        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Merk</label>
                         <input type="text" name="brand" id="brand" value="{{ old('brand') }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('brand') border-red-500 @enderror"
                                placeholder="Toyota, Honda, dll">
@@ -56,7 +56,7 @@
 
                     <!-- Model -->
                     <div>
-                        <label for="model" class="block text-sm font-medium text-gray-700 mb-2">Model *</label>
+                        <label for="model" class="block text-sm font-medium text-gray-700 mb-2">Model</label>
                         <input type="text" name="model" id="model" value="{{ old('model') }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('model') border-red-500 @enderror"
                                placeholder="Avanza, Beat, dll">
@@ -67,7 +67,7 @@
 
                     <!-- Year -->
                     <div>
-                        <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Tahun *</label>
+                        <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Tahun</label>
                         <input type="number" name="year" id="year" value="{{ old('year') }}" required
                                min="1990" max="{{ date('Y') + 1 }}"
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('year') border-red-500 @enderror"
@@ -79,7 +79,7 @@
 
                     <!-- License Plate -->
                     <div>
-                        <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-2">Plat Nomor *</label>
+                        <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-2">Plat Nomor</label>
                         <input type="text" name="license_plate" id="license_plate" value="{{ old('license_plate') }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('license_plate') border-red-500 @enderror"
                                placeholder="B 1234 ABC" style="text-transform: uppercase;">
@@ -90,7 +90,7 @@
 
                     <!-- Color -->
                     <div>
-                        <label for="color" class="block text-sm font-medium text-gray-700 mb-2">Warna *</label>
+                        <label for="color" class="block text-sm font-medium text-gray-700 mb-2">Warna</label>
                         <input type="text" name="color" id="color" value="{{ old('color') }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('color') border-red-500 @enderror"
                                placeholder="Hitam, Putih, dll">
@@ -107,7 +107,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Tax Expiry Date -->
                     <div>
-                        <label for="tax_expiry_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Berakhir Pajak *</label>
+                        <label for="tax_expiry_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Berakhir Pajak</label>
                         <input type="date" name="tax_expiry_date" id="tax_expiry_date" value="{{ old('tax_expiry_date') }}" required
                                min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tax_expiry_date') border-red-500 @enderror">
@@ -118,7 +118,7 @@
 
                     <!-- Document Status -->
                     <div>
-                        <label for="document_status" class="block text-sm font-medium text-gray-700 mb-2">Status Dokumen *</label>
+                        <label for="document_status" class="block text-sm font-medium text-gray-700 mb-2">Status Dokumen</label>
                         <select name="document_status" id="document_status" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('document_status') border-red-500 @enderror">
                             <option value="">Pilih Status</option>

@@ -274,16 +274,16 @@
 <body style="background-color: #f9fafb;">
     <div style="min-height: 100vh;">
         @if(auth()->check())
-            <nav class="bg-white shadow-lg">
+            <nav class="bg-blue-600 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16 items-center">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 flex items-center">
-                                <h1 class="text-lg font-bold text-gray-800">Kendaraan Dinas</h1>
+                                <h1 class="text-lg font-bold text-white">Kendaraan Dinas</h1>
                             </div>
                         </div>
                         <div class="flex lg:hidden">
-                            <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                            <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
@@ -291,19 +291,19 @@
                         </div>
                         <div class="hidden lg:flex items-center ml-10 space-x-8">
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('admin.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Dashboard</a>
-                                <a href="{{ route('admin.vehicles.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Data Kendaraan</a>
-                                <a href="{{ route('admin.users.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.users.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Data Operator</a>
+                                <a href="{{ route('admin.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Dashboard</a>
+                                <a href="{{ route('admin.vehicles.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Data Kendaraan</a>
+                                <a href="{{ route('admin.operators.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.operators.*')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Data Operator</a>
                             @elseif(auth()->user()->isOperator())
-                                <a href="{{ route('operator.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Dashboard</a>
-                                <a href="{{ route('operator.services.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Service Kendaraan</a>
-                                <a href="{{ route('operator.borrowings.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Peminjaman</a>
-                                <a href="{{ route('operator.payments.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-b-2 border-indigo-500 text-gray-800 @else border-b-2 border-transparent text-gray-500 hover:text-gray-800 @endif">Pembayaran</a>
+                                <a href="{{ route('operator.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Dashboard</a>
+                                <a href="{{ route('operator.services.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Service Kendaraan</a>
+                                <a href="{{ route('operator.borrowings.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Peminjaman</a>
+                                <a href="{{ route('operator.payments.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Pembayaran</a>
                             @endif
                         </div>
                         <div class="hidden lg:flex items-center ml-6">
-                            <span class="text-gray-700 mr-2">{{ auth()->user()->name }}</span>
-                            <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-red-100 text-red-700 @else bg-blue-100 text-blue-700 @endif">
+                            <span class="text-white mr-2">{{ auth()->user()->name }}</span>
+                            <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-white text-red-700 @else bg-blue-100 text-blue-700 @endif">
                                 {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
                             </span>
                             <form method="POST" action="{{ route('logout') }}" class="ml-4" id="logoutFormDesktop">
@@ -318,22 +318,23 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="lg:hidden hidden" id="mobile-menu">
                     <div class="px-2 pt-2 pb-3 space-y-1">
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Dashboard</a>
-                            <a href="{{ route('admin.vehicles.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Data Kendaraan</a>
-                            <a href="{{ route('admin.users.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.users.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Data Operator</a>
+                            <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Dashboard</a>
+                            <a href="{{ route('admin.vehicles.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Data Kendaraan</a>
+                            <a href="{{ route('admin.operators.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.operators.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Data Operator</a>
                         @elseif(auth()->user()->isOperator())
-                            <a href="{{ route('operator.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Dashboard</a>
-                            <a href="{{ route('operator.services.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Service Kendaraan</a>
-                            <a href="{{ route('operator.borrowings.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Peminjaman</a>
-                            <a href="{{ route('operator.payments.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-l-4 border-indigo-500 bg-indigo-50 text-gray-800 @else border-l-4 border-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-800 @endif">Pembayaran</a>
+                            <a href="{{ route('operator.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Dashboard</a>
+                            <a href="{{ route('operator.services.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Service Kendaraan</a>
+                            <a href="{{ route('operator.borrowings.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Peminjaman</a>
+                            <a href="{{ route('operator.payments.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Pembayaran</a>
                         @endif
-                        <div class="border-t border-gray-200 mt-3 pt-3">
+                        <div class="border-t border-blue-500 mt-3 pt-3">
                             <div class="flex items-center px-4 py-2">
-                                <span class="text-gray-700 mr-2">{{ auth()->user()->name }}</span>
-                                <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-red-100 text-red-700 @else bg-blue-100 text-blue-700 @endif">
+                                <span class="text-white mr-2">{{ auth()->user()->name }}</span>
+                                <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-white text-blue-700 @else bg-blue-100 text-blue-700 @endif">
                                     {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
                                 </span>
                             </div>

@@ -34,7 +34,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <!-- Type -->
                     <div>
-                        <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kendaraan *</label>
+                        <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kendaraan</label>
                         <select name="type" id="type" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('type') border-red-500 @enderror">
                             <option value="">Pilih Jenis</option>
@@ -48,7 +48,7 @@
 
                     <!-- Brand -->
                     <div>
-                        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Merk *</label>
+                        <label for="brand" class="block text-sm font-medium text-gray-700 mb-2">Merk</label>
                         <input type="text" name="brand" id="brand" value="{{ old('brand', $vehicle->brand) }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('brand') border-red-500 @enderror"
                                placeholder="Toyota, Honda, dll">
@@ -59,7 +59,7 @@
 
                     <!-- Model -->
                     <div>
-                        <label for="model" class="block text-sm font-medium text-gray-700 mb-2">Model *</label>
+                        <label for="model" class="block text-sm font-medium text-gray-700 mb-2">Model</label>
                         <input type="text" name="model" id="model" value="{{ old('model', $vehicle->model) }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('model') border-red-500 @enderror"
                                placeholder="Avanza, Beat, dll">
@@ -70,7 +70,7 @@
 
                     <!-- Year -->
                     <div>
-                        <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Tahun *</label>
+                        <label for="year" class="block text-sm font-medium text-gray-700 mb-2">Tahun</label>
                         <input type="number" name="year" id="year" value="{{ old('year', $vehicle->year) }}" required
                                min="1990" max="{{ date('Y') + 1 }}"
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('year') border-red-500 @enderror"
@@ -82,7 +82,7 @@
 
                     <!-- License Plate -->
                     <div>
-                        <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-2">Plat Nomor *</label>
+                        <label for="license_plate" class="block text-sm font-medium text-gray-700 mb-2">Plat Nomor</label>
                         <input type="text" name="license_plate" id="license_plate" value="{{ old('license_plate', $vehicle->license_plate) }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('license_plate') border-red-500 @enderror"
                                placeholder="B 1234 ABC" style="text-transform: uppercase;">
@@ -93,7 +93,7 @@
 
                     <!-- Color -->
                     <div>
-                        <label for="color" class="block text-sm font-medium text-gray-700 mb-2">Warna *</label>
+                        <label for="color" class="block text-sm font-medium text-gray-700 mb-2">Warna</label>
                         <input type="text" name="color" id="color" value="{{ old('color', $vehicle->color) }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('color') border-red-500 @enderror"
                                placeholder="Hitam, Putih, dll">
@@ -110,7 +110,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <!-- Tax Expiry Date -->
                     <div>
-                        <label for="tax_expiry_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Berakhir Pajak *</label>
+                        <label for="tax_expiry_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Berakhir Pajak</label>
                         <input type="date" name="tax_expiry_date" id="tax_expiry_date" value="{{ old('tax_expiry_date', $vehicle->tax_expiry_date?->format('Y-m-d')) }}" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tax_expiry_date') border-red-500 @enderror">
                         @error('tax_expiry_date')
@@ -120,7 +120,7 @@
 
                     <!-- Document Status -->
                     <div>
-                        <label for="document_status" class="block text-sm font-medium text-gray-700 mb-2">Status Dokumen *</label>
+                        <label for="document_status" class="block text-sm font-medium text-gray-700 mb-2">Status Dokumen</label>
                         <select name="document_status" id="document_status" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('document_status') border-red-500 @enderror">
                             <option value="">Pilih Status</option>
@@ -151,7 +151,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Availability Status -->
                     <div>
-                        <label for="availability_status" class="block text-sm font-medium text-gray-700 mb-2">Status Ketersediaan *</label>
+                        <label for="availability_status" class="block text-sm font-medium text-gray-700 mb-2">Status Ketersediaan</label>
                         <select name="availability_status" id="availability_status" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('availability_status') border-red-500 @enderror">
                             <option value="tersedia" {{ old('availability_status', $vehicle->availability_status) == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
@@ -214,11 +214,12 @@
                         <div id="photo-preview-container" class="hidden mb-4">
                             <div class="relative inline-block">
                                 <img id="photo-preview" src="" alt="Preview" class="h-32 w-32 object-cover rounded-lg border-2 border-gray-300">
-                                <button type="button" id="remove-photo" class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm transition-colors">
+                                <button type="button" id="remove-photo"
+lass="absolute -top-32-right-32bg-red-500 hover:bg-red-600 text-white rounded-full w-86h-86flex items-center justify-center text-bsmtransioion-lcw v:c>
                                     ×
                                 </button>
-                            </div>
-                            <p class="mt-2 text-sm text-gray-600">Preview foto baru yang akan diupload</p>
+    <                       <d/iv
+                             <p class="mt-2 text-sm text-gray-600">Preview foto baru yang akan diupload</p>
                         </div>
 
                         <!-- Upload Area -->
@@ -232,8 +233,8 @@
                                         <span>📁 {{ $vehicle->photo ? 'Pilih File Baru' : 'Pilih File' }}</span>
                                         <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
                                     </label>
-                                    <button type="button" onclick="openCamera()" class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-                                        <span>📷 Ambil Foto</span>
+                                    <button type="button" onclick="openCamera()" lass="bgrgreen-600 tomt-white px-64py-32rounded-xmdfont-sie iumhover:fbggreen-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-aawgv:h>
+                                        <spast>📷 Ambil Foto</span>
                                     </button>
                                 </div>
                                 <p class="text-sm text-gray-600">atau drag and drop file di sini</p>
@@ -253,9 +254,9 @@
                    class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors text-center">
                     Batal
                 </a>
-                <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors inline-flex items-center justify-center">
+                <button type="submit"class="w-full sm:w-auto px-84py-32bgrindigo-600 hover:fbgindigo-700 text-white text-sm font-sie iumroundedd-md sha-owxsmfocus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-aco nrsinline-flex items-center justify-centrr:>
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        <path stroke- linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                     Perbarui Kendaraan
                 </button>
@@ -506,6 +507,4 @@
             });
         }
     });
-</script>
-@endpush
-@endsection
+</script

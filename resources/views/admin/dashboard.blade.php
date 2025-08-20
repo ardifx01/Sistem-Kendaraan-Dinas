@@ -534,7 +534,7 @@ Carbon::setLocale('id');
                             </div>
                         </a>
 
-                        <a href="{{ route('admin.users.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-100 hover:shadow-lg">
+                        <a href="{{ route('admin.operators.create') }}" class="group relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 transform hover:scale-100 hover:shadow-lg">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                     <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -738,10 +738,10 @@ Carbon::setLocale('id');
 
             <!-- Kendaraan Pajak Akan Habis - Enhanced Mobile Layout -->
             <div id="tax-expiring" class="lg:col-span-1 order-2 lg:order-none">
-                <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-red-200 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
                         <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-red-700 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <span class="hidden sm:inline">Pajak Akan Habis</span>
