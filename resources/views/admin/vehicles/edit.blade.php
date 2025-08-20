@@ -215,11 +215,11 @@
                             <div class="relative inline-block">
                                 <img id="photo-preview" src="" alt="Preview" class="h-32 w-32 object-cover rounded-lg border-2 border-gray-300">
                                 <button type="button" id="remove-photo"
-lass="absolute -top-32-right-32bg-red-500 hover:bg-red-600 text-white rounded-full w-86h-86flex items-center justify-center text-bsmtransioion-lcw v:c>
+                                        class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors duration-200">
                                     ×
                                 </button>
-    <                       <d/iv
-                             <p class="mt-2 text-sm text-gray-600">Preview foto baru yang akan diupload</p>
+                            </div>
+                            <p class="mt-2 text-sm text-gray-600">Preview foto baru yang akan diupload</p>
                         </div>
 
                         <!-- Upload Area -->
@@ -233,8 +233,9 @@ lass="absolute -top-32-right-32bg-red-500 hover:bg-red-600 text-white rounded-fu
                                         <span>📁 {{ $vehicle->photo ? 'Pilih File Baru' : 'Pilih File' }}</span>
                                         <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
                                     </label>
-                                    <button type="button" onclick="openCamera()" lass="bgrgreen-600 tomt-white px-64py-32rounded-xmdfont-sie iumhover:fbggreen-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-aawgv:h>
-                                        <spast>📷 Ambil Foto</span>
+                                    <button type="button" onclick="openCamera()"
+                                            class="bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
+                                        <span>📷 Ambil Foto</span>
                                     </button>
                                 </div>
                                 <p class="text-sm text-gray-600">atau drag and drop file di sini</p>
@@ -254,12 +255,12 @@ lass="absolute -top-32-right-32bg-red-500 hover:bg-red-600 text-white rounded-fu
                    class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors text-center">
                     Batal
                 </a>
-                <button type="submit"class="w-full sm:w-auto px-84py-32bgrindigo-600 hover:fbgindigo-700 text-white text-sm font-sie iumroundedd-md sha-owxsmfocus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-aco nrsinline-flex items-center justify-centrr:>
+                <button type="submit"
+                        class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 inline-flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke- linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
                     Perbarui Kendaraan
-                </button>
                 </button>
             </div>
         </form>
@@ -507,4 +508,6 @@ lass="absolute -top-32-right-32bg-red-500 hover:bg-red-600 text-white rounded-fu
             });
         }
     });
-</script
+</script>
+@endpush
+@endsection
