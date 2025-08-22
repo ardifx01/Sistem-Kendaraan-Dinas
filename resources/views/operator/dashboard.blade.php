@@ -243,195 +243,996 @@ Carbon::setLocale('id');
             </div>
         </div>
 
-        <!-- Stats Cards with Enhanced Responsive Design -->
-        <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 mb-6 sm:mb-8">
-            <!-- Total Kendaraan -->
-            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Total Kendaraan</p>
-                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['total_vehicles'] }}</p>
-                            <p class="text-xxs sm:text-xs text-green-600 mt-1 hidden sm:block">
-                                <span class="inline-flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Semua unit terdaftar
-                                </span>
-                            </p>
-                            <!-- Mobile version - simplified -->
-                            <p class="text-xxs text-green-600 mt-1 sm:hidden">
-                                ✓ Terdaftar
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-9 h-9 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.712 4.33a9.027 9.027 0 0 1 1.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 0 0-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 0 1 0 9.424m-4.138-5.976a3.736 3.736 0 0 0-.88-1.388 3.737 3.737 0 0 0-1.388-.88m2.268 2.268a3.765 3.765 0 0 1 0 2.528m-2.268-4.796a3.765 3.765 0 0 0-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 0 1-1.388.88m2.268-2.268 4.138 3.448m0 0a9.027 9.027 0 0 1-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0-3.448-4.138m3.448 4.138a9.014 9.014 0 0 1-9.424 0m5.976-4.138a3.765 3.765 0 0 1-2.528 0m0 0a3.736 3.736 0 0 1-1.388-.88 3.737 3.737 0 0 1-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 0 1-1.652-1.306 9.027 9.027 0 0 1-1.306-1.652m0 0 4.138-3.448M4.33 16.712a9.014 9.014 0 0 1 0-9.424m4.138 5.976a3.765 3.765 0 0 1 0-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 0 1 1.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 0 0-1.652 1.306A9.025 9.025 0 0 0 4.33 7.288" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kendaraan Tersedia -->
-            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-green-200 transition-all duration-300">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Kendaraan Tersedia</p>
-                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['available_vehicles'] }}</p>
-                            <p class="text-xxs sm:text-xs text-green-600 mt-1 hidden sm:block">
-                                <span class="inline-flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Siap digunakan
-                                </span>
-                            </p>
-                            <p class="text-xxs text-green-600 mt-1 sm:hidden">
-                                ✓ Siap pakai
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kendaraan Dipinjam -->
-            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-yellow-200 transition-all duration-300">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Sedang Dipinjam</p>
-                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['borrowed_vehicles'] }}</p>
-                            <p class="text-xxs sm:text-xs text-yellow-600 mt-1 hidden sm:block">
-                                <span class="inline-flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Dalam penggunaan
-                                </span>
-                            </p>
-                            <p class="text-xxs text-yellow-600 mt-1 sm:hidden">
-                                ⏰ Digunakan
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kendaraan Service -->
-            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-red-200 transition-all duration-300">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Sedang Service</p>
-                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['vehicles_in_service'] ?? 0 }}</p>
-                            <p class="text-xxs sm:text-xs text-red-600 mt-1 hidden sm:block">
-                                <span class="inline-flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 1.414L10.586 9.5 9.293 10.793a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Dalam perbaikan
-                                </span>
-                            </p>
-                            <p class="text-xxs text-red-600 mt-1 sm:hidden">
-                                🔧 Perbaikan
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-red-500 to-red-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Total Operator -->
-            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-indigo-200 transition-all duration-300">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1 min-w-0">
-                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Total Operator</p>
-                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['total_operators'] }}</p>
-                            <p class="text-xxs sm:text-xs text-indigo-600 mt-1 hidden sm:block">
-                                <span class="inline-flex items-center">
-                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
-                                    </svg>
-                                    User aktif
-                                </span>
-                            </p>
-                            <p class="text-xxs text-indigo-600 mt-1 sm:hidden">
-                                👥 Aktif
-                            </p>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions untuk Operator -->
+        <!-- Kendaraan Berdasarkan Status -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Aksi Cepat</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors duration-200">
-                    <svg class="w-8 h-8 text-blue-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-blue-900">Tambah Kendaraan</span>
-                </a>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2 sm:mb-0">Informasi Kendaraan</h3>
+            </div>
 
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors duration-200">
-                    <svg class="w-8 h-8 text-green-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-green-900">Laporan</span>
-                </a>
+            <!-- Status Overview Cards -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <!-- Tersedia -->
+                <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-green-600">Tersedia</p>
+                            <p class="text-2xl font-bold text-green-900">{{ $vehicles_by_status['tersedia'] ?? 0 }}</p>
+                        </div>
+                        <div class="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors duration-200">
-                    <svg class="w-8 h-8 text-yellow-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-yellow-900">Service</span>
-                </a>
+                <!-- Service -->
+                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-red-600">Service</p>
+                            <p class="text-2xl font-bold text-red-900">{{ $vehicles_by_status['service'] ?? 0 }}</p>
+                        </div>
+                        <div class="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <a href="#" class="flex flex-col items-center justify-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors duration-200">
-                    <svg class="w-8 h-8 text-purple-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                    <span class="text-sm font-medium text-purple-900">Profil</span>
-                </a>
+            <!-- Detail Kendaraan per Status -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Semua Kendaraan Tersedia -->
+                <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                    <h4 class="text-md font-semibold text-green-900 mb-3 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Semua Kendaraan Tersedia
+                    </h4>
+                    @if($vehicles_by_status_detailed['tersedia']->count() > 0)
+                        <div class="space-y-2 max-h-96 overflow-y-auto">
+                            @foreach($vehicles_by_status_detailed['tersedia'] as $vehicle)
+                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                        <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
+                                    </div>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Siap Pakai</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        @if($vehicles_by_status['tersedia'] > $vehicles_by_status_detailed['tersedia']->count())
+                            <p class="text-xs text-gray-500 mt-2 text-center">
+                                Dan {{ $vehicles_by_status['tersedia'] - $vehicles_by_status_detailed['tersedia']->count() }} kendaraan lainnya...
+                            </p>
+                        @endif
+                    @else
+                        <p class="text-sm text-green-600">Tidak ada kendaraan tersedia</p>
+                    @endif
+                </div>
+
+                <!-- Kendaraan Service -->
+                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                    <h4 class="text-md font-semibold text-red-900 mb-3 flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Kendaraan Dalam Service
+                    </h4>
+                    @if($vehicles_by_status_detailed['service']->count() > 0)
+                        <div class="space-y-2 max-h-96 overflow-y-auto">
+                            @foreach($vehicles_by_status_detailed['service'] as $vehicle)
+                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                        @if($vehicle->latestService)
+                                            <p class="text-xs text-red-600">{{ $vehicle->latestService->service_type }}</p>
+                                        @endif
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Dalam Service</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        @if($vehicles_by_status['service'] > $vehicles_by_status_detailed['service']->count())
+                            <p class="text-xs text-gray-500 mt-2 text-center">
+                                Dan {{ $vehicles_by_status['service'] - $vehicles_by_status_detailed['service']->count() }} kendaraan lainnya...
+                            </p>
+                        @endif
+                    @else
+                        <p class="text-sm text-red-600">Tidak ada kendaraan dalam service</p>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Sederhana -->
+<!-- 1. Modal Konfirmasi -->
+<div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="confirmContent">
+        <div class="p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2" id="confirmTitle">Konfirmasi</h3>
+            <p class="text-gray-600 mb-6" id="confirmMessage">Apakah Anda yakin?</p>
+            <div class="flex space-x-3">
+                <button id="confirmCancel" class="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
+                    Batal
+                </button>
+                <button id="confirmOk" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal Success -->
+<div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="successContent">
+        <div class="p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Berhasil!</h3>
+            <p class="text-gray-600 mb-6" id="successMessage">Operasi berhasil dilakukan.</p>
+            <button id="successOk" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Modal Error -->
+<div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="errorContent">
+        <div class="p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Terjadi Kesalahan!</h3>
+            <p class="text-gray-600 mb-6" id="errorMessage">Operasi gagal dilakukan.</p>
+            <button id="errorOk" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Modal Loading -->
+<div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-sm w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="loadingContent">
+        <div class="p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                <svg class="animate-spin h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Memproses...</h3>
+            <p class="text-gray-600" id="loadingMessage">Mohon tunggu sebentar.</p>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Modal Info -->
+<div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="infoContent">
+        <div class="p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2" id="infoTitle">Informasi</h3>
+            <p class="text-gray-600 mb-6" id="infoMessage">Informasi untuk Anda.</p>
+            <button id="infoOk" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                Mengerti
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 6. Modal Validation -->
+<div id="validationModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden justify-center items-center p-4">
+    <div class="bg-white rounded-lg max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="validationContent">
+        <div class="p-6">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-orange-100">
+                        <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="ml-4 flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Periksa Form Anda</h3>
+                    <div class="text-sm text-gray-600" id="validationErrors">
+                        <!-- Error list akan muncul di sini -->
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button id="validationOk" class="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                    OK, Saya Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+// Simple Modal Manager untuk Dashboard
+class DashboardModal {
+    constructor() {
+        this.modals = {
+            confirm: document.getElementById('confirmModal'),
+            success: document.getElementById('successModal'),
+            error: document.getElementById('errorModal'),
+            loading: document.getElementById('loadingModal'),
+            info: document.getElementById('infoModal'),
+            validation: document.getElementById('validationModal')
+        };
+
+        this.confirmCallback = null;
+        this.init();
+    }
+
+    init() {
+        // Event listeners untuk tombol modal
+        document.getElementById('confirmOk')?.addEventListener('click', () => {
+            this.hide('confirm');
+            if (this.confirmCallback) this.confirmCallback();
+        });
+
+        document.getElementById('confirmCancel')?.addEventListener('click', () => {
+            this.hide('confirm');
+        });
+
+        document.getElementById('successOk')?.addEventListener('click', () => {
+            this.hide('success');
+        });
+
+        document.getElementById('errorOk')?.addEventListener('click', () => {
+            this.hide('error');
+        });
+
+        document.getElementById('infoOk')?.addEventListener('click', () => {
+            this.hide('info');
+        });
+
+        document.getElementById('validationOk')?.addEventListener('click', () => {
+            this.hide('validation');
+        });
+
+        // Close modal ketika klik backdrop
+        Object.values(this.modals).forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        this.hideAll();
+                    }
+                });
+            }
+        });
+
+        // Close dengan ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.hideAll();
+            }
+        });
+    }
+
+    show(type) {
+        const modal = this.modals[type];
+        if (!modal) return;
+
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+
+        // Animate in
+        const content = modal.querySelector(`#${type}Content`);
+        if (content) {
+            requestAnimationFrame(() => {
+                content.style.transform = 'scale(1)';
+                content.style.opacity = '1';
+            });
+        }
+    }
+
+    hide(type) {
+        const modal = this.modals[type];
+        if (!modal) return;
+
+        const content = modal.querySelector(`#${type}Content`);
+        if (content) {
+            content.style.transform = 'scale(0.95)';
+            content.style.opacity = '0';
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }, 150);
+        } else {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    hideAll() {
+        Object.keys(this.modals).forEach(type => this.hide(type));
+    }
+
+    // Show confirmation modal
+    confirm(title, message, callback) {
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMessage').textContent = message;
+        this.confirmCallback = callback;
+        this.show('confirm');
+    }
+
+    // Show success modal
+    success(message, autoHide = true) {
+        document.getElementById('successMessage').textContent = message;
+        this.show('success');
+
+        if (autoHide) {
+            setTimeout(() => this.hide('success'), 3000);
+        }
+    }
+
+    // Show error modal
+    error(message) {
+        document.getElementById('errorMessage').textContent = message;
+        this.show('error');
+    }
+
+    // Show loading modal
+    loading(message = 'Memproses...') {
+        document.getElementById('loadingMessage').textContent = message;
+        this.show('loading');
+    }
+
+    // Hide loading modal
+    hideLoading() {
+        this.hide('loading');
+    }
+
+    // Show info modal
+    info(title, message) {
+        document.getElementById('infoTitle').textContent = title;
+        document.getElementById('infoMessage').textContent = message;
+        this.show('info');
+    }
+
+    // Show validation errors
+    validation(errors) {
+        const container = document.getElementById('validationErrors');
+        let html = '<ul class="list-disc list-inside space-y-1 text-left">';
+
+        if (Array.isArray(errors)) {
+            errors.forEach(error => {
+                html += `<li>${error}</li>`;
+            });
+        } else if (typeof errors === 'object') {
+            Object.keys(errors).forEach(field => {
+                if (Array.isArray(errors[field])) {
+                    errors[field].forEach(error => {
+                        html += `<li><strong>${this.formatField(field)}:</strong> ${error}</li>`;
+                    });
+                } else {
+                    html += `<li><strong>${this.formatField(field)}:</strong> ${errors[field]}</li>`;
+                }
+            });
+        } else {
+            html += `<li>${errors}</li>`;
+        }
+
+        html += '</ul>';
+        container.innerHTML = html;
+        this.show('validation');
+    }
+
+    formatField(field) {
+        const map = {
+            'vehicle_id': 'Kendaraan',
+            'service_date': 'Tanggal Service',
+            'service_type': 'Jenis Service',
+            'description': 'Deskripsi',
+            'cost': 'Biaya',
+            'garage_name': 'Nama Bengkel',
+            'status': 'Status',
+            'name': 'Nama',
+            'email': 'Email'
+        };
+        return map[field] || field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+}
+
+// Initialize modal
+let dashModal;
+
+document.addEventListener('DOMContentLoaded', function() {
+    dashModal = new DashboardModal();
+
+    // Global functions
+    window.showConfirm = (title, message, callback) => dashModal.confirm(title, message, callback);
+    window.showSuccess = (message, autoHide) => dashModal.success(message, autoHide);
+    window.showError = (message) => dashModal.error(message);
+    window.showInfo = (title, message) => dashModal.info(title, message);
+    window.showLoading = (message) => dashModal.loading(message);
+    window.hideLoading = () => dashModal.hideLoading();
+    window.showValidation = (errors) => dashModal.validation(errors);
+});
+
+// Utility functions
+async function deleteData(name, url) {
+    showConfirm(
+        'Konfirmasi Hapus',
+        `Yakin ingin menghapus "${name}"? Tindakan ini tidak dapat dibatalkan.`,
+        async () => {
+            showLoading('Menghapus data...');
+
+            try {
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                });
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.success) {
+                    showSuccess('Data berhasil dihapus!');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showError(result.message || 'Gagal menghapus data');
+                }
+            } catch (error) {
+                hideLoading();
+                showError('Terjadi kesalahan koneksi');
+            }
+        }
+    );
+}
+
+async function updateStatus(name, newStatus, url) {
+    showConfirm(
+        'Konfirmasi Perubahan',
+        `Yakin ingin mengubah status "${name}" ke "${newStatus}"?`,
+        async () => {
+            showLoading('Mengubah status...');
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const result = await response.json();
+                hideLoading();
+
+                if (result.success) {
+                    showSuccess('Status berhasil diubah!');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showError(result.message || 'Gagal mengubah status');
+                }
+            } catch (error) {
+                hideLoading();
+                showError('Terjadi kesalahan koneksi');
+            }
+        }
+    );
+}
+
+// Test modals (uncomment untuk test)
+// setTimeout(() => {
+//     showInfo('Test Modal', 'Modal berfungsi dengan baik!');
+// }, 1000);
+</script>
+@endpush
+<!-- 1. Modal Konfirmasi Hapus -->
+<div id="deleteModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Konfirmasi Hapus
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500" id="deleteMessage">
+                                Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="confirmDelete" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                    Hapus
+                </button>
+                <button type="button" id="cancelDelete" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal Konfirmasi Status -->
+<div id="statusModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="status-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="status-modal-title">
+                            Konfirmasi Perubahan Status
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500" id="statusMessage">
+                                Apakah Anda yakin ingin mengubah status ini?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="confirmStatus" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Konfirmasi
+                </button>
+                <button type="button" id="cancelStatus" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    Batal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Modal Success -->
+<div id="successModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="success-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="success-modal-title">
+                            Berhasil!
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500" id="successMessage">
+                                Operasi berhasil dilakukan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="closeSuccess" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. Modal Error -->
+<div id="errorModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="error-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="error-modal-title">
+                            Terjadi Kesalahan!
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500" id="errorMessage">
+                                Operasi gagal dilakukan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" id="closeError" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 5. Modal Loading -->
+<div id="loadingModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="loading-modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <!-- Background overlay -->
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+        <!-- Modal panel -->
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                        <svg class="animate-spin h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
+                        Memproses...
+                    </h3>
+                    <p class="text-sm text-gray-500" id="loadingMessage">
+                        Mohon tunggu sebentar.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+// Modal Utilities
+class ModalManager {
+    constructor() {
+        this.modals = {
+            delete: document.getElementById('deleteModal'),
+            status: document.getElementById('statusModal'),
+            success: document.getElementById('successModal'),
+            error: document.getElementById('errorModal'),
+            loading: document.getElementById('loadingModal')
+        };
+
+        this.initializeEventListeners();
+    }
+
+    initializeEventListeners() {
+        // Delete Modal
+        const cancelDelete = document.getElementById('cancelDelete');
+        if (cancelDelete) {
+            cancelDelete.addEventListener('click', () => this.hide('delete'));
+        }
+
+        // Status Modal
+        const cancelStatus = document.getElementById('cancelStatus');
+        if (cancelStatus) {
+            cancelStatus.addEventListener('click', () => this.hide('status'));
+        }
+
+        // Success Modal
+        const closeSuccess = document.getElementById('closeSuccess');
+        if (closeSuccess) {
+            closeSuccess.addEventListener('click', () => this.hide('success'));
+        }
+
+        // Error Modal
+        const closeError = document.getElementById('closeError');
+        if (closeError) {
+            closeError.addEventListener('click', () => this.hide('error'));
+        }
+
+        // Close modals when clicking backdrop
+        Object.values(this.modals).forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        this.hideAll();
+                    }
+                });
+            }
+        });
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.hideAll();
+            }
+        });
+    }
+
+    show(type) {
+        if (this.modals[type]) {
+            this.modals[type].classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    hide(type) {
+        if (this.modals[type]) {
+            this.modals[type].classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    hideAll() {
+        Object.keys(this.modals).forEach(type => this.hide(type));
+    }
+
+    // Show delete confirmation
+    confirmDelete(message, onConfirm) {
+        const messageEl = document.getElementById('deleteMessage');
+        const confirmBtn = document.getElementById('confirmDelete');
+
+        if (messageEl) messageEl.textContent = message;
+
+        // Remove previous event listeners
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+        // Add new event listener
+        newConfirmBtn.addEventListener('click', () => {
+            this.hide('delete');
+            if (onConfirm) onConfirm();
+        });
+
+        this.show('delete');
+    }
+
+    // Show status confirmation
+    confirmStatus(message, onConfirm) {
+        const messageEl = document.getElementById('statusMessage');
+        const confirmBtn = document.getElementById('confirmStatus');
+
+        if (messageEl) messageEl.textContent = message;
+
+        // Remove previous event listeners
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+        // Add new event listener
+        newConfirmBtn.addEventListener('click', () => {
+            this.hide('status');
+            if (onConfirm) onConfirm();
+        });
+
+        this.show('status');
+    }
+
+    // Show success message
+    showSuccess(message) {
+        const messageEl = document.getElementById('successMessage');
+        if (messageEl) messageEl.textContent = message;
+        this.show('success');
+
+        // Auto hide after 3 seconds
+        setTimeout(() => this.hide('success'), 3000);
+    }
+
+    // Show error message
+    showError(message) {
+        const messageEl = document.getElementById('errorMessage');
+        if (messageEl) messageEl.textContent = message;
+        this.show('error');
+    }
+
+    // Show loading
+    showLoading(message = 'Memproses...') {
+        const messageEl = document.getElementById('loadingMessage');
+        if (messageEl) messageEl.textContent = message;
+        this.show('loading');
+    }
+
+    // Hide loading
+    hideLoading() {
+        this.hide('loading');
+    }
+}
+
+// Initialize modal manager
+const modalManager = new ModalManager();
+
+// Global functions for easy access
+window.showDeleteConfirm = (message, onConfirm) => modalManager.confirmDelete(message, onConfirm);
+window.showStatusConfirm = (message, onConfirm) => modalManager.confirmStatus(message, onConfirm);
+window.showSuccess = (message) => modalManager.showSuccess(message);
+window.showError = (message) => modalManager.showError(message);
+window.showLoading = (message) => modalManager.showLoading(message);
+window.hideLoading = () => modalManager.hideLoading();
+
+// Example usage functions
+function deleteItem(id, name) {
+    showDeleteConfirm(
+        `Apakah Anda yakin ingin menghapus "${name}"? Tindakan ini tidak dapat dibatalkan.`,
+        () => {
+            showLoading('Menghapus data...');
+
+            // Simulate API call
+            fetch(`/api/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if (data.success) {
+                    showSuccess('Data berhasil dihapus!');
+                    // Refresh page or remove element
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showError(data.message || 'Terjadi kesalahan saat menghapus data');
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                showError('Terjadi kesalahan koneksi');
+                console.error('Error:', error);
+            });
+        }
+    );
+}
+
+function changeStatus(id, newStatus, currentStatus) {
+    showStatusConfirm(
+        `Apakah Anda yakin ingin mengubah status dari "${currentStatus}" ke "${newStatus}"?`,
+        () => {
+            showLoading('Mengubah status...');
+
+            // Simulate API call
+            fetch(`/api/change-status/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideLoading();
+                if (data.success) {
+                    showSuccess('Status berhasil diubah!');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showError(data.message || 'Terjadi kesalahan saat mengubah status');
+                }
+            })
+            .catch(error => {
+                hideLoading();
+                showError('Terjadi kesalahan koneksi');
+                console.error('Error:', error);
+            });
+        }
+    );
+}
+
+// Form submission with validation
+function submitFormWithValidation(formId, successMessage) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        showLoading('Menyimpan data...');
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideLoading();
+            if (data.success) {
+                showSuccess(successMessage || 'Data berhasil disimpan!');
+                setTimeout(() => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    } else {
+                        location.reload();
+                    }
+                }, 1500);
+            } else {
+                showError(data.message || 'Terjadi kesalahan saat menyimpan data');
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            showError('Terjadi kesalahan koneksi');
+            console.error('Error:', error);
+        });
+    });
+}
+
+// Status card click handlers untuk navigasi ke halaman services dengan filter
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers untuk status cards
+    const statusCards = document.querySelectorAll('.status-card');
+    statusCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const status = this.getAttribute('data-status');
+            if (status) {
+                window.location.href = `{{ route('operator.services.index') }}?status=${status}`;
+            }
+        });
+    });
+});
+</script>
+@endpush
 @endsection

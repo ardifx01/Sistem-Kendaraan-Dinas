@@ -20,7 +20,6 @@ class Service extends Model
         'documents',
         'photos',
         'service_date',
-        'status',
     ];
 
     protected $casts = [

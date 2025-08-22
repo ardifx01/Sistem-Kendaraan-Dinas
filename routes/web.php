@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Service management
         Route::resource('services', ServiceController::class);
+        Route::get('/services/vehicles-by-status/{status?}', [ServiceController::class, 'vehiclesByStatus'])->name('services.vehicles-by-status');
 
         // Borrowing management
         Route::resource('borrowings', BorrowingController::class);

@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
         // Call the seeders
         $this->call([
             TestDataSeeder::class,
-            VehicleSeeder::class,
+            VehicleSeeder::class
+            // ServiceSeeder::class, // Jalankan manual setelah admin menambahkan kendaraan
         ]);
     }
 }

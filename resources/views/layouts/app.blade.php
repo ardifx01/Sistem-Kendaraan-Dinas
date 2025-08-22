@@ -24,8 +24,6 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="stylesheet" href="{{ asset('css/confirmations.css') }}">
-
     <style>
         .card {
             background: white;
@@ -129,7 +127,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        /* PERUBAHAN: Menambahkan style untuk tombol logout (danger) */
         .btn-danger {
             background: linear-gradient(to right, #ef4444, #dc2626);
             color: white;
@@ -165,7 +162,6 @@
             color: #92400e;
         }
 
-        /* Animasi dan transisi modern */
         .group:hover .group-hover\:scale-110 {
             transform: scale(1.1);
         }
@@ -200,7 +196,6 @@
             transition-duration: 300ms;
         }
 
-        /* Responsive breakpoints */
         .sm\:grid-cols-2 {
             @media (min-width: 640px) {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -298,7 +293,6 @@
                                 <a href="{{ route('operator.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Dashboard</a>
                                 <a href="{{ route('operator.services.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Service Kendaraan</a>
                                 <a href="{{ route('operator.borrowings.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Peminjaman</a>
-                                <a href="{{ route('operator.payments.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Pembayaran</a>
                             @endif
                         </div>
                         <div class="hidden lg:flex items-center ml-6">

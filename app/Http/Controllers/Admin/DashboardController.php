@@ -21,7 +21,7 @@ class DashboardController extends Controller
             'borrowed_vehicles' => Vehicle::where('availability_status', 'dipinjam')->count(),
             'total_operators' => User::where('role', 'operator')->count(),
             'active_operators' => User::where('role', 'operator')->where('is_active', true)->count(),
-            'pending_services' => Service::where('status', 'pending')->count(),
+            'total_services' => Service::count(),
             'pending_borrowings' => Borrowing::where('status', 'pending')->count(),
             'vehicles_tax_expiring' => Vehicle::taxExpiringSoon()->count(),
         ];
