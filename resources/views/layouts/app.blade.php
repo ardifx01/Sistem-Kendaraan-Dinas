@@ -323,7 +323,6 @@
                             <a href="{{ route('operator.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Dashboard</a>
                             <a href="{{ route('operator.services.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Service Kendaraan</a>
                             <a href="{{ route('operator.borrowings.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Peminjaman</a>
-                            <a href="{{ route('operator.payments.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.payments.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Pembayaran</a>
                         @endif
                         <div class="border-t border-blue-500 mt-3 pt-3">
                             <div class="flex items-center px-4 py-2">

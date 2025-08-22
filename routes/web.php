@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Borrowing management
         Route::resource('borrowings', BorrowingController::class);
+        Route::get('/borrowings/{borrowing}/print', [BorrowingController::class, 'print'])->name('borrowings.print');
 
         // Payment management
         Route::resource('payments', PaymentController::class);

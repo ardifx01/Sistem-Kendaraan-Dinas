@@ -14,14 +14,18 @@ class Borrowing extends Model
         'user_id',
         'borrower_type',
         'borrower_name',
+        'borrower_nip',
+        'borrower_institution',
+        'borrower_contact',
         'start_date',
         'end_date',
         'purpose',
         'location_type',
         'destination',
         'unit_count',
-        'request_letter',
-        'statement_letter',
+        'vehicles_data',
+        'surat_permohonan',
+        'surat_tugas',
         'status',
         'notes',
     ];
@@ -30,6 +34,8 @@ class Borrowing extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'unit_count' => 'integer',
+        'vehicles_data' => 'array',
+        'destination' => 'array',
     ];
 
     /**
