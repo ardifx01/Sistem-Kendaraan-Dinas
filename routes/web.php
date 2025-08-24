@@ -40,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
 
             // Vehicle management
             Route::resource('vehicles', AdminVehicleController::class);
+            Route::get('/vehicles/export/pdf', [AdminVehicleController::class, 'exportPdf'])->name('vehicles.export.pdf');
+            Route::get('/vehicles/{vehicle}/export/pdf', [AdminVehicleController::class, 'exportSinglePdf'])->name('vehicles.export.single.pdf');
 
             // User management
             Route::resource('users', AdminUserController::class);

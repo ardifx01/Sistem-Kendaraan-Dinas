@@ -178,7 +178,7 @@
                             ? json_decode($borrowing->vehicles_data, true)
                             : $borrowing->vehicles_data;
                     @endphp
-                    
+
                     @if($vehiclesData && is_array($vehiclesData) && count($vehiclesData) > 0)
                         {{-- Multiple vehicles from vehicles_data --}}
                         @foreach($vehiclesData as $vehicleIndex => $vehicleData)

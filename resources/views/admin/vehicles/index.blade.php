@@ -17,7 +17,14 @@ Carbon::setLocale('id');
             <h1 class="text-2xl font-bold text-gray-900">Data Kendaraan</h1>
             <p class="mt-2 text-sm text-gray-700">Kelola semua kendaraan dinas</p>
         </div>
-        <div class="mt-4 sm:mt-0">
+        <div class="mt-4 sm:mt-0 flex space-x-2">
+            <a href="{{ route('admin.vehicles.export.pdf', request()->query()) }}"
+               class="btn bg-green-600 hover:bg-green-700 text-white">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Export PDF
+            </a>
             <a href="{{ route('admin.vehicles.create') }}" class="btn btn-primary">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -162,6 +169,13 @@ Carbon::setLocale('id');
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                             </svg>
                                         </a>
+                                        <a href="{{ route('admin.vehicles.export.single.pdf', $vehicle) }}"
+                                           class="text-green-600 hover:text-green-900 transition-colors"
+                                           title="Export PDF">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </a>
                                         <a href="{{ route('admin.vehicles.edit', $vehicle) }}"
                                            class="text-yellow-600 hover:text-yellow-900 transition-colors"
                                            title="Edit">
@@ -297,6 +311,13 @@ Carbon::setLocale('id');
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                 </svg>
                                 <span class="hidden xs:inline">Detail</span>
+                            </a>
+                            <a href="{{ route('admin.vehicles.export.single.pdf', $vehicle) }}"
+                               class="flex items-center justify-center px-3 py-2 text-sm text-green-600 hover:text-green-900 hover:bg-green-50 rounded-md transition-colors">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="hidden xs:inline">PDF</span>
                             </a>
                             <a href="{{ route('admin.vehicles.edit', $vehicle) }}"
                                class="flex items-center justify-center px-3 py-2 text-sm text-yellow-600 hover:text-yellow-900 hover:bg-yellow-50 rounded-md transition-colors">

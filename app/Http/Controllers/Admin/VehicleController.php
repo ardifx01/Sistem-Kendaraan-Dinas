@@ -7,6 +7,7 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VehicleController extends Controller
 {
@@ -163,5 +164,51 @@ class VehicleController extends Controller
 
         return redirect()->route('admin.vehicles.index')
             ->with('success', 'Kendaraan berhasil dihapus.');
+    }
+
+    /**
+     * Export all vehicles to PDF
+     */
+    public function exportPdf(Request $request)
+    {
+        $query = Vehicle::query();
+
+        // Apply same filters as index
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('license_plate', 'like', "%{$search}%")
+                  ->orWhere('brand', 'like', "%{$search}%")
+                  ->orWhere('model', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('availability')) {
+            $query->where('availability_status', $request->availability);
+        }
+
+        $vehicles = $query->orderBy('created_at', 'desc')->get();
+
+        $pdf = Pdf::loadView('admin.vehicles.pdf.all', compact('vehicles', 'request'));
+
+        $filename = 'Data_Kendaraan_' . now()->format('Y-m-d_H-i-s') . '.pdf';
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Export single vehicle to PDF
+     */
+    public function exportSinglePdf(Vehicle $vehicle)
+    {
+        $pdf = Pdf::loadView('admin.vehicles.pdf.single', compact('vehicle'));
+
+        $filename = 'Kendaraan_' . $vehicle->license_plate . '_' . now()->format('Y-m-d_H-i-s') . '.pdf';
+
+        return $pdf->download($filename);
     }
 }
