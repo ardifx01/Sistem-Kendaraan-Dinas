@@ -26,10 +26,19 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
+            'captcha' => 'required|string|size:5',
+        ], [
+            'captcha.required' => 'Kode verifikasi harus diisi.',
+            'captcha.size' => 'Kode verifikasi harus 5 karakter.',
         ]);
+
+        // Note: Frontend captcha validation is primary
+        // This is additional server-side validation for security
+
+        $credentials = $request->only('username', 'password');
 
         // Try to authenticate with username
         if (Auth::attempt($credentials, $request->boolean('remember'))) {

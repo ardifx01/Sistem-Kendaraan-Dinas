@@ -72,6 +72,57 @@
                     </div>
                 </div>
 
+                <!-- Captcha Field -->
+                <div>
+                    <label for="captcha" class="block text-sm font-medium text-gray-700 mb-2">
+                        Verifikasi Keamanan
+                    </label>
+                    <div class="flex space-x-3">
+                        <!-- Captcha Display -->
+                        <div class="flex-1">
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-300 rounded-lg p-4 flex items-center justify-center h-12 relative overflow-hidden">
+                                <!-- Background pattern -->
+                                <div class="absolute inset-0 opacity-10">
+                                    <div class="absolute top-0 left-0 w-full h-full" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, #000 2px, #000 4px);"></div>
+                                </div>
+                                <div class="flex items-center space-x-2 relative z-10">
+                                    <span id="captcha-text" class="text-xl font-bold text-gray-800 tracking-widest font-mono select-none transform skew-y-1 shadow-sm"></span>
+                                    <button type="button" id="refresh-captcha" 
+                                            class="ml-3 p-2 text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 transition-all duration-200 rounded-full hover:bg-white hover:shadow-md"
+                                            title="Refresh Captcha">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Captcha Input -->
+                        <div class="flex-1">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <input id="captcha" name="captcha" type="text" required maxlength="5"
+                                       class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm"
+                                       placeholder="Masukkan kode"
+                                       autocomplete="off">
+                            </div>
+                            <div id="captcha-error" class="mt-1 text-sm text-red-600 hidden">
+                                Kode verifikasi tidak cocok
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-xs text-gray-500 flex items-center">
+                        <svg class="w-3 h-3 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Masukkan kode yang ditampilkan untuk verifikasi keamanan
+                    </p>
+                </div>
+
                 <!-- Error Messages -->
                 @if($errors->any())
                     <div class="rounded-lg bg-red-50 p-4 border border-red-200">
@@ -198,8 +249,116 @@
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
         const submitButton = form.querySelector('button[type="submit"]');
+        
+        // Captcha functionality
+        let captchaCode = '';
+        
+        function generateCaptcha() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            captchaCode = '';
+            for (let i = 0; i < 5; i++) {
+                captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            const captchaDisplay = document.getElementById('captcha-text');
+            
+            // Add fade effect during generation
+            captchaDisplay.style.opacity = '0';
+            captchaDisplay.style.transform = 'scale(0.8) skew(-2deg)';
+            
+            setTimeout(() => {
+                captchaDisplay.textContent = captchaCode;
+                captchaDisplay.style.opacity = '1';
+                captchaDisplay.style.transform = 'scale(1) skew(1deg)';
+                
+                // Add random colors for each character (keeping readability)
+                const colors = ['text-gray-800', 'text-blue-800', 'text-green-800', 'text-purple-800', 'text-red-800'];
+                captchaDisplay.className = `text-xl font-bold tracking-widest font-mono select-none transform skew-y-1 shadow-sm transition-all duration-300 ${colors[Math.floor(Math.random() * colors.length)]}`;
+            }, 150);
+            
+            // Clear previous input and error
+            document.getElementById('captcha').value = '';
+            document.getElementById('captcha-error').classList.add('hidden');
+            
+            // Reset input field styling
+            const captchaInput = document.getElementById('captcha');
+            captchaInput.classList.remove('border-red-300', 'ring-red-500', 'border-green-300', 'ring-green-500');
+            captchaInput.classList.add('border-gray-300');
+        }
+        
+        // Generate initial captcha
+        generateCaptcha();
+        
+        // Refresh captcha button
+        document.getElementById('refresh-captcha').addEventListener('click', function() {
+            // Add loading state
+            this.innerHTML = `
+                <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+            `;
+            
+            // Generate new captcha after short delay
+            setTimeout(() => {
+                generateCaptcha();
+                
+                // Restore original icon
+                this.innerHTML = `
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                `;
+                
+                // Add success feedback
+                this.classList.add('text-green-600');
+                setTimeout(() => {
+                    this.classList.remove('text-green-600');
+                }, 1000);
+            }, 500);
+        });
+        
+        // Validate captcha on input
+        document.getElementById('captcha').addEventListener('input', function() {
+            const userInput = this.value.toUpperCase();
+            const errorDiv = document.getElementById('captcha-error');
+            
+            if (userInput.length === 5) {
+                if (userInput !== captchaCode) {
+                    errorDiv.classList.remove('hidden');
+                    this.classList.add('border-red-300', 'ring-red-500');
+                    this.classList.remove('border-gray-300', 'ring-blue-500');
+                } else {
+                    errorDiv.classList.add('hidden');
+                    this.classList.remove('border-red-300', 'ring-red-500');
+                    this.classList.add('border-green-300', 'ring-green-500');
+                }
+            } else {
+                errorDiv.classList.add('hidden');
+                this.classList.remove('border-red-300', 'ring-red-500', 'border-green-300', 'ring-green-500');
+                this.classList.add('border-gray-300');
+            }
+        });
 
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function(e) {
+            const captchaInput = document.getElementById('captcha').value.toUpperCase();
+            const errorDiv = document.getElementById('captcha-error');
+            
+            // Validate captcha before submission
+            if (captchaInput !== captchaCode) {
+                e.preventDefault();
+                errorDiv.classList.remove('hidden');
+                errorDiv.textContent = 'Kode verifikasi tidak cocok. Silakan coba lagi.';
+                
+                // Highlight error field
+                document.getElementById('captcha').classList.add('border-red-300', 'ring-red-500');
+                document.getElementById('captcha').focus();
+                
+                // Generate new captcha
+                generateCaptcha();
+                return false;
+            }
+            
+            // Show loading state
             submitButton.disabled = true;
             submitButton.classList.add('form-loading');
             submitButton.innerHTML = `
@@ -212,6 +371,27 @@
                 </div>
             `;
         });
+        
+        // Add transition styles for refresh button and captcha
+        const refreshButton = document.getElementById('refresh-captcha');
+        const captchaDisplay = document.getElementById('captcha-text');
+        
+        refreshButton.style.transition = 'all 0.2s ease-in-out';
+        captchaDisplay.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Add hover effects for captcha display
+        const captchaContainer = captchaDisplay.parentElement.parentElement;
+        captchaContainer.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+        });
+        
+        captchaContainer.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+        });
+        
+        captchaContainer.style.transition = 'all 0.2s ease-in-out';
     });
 </script>
 @endsection
