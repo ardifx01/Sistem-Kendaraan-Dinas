@@ -9,10 +9,12 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\VehicleController as AdminVehicleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\OperatorController as AdminOperatorController;
+use App\Http\Controllers\Admin\BorrowingController as AdminBorrowingController;
 use App\Http\Controllers\Operator\DashboardController as OperatorDashboardController;
 use App\Http\Controllers\Operator\ServiceController;
 use App\Http\Controllers\Operator\BorrowingController;
 use App\Http\Controllers\Operator\PaymentController;
+use App\Http\Controllers\Operator\CheckoutController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -46,6 +48,17 @@ Route::middleware(['auth'])->group(function () {
 
             // Operator management
             Route::resource('operators', AdminOperatorController::class);
+
+            // Borrowings management
+            Route::resource('borrowings', AdminBorrowingController::class)->only(['index', 'show', 'destroy']);
+            Route::post('/borrowings/{borrowing}/approve', [AdminBorrowingController::class, 'approve'])->name('borrowings.approve');
+            Route::post('/borrowings/{borrowing}/reject', [AdminBorrowingController::class, 'reject'])->name('borrowings.reject');
+            Route::post('/borrowings/{borrowing}/approve-return', [AdminBorrowingController::class, 'approveReturn'])->name('borrowings.approve-return');
+            Route::get('/borrowings-awaiting-return', [AdminBorrowingController::class, 'awaitingReturn'])->name('borrowings.awaiting-return');
+
+            // History borrowings
+            Route::get('/borrowings-history', [AdminBorrowingController::class, 'history'])->name('borrowings.history');
+            Route::get('/borrowings-history/export-pdf', [AdminBorrowingController::class, 'exportHistoryPdf'])->name('borrowings.history.export-pdf');
         });
     });
 
@@ -60,6 +73,10 @@ Route::middleware(['auth'])->group(function () {
         // Borrowing management
         Route::resource('borrowings', BorrowingController::class);
         Route::get('/borrowings/{borrowing}/print', [BorrowingController::class, 'print'])->name('borrowings.print');
+
+        // Checkout/Checkin management
+        Route::post('/borrowings/{borrowing}/checkout', [CheckoutController::class, 'checkout'])->name('borrowings.checkout');
+        Route::post('/borrowings/{borrowing}/checkin', [CheckoutController::class, 'checkin'])->name('borrowings.checkin');
 
         // Payment management
         Route::resource('payments', PaymentController::class);

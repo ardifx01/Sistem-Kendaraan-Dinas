@@ -4,6 +4,34 @@
 
 @push('styles')
 <style>
+    /* Ensure navbar is always visible and properly positioned */
+    nav {
+        position: relative !important;
+        z-index: 1000 !important;
+        display: block !important;
+        width: 100% !important;
+    }
+
+    /* Ensure nav items are visible */
+    nav .flex,
+    nav .hidden.md\\:flex,
+    nav .md\\:hidden {
+        display: flex !important;
+    }
+
+    nav .md\\:hidden {
+        display: none !important;
+    }
+
+    @media (min-width: 768px) {
+        nav .hidden.md\\:flex {
+            display: flex !important;
+        }
+        nav .md\\:hidden {
+            display: none !important;
+        }
+    }
+
     /* Custom Animations */
     @keyframes fadeInUp {
         from {
@@ -419,7 +447,7 @@ use Carbon\Carbon;
 // Set locale ke Indonesia
 Carbon::setLocale('id');
 @endphp
-<div class="min-h-screen bg-gray-50">
+<div class="bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 xl:px-10 2xl:px-12 2xl:max-w-8xl py-4 sm:py-6">
         <!-- Header with Welcome Message - Enhanced Responsive -->
         <div class="mb-6 sm:mb-8">
@@ -473,7 +501,7 @@ Carbon::setLocale('id');
         @endif
 
         <!-- Stats Cards with Enhanced Responsive Design -->
-        <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 mb-6 sm:mb-8">
+        <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-6 mb-6 sm:mb-8">
             <!-- Total Kendaraan -->
             <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
                 <div class="p-4 sm:p-6">
@@ -558,6 +586,36 @@ Carbon::setLocale('id');
                             <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                                 <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menunggu Pengembalian -->
+            <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-orange-200 transition-all duration-300">
+                <div class="p-4 sm:p-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-gray-600 mb-1 truncate">Menunggu Pengembalian</p>
+                            <p class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{{ $data['awaiting_return'] ?? 0 }}</p>
+                            <p class="text-xxs sm:text-xs text-orange-600 mt-1 hidden sm:block">
+                                <span class="inline-flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    Butuh konfirmasi
+                                </span>
+                            </p>
+                            <p class="text-xxs text-orange-600 mt-1 sm:hidden">
+                                📥 Konfirmasi
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                 </svg>
                             </div>
                         </div>
@@ -687,17 +745,133 @@ Carbon::setLocale('id');
             </div>
         </div>
 
+        <!-- Konfirmasi Pengembalian Kendaraan - New Section -->
+        @if(isset($awaiting_returns) && $awaiting_returns->count() > 0)
+            <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
+                <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-blue-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                Konfirmasi Pengembalian Kendaraan
+                            </h3>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                                {{ $awaiting_returns->count() }} menunggu
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="divide-y divide-gray-200">
+                        @foreach($awaiting_returns as $borrowing)
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                                    <!-- Info Pengembalian -->
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                                                    <svg class="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-900 truncate">
+                                                            {{ $borrowing->borrower_name }}
+                                                        </p>
+                                                        <p class="text-xs text-gray-500">{{ $borrowing->borrower_institution ?? 'N/A' }}</p>
+                                                    </div>
+                                                    <div class="mt-1 sm:mt-0">
+                                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                            <svg class="w-2 h-2 mr-1" fill="currentColor" viewBox="0 0 8 8">
+                                                                <circle cx="4" cy="4" r="3"/>
+                                                            </svg>
+                                                            Menunggu Konfirmasi
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 text-xs text-gray-600">
+                                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                                                        <div>
+                                                            <span class="font-medium">Dikembalikan:</span>
+                                                            {{ $borrowing->checked_in_at ? $borrowing->checked_in_at->format('d/m/Y H:i') : 'N/A' }}
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-medium">Kendaraan:</span>
+                                                            @if(is_array($borrowing->vehicles_data) && count($borrowing->vehicles_data) > 0)
+                                                                @foreach($borrowing->vehicles_data as $index => $vehicleData)
+                                                                    {{ $vehicleData['license_plate'] ?? 'N/A' }}@if(!$loop->last), @endif
+                                                                @endforeach
+                                                            @elseif($borrowing->vehicle)
+                                                                {{ $borrowing->vehicle->license_plate }}
+                                                            @else
+                                                                N/A
+                                                            @endif
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-medium">Catatan:</span>
+                                                            {{ Str::limit($borrowing->checkin_notes ?? 'Tidak ada catatan', 30) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="flex-shrink-0">
+                                        <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                                            <button type="button"
+                                                    onclick="approveReturn({{ $borrowing->id }})"
+                                                    class="w-full sm:w-auto inline-flex items-center justify-center px-3 py-2 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                                Konfirmasi
+                                            </button>
+                                            <a href="{{ route('admin.borrowings.show', $borrowing->id) }}"
+                                               class="w-full sm:w-auto inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                </svg>
+                                                Detail
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Footer dengan link ke halaman awaiting return -->
+                    <div class="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                        <a href="{{ route('admin.borrowings.awaiting-return') }}" class="text-indigo-600 hover:text-indigo-900 text-xs sm:text-sm font-medium flex items-center group">
+                            Lihat semua pengembalian
+                            <svg class="ml-1 w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Main Content Grid - Enhanced Responsive -->
         <div class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3 xl:grid-cols-3">
-            <!-- Kendaraan Terbaru - Enhanced Mobile Layout -->
+            <!-- Kendaraan Tersedia - Enhanced Mobile Layout -->
             <div class="lg:col-span-2 order-1">
                 <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
                         <h3 class="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                            <svg class="w-9 h-9 sm:w-9 sm:h-9 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-9 h-9 sm:w-9 sm:h-9 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.712 4.33a9.027 9.027 0 0 1 1.652 1.306c.51.51.944 1.064 1.306 1.652M16.712 4.33l-3.448 4.138m3.448-4.138a9.014 9.014 0 0 0-9.424 0M19.67 7.288l-4.138 3.448m4.138-3.448a9.014 9.014 0 0 1 0 9.424m-4.138-5.976a3.736 3.736 0 0 0-.88-1.388 3.737 3.737 0 0 0-1.388-.88m2.268 2.268a3.765 3.765 0 0 1 0 2.528m-2.268-4.796a3.765 3.765 0 0 0-2.528 0m4.796 4.796c-.181.506-.475.982-.88 1.388a3.736 3.736 0 0 1-1.388.88m2.268-2.268 4.138 3.448m0 0a9.027 9.027 0 0 1-1.306 1.652c-.51.51-1.064.944-1.652 1.306m0 0-3.448-4.138m3.448 4.138a9.014 9.014 0 0 1-9.424 0m5.976-4.138a3.765 3.765 0 0 1-2.528 0m0 0a3.736 3.736 0 0 1-1.388-.88 3.737 3.737 0 0 1-.88-1.388m2.268 2.268L7.288 19.67m0 0a9.024 9.024 0 0 1-1.652-1.306 9.027 9.027 0 0 1-1.306-1.652m0 0 4.138-3.448M4.33 16.712a9.014 9.014 0 0 1 0-9.424m4.138 5.976a3.765 3.765 0 0 1 0-2.528m0 0c.181-.506.475-.982.88-1.388a3.736 3.736 0 0 1 1.388-.88m-2.268 2.268L4.33 7.288m6.406 1.18L7.288 4.33m0 0a9.024 9.024 0 0 0-1.652 1.306A9.025 9.025 0 0 0 4.33 7.288" />
                             </svg>
-                            Kendaraan Terbaru
+                            Kendaraan Tersedia
                         </h3>
                     </div>
 
@@ -844,11 +1018,11 @@ Carbon::setLocale('id');
                             <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada kendaraan</h3>
-                            <p class="mt-1 text-xs sm:text-sm text-gray-500">Mulai dengan menambahkan kendaraan baru.</p>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada kendaraan tersedia</h3>
+                            <p class="mt-1 text-xs sm:text-sm text-gray-500">Semua kendaraan sedang dipinjam, dalam service, atau tidak tersedia.</p>
                             <div class="mt-4 sm:mt-6">
-                                <a href="{{ route('admin.vehicles.create') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 border border-transparent shadow-sm text-xs sm:text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                                    Tambah Kendaraan
+                                <a href="{{ route('admin.vehicles.index') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 border border-transparent shadow-sm text-xs sm:text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                                    Lihat Semua Kendaraan
                                 </a>
                             </div>
                         </div>
@@ -989,4 +1163,337 @@ Carbon::setLocale('id');
         </div>
     </div>
 </div>
+
+<!-- Approve Modal -->
+<div id="approveModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full" style="z-index: 9999;">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-xl rounded-lg bg-white">
+        <div class="mt-3">
+            <div class="flex items-center">
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="ml-4 text-left">
+                    <h3 class="text-lg font-medium text-gray-900">Setujui Peminjaman</h3>
+                    <p class="text-sm text-gray-500 mt-1">Apakah Anda yakin ingin menyetujui peminjaman ini?</p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeApproveModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    Batal
+                </button>
+                <button onclick="confirmApprove()" id="confirmApproveBtn" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    Ya, Setujui
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approve Return Modal -->
+<div id="approveReturnModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full" style="z-index: 9999;">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-xl rounded-lg bg-white">
+        <div class="mt-3">
+            <div class="flex items-center">
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
+                    <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4 text-left">
+                    <h3 class="text-lg font-medium text-gray-900">Konfirmasi Pengembalian</h3>
+                    <p class="text-sm text-gray-500 mt-1">Apakah Anda yakin ingin mengkonfirmasi pengembalian kendaraan ini?</p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeApproveReturnModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    Batal
+                </button>
+                <button onclick="confirmApproveReturn()" id="confirmApproveReturnBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Ya, Konfirmasi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full" style="z-index: 9999;">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-xl rounded-lg bg-white">
+        <div class="mt-3">
+            <div class="flex items-center">
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                    <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <div class="ml-4 text-left">
+                    <h3 class="text-lg font-medium text-gray-900">Tolak Peminjaman</h3>
+                    <p class="text-sm text-gray-500 mt-1">Apakah Anda yakin ingin menolak peminjaman ini?</p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label for="rejectReason" class="block text-sm font-medium text-gray-700 mb-2">Alasan Penolakan (Opsional)</label>
+                <textarea id="rejectReason" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500" placeholder="Masukkan alasan penolakan..."></textarea>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button onclick="closeRejectModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    Batal
+                </button>
+                <button onclick="confirmReject()" id="confirmRejectBtn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    Ya, Tolak
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+let currentBorrowingId = null;
+
+// Handle approval/rejection of borrowings
+function approveBorrowing(borrowingId) {
+    currentBorrowingId = borrowingId;
+    document.getElementById('approveModal').classList.remove('hidden');
+}
+
+function rejectBorrowing(borrowingId) {
+    currentBorrowingId = borrowingId;
+    document.getElementById('rejectModal').classList.remove('hidden');
+}
+
+function closeApproveModal() {
+    document.getElementById('approveModal').classList.add('hidden');
+    currentBorrowingId = null;
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModal').classList.add('hidden');
+    document.getElementById('rejectReason').value = '';
+    currentBorrowingId = null;
+}
+
+function closeApproveReturnModal() {
+    document.getElementById('approveReturnModal').classList.add('hidden');
+    currentBorrowingId = null;
+}
+
+function confirmApprove() {
+    if (!currentBorrowingId) return;
+
+    const btn = document.getElementById('confirmApproveBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Memproses...';
+    btn.disabled = true;
+
+    fetch(`/admin/borrowings/${currentBorrowingId}/approve`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            status: 'approved'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeApproveModal();
+            showNotification('Peminjaman berhasil disetujui!', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            showNotification(data.message || 'Terjadi kesalahan!', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Terjadi kesalahan saat memproses permintaan!', 'error');
+    })
+    .finally(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    });
+}
+
+function confirmReject() {
+    if (!currentBorrowingId) return;
+
+    const btn = document.getElementById('confirmRejectBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Memproses...';
+    btn.disabled = true;
+
+    const reason = document.getElementById('rejectReason').value;
+
+    fetch(`/admin/borrowings/${currentBorrowingId}/reject`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            status: 'rejected',
+            notes: reason
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeRejectModal();
+            showNotification('Peminjaman berhasil ditolak!', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            showNotification(data.message || 'Terjadi kesalahan!', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Terjadi kesalahan saat memproses permintaan!', 'error');
+    })
+    .finally(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    });
+}
+
+function confirmApproveReturn() {
+    if (!currentBorrowingId) return;
+
+    const btn = document.getElementById('confirmApproveReturnBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Memproses...';
+    btn.disabled = true;
+
+    fetch(`/admin/borrowings/${currentBorrowingId}/approve-return`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeApproveReturnModal();
+            showNotification('Pengembalian kendaraan berhasil dikonfirmasi!', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            showNotification(data.message || 'Terjadi kesalahan!', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Terjadi kesalahan saat memproses permintaan!', 'error');
+    })
+    .finally(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    });
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const approveModal = document.getElementById('approveModal');
+    const rejectModal = document.getElementById('rejectModal');
+    const approveReturnModal = document.getElementById('approveReturnModal');
+
+    if (event.target === approveModal) {
+        closeApproveModal();
+    }
+    if (event.target === rejectModal) {
+        closeRejectModal();
+    }
+    if (event.target === approveReturnModal) {
+        closeApproveReturnModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeApproveModal();
+        closeRejectModal();
+        closeApproveReturnModal();
+    }
+});
+
+// Handle approval of returns
+function approveReturn(borrowingId) {
+    currentBorrowingId = borrowingId;
+    document.getElementById('approveReturnModal').classList.remove('hidden');
+}
+
+// Show notification function
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 max-w-sm w-full bg-white border border-gray-200 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
+
+    const bgColor = type === 'success' ? 'bg-green-50 border-green-200' :
+                   type === 'error' ? 'bg-red-50 border-red-200' :
+                   'bg-blue-50 border-blue-200';
+
+    const iconColor = type === 'success' ? 'text-green-400' :
+                     type === 'error' ? 'text-red-400' :
+                     'text-blue-400';
+
+    const icon = type === 'success' ?
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>' :
+        type === 'error' ?
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>' :
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+
+    notification.className = `fixed top-4 right-4 z-50 max-w-sm w-full ${bgColor} rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
+
+    notification.innerHTML = `
+        <div class="p-4">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        ${icon}
+                    </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1">
+                    <p class="text-sm font-medium text-gray-900">${message}</p>
+                </div>
+                <div class="ml-4 flex-shrink-0 flex">
+                    <button class="inline-flex text-gray-400 hover:text-gray-500 focus:outline-none" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 300);
+    }, 5000);
+}
+</script>
+@endpush

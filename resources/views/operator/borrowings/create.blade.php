@@ -448,18 +448,18 @@
                         </div>
 
                         <!-- File Preview Area -->
-                        <div id="surat_permohonan_preview" class="hidden mt-2 p-3 bg-blue-50 rounded-md border border-blue-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div id="surat_permohonan_preview" class="hidden mt-2 p-3 bg-blue-50 rounded-md border border-blue-200 file-preview-area">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-2 flex-1 min-w-0">
+                                    <svg class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
-                                    <div>
-                                        <p class="text-xs font-medium text-blue-700" id="surat_permohonan_filename">File terpilih</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-medium text-blue-700 filename" id="surat_permohonan_filename">File terpilih</p>
                                         <p class="text-xs text-blue-600" id="surat_permohonan_size">Ukuran file</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-2 flex-shrink-0 ml-2">
                                     <button type="button" onclick="previewFile('surat_permohonan')"
                                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-md transition-colors duration-150">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -501,18 +501,18 @@
                         </div>
 
                         <!-- File Preview Area -->
-                        <div id="surat_tugas_preview" class="hidden mt-2 p-3 bg-green-50 rounded-md border border-green-200">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div id="surat_tugas_preview" class="hidden mt-2 p-3 bg-green-50 rounded-md border border-green-200 file-preview-area">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start space-x-2 flex-1 min-w-0">
+                                    <svg class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
-                                    <div>
-                                        <p class="text-xs font-medium text-green-700" id="surat_tugas_filename">File terpilih</p>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-medium text-green-700 filename" id="surat_tugas_filename">File terpilih</p>
                                         <p class="text-xs text-green-600" id="surat_tugas_size">Ukuran file</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-2">
+                                <div class="flex items-center space-x-2 flex-shrink-0 ml-2">
                                     <button type="button" onclick="previewFile('surat_tugas')"
                                             class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 hover:bg-green-200 rounded-md transition-colors duration-150">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1366,11 +1366,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // File upload handling with preview
     const fileInputs = document.querySelectorAll('input[type="file"]');
     fileInputs.forEach(input => {
-        input.addEventListener('change', function() {
+        input.addEventListener('change', function(e) {
             const maxSize = 2 * 1024 * 1024; // 2MB in bytes
             const file = this.files[0];
 
             if (file) {
+                // Check file size
                 if (file.size > maxSize) {
                     alert('Ukuran file terlalu besar. Maksimal 2MB.');
                     this.value = '';
@@ -1378,12 +1379,51 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
+                // Validate file type
+                const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+                const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+                const fileName = file.name.toLowerCase();
+                const fileExtension = '.' + fileName.split('.').pop();
+
+                if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
+                    alert('Tipe file tidak didukung. Hanya PDF, JPG, JPEG, dan PNG yang diperbolehkan.');
+                    this.value = '';
+                    hideFilePreview(this.id);
+                    return;
+                }
+
                 // Show file preview
+                console.log('Showing preview for file:', file.name, 'Size:', file.size);
                 showFilePreview(this.id, file);
             } else {
                 hideFilePreview(this.id);
             }
         });
+
+        // Also handle drag and drop
+        const dropArea = input.closest('.file-upload-area') || input.closest('div');
+        if (dropArea) {
+            dropArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('border-blue-400', 'bg-blue-50');
+            });
+
+            dropArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-blue-400', 'bg-blue-50');
+            });
+
+            dropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-blue-400', 'bg-blue-50');
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    input.files = files;
+                    input.dispatchEvent(new Event('change'));
+                }
+            });
+        }
     });
 
     // Initialize download button state
@@ -1426,16 +1466,37 @@ function showFilePreview(inputId, file) {
     const sizeElement = document.getElementById(inputId + '_size');
 
     if (previewArea && filenameElement && sizeElement) {
+        // Clear previous content and set new filename
+        filenameElement.innerHTML = '';
         filenameElement.textContent = file.name;
+
+        // Clear previous content and set new file size
+        sizeElement.innerHTML = '';
         sizeElement.textContent = formatFileSize(file.size);
+
+        // Show the preview area
         previewArea.classList.remove('hidden');
+
+        // Force a reflow to ensure the content is rendered
+        previewArea.offsetHeight;
     }
 }
 
 function hideFilePreview(inputId) {
     const previewArea = document.getElementById(inputId + '_preview');
+    const filenameElement = document.getElementById(inputId + '_filename');
+    const sizeElement = document.getElementById(inputId + '_size');
+
     if (previewArea) {
         previewArea.classList.add('hidden');
+    }
+
+    // Reset filename and size text
+    if (filenameElement) {
+        filenameElement.textContent = 'File terpilih';
+    }
+    if (sizeElement) {
+        sizeElement.textContent = 'Ukuran file';
     }
 }
 
@@ -1612,6 +1673,35 @@ function removeFile(inputId) {
 .form-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* File preview styling */
+.file-preview-area {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.file-preview-area p {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-preview-area p.filename {
+    white-space: normal;
+    word-break: break-all;
+    line-height: 1.3;
+}
+
+/* Ensure filename is visible */
+#surat_permohonan_filename,
+#surat_tugas_filename {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: inherit !important;
+    font-weight: 500 !important;
 }
 
 /* Radio button custom styling */

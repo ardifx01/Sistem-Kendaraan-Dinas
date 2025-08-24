@@ -187,9 +187,6 @@
                                         </div>
                                         <div class="text-xs text-gray-600">
                                             📍 {{ $borrowing->location_type == 'dalam_kota' ? 'Dalam Kota' : 'Luar Kota' }}
-                                            @if($borrowing->location_type == 'luar_kota' && $borrowing->destination)
-                                                ({{ Str::limit($borrowing->destination, 15) }})
-                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -198,14 +195,11 @@
 
                         <!-- Vehicle Info -->
                         <td class="px-2 py-2 whitespace-nowrap" data-label="Kendaraan">
-                            <div class="text-xs font-medium text-gray-900 truncate max-w-28" title="{{ $borrowing->vehicle ? $borrowing->vehicle->brand . ' ' . $borrowing->vehicle->model : 'Kendaraan tidak ditemukan' }}">
-                                {{ $borrowing->vehicle ? Str::limit($borrowing->vehicle->brand . ' ' . $borrowing->vehicle->model, 18) : 'N/A' }}
+                            <div class="text-xs font-medium text-gray-900">
+                                {{ $borrowing->unit_count }} Unit
                             </div>
                             <div class="text-xs text-gray-500">
-                                {{ $borrowing->vehicle ? $borrowing->vehicle->license_plate : '-' }}
-                            </div>
-                            <div class="text-xs text-gray-600">
-                                {{ $borrowing->unit_count }} Unit
+                                Kendaraan Dinas
                             </div>
                         </td>
 
@@ -228,14 +222,9 @@
 
                         <!-- Location -->
                         <td class="px-2 py-2 whitespace-nowrap text-xs text-gray-900 hidden lg:table-cell" data-label="Lokasi">
-                            <div class="text-xs">
+                            <div class="text-xs font-medium">
                                 {{ $borrowing->location_type == 'dalam_kota' ? 'Dalam Kota' : 'Luar Kota' }}
                             </div>
-                            @if($borrowing->location_type == 'luar_kota' && $borrowing->destination)
-                                <div class="text-xs text-gray-600 truncate max-w-20" title="{{ $borrowing->destination }}">
-                                    {{ Str::limit($borrowing->destination, 15) }}
-                                </div>
-                            @endif
                         </td>
 
                         <!-- Status -->
@@ -273,6 +262,24 @@
                                        data-borrowing-id="{{ $borrowing->id }}"
                                        data-borrowing-name="{{ $borrowing->borrower_name }}"
                                        data-borrowing-period="{{ $borrowing->start_date->format('d/m/Y') }} - {{ $borrowing->end_date->format('d/m/Y') }}">Edit</a>
+                                @endif
+
+                                <!-- Checkout Button -->
+                                @if($borrowing->status == 'approved' && !$borrowing->checked_out_at)
+                                    <button type="button"
+                                            onclick="checkoutVehicle({{ $borrowing->id }})"
+                                            class="text-purple-600 hover:text-purple-800 transition-colors duration-200 text-xs">
+                                        Checkout
+                                    </button>
+                                @endif
+
+                                <!-- Checkin Button -->
+                                @if($borrowing->status == 'in_use' && $borrowing->checked_out_at && !$borrowing->checked_in_at)
+                                    <button type="button"
+                                            onclick="checkinVehicle({{ $borrowing->id }})"
+                                            class="text-orange-600 hover:text-orange-800 transition-colors duration-200 text-xs">
+                                        Checkin
+                                    </button>
                                 @endif
 
                                 @if(in_array($borrowing->status, ['pending', 'rejected']))
@@ -599,6 +606,78 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- Modal Checkout Kendaraan -->
+<div id="checkoutModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-purple-100 rounded-full mb-4">
+                    <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 text-center mb-2">Checkout Kendaraan</h3>
+                <p class="text-sm text-gray-500 text-center mb-4">Konfirmasi untuk checkout kendaraan yang sudah disetujui</p>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Checkout (Opsional)</label>
+                    <textarea id="checkoutNotes"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500"
+                              rows="3"
+                              placeholder="Tambahkan catatan checkout (kondisi kendaraan, kelengkapan, dll.)..."></textarea>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeCheckoutModal()"
+                            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
+                        Batal
+                    </button>
+                    <button type="button" onclick="confirmCheckout()"
+                            class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
+                        Checkout Kendaraan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Checkin Kendaraan -->
+<div id="checkinModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex items-center justify-center w-12 h-12 mx-auto bg-orange-100 rounded-full mb-4">
+                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 text-center mb-2">Checkin Kendaraan</h3>
+                <p class="text-sm text-gray-500 text-center mb-4">Konfirmasi bahwa kendaraan telah dikembalikan</p>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Checkin (Opsional)</label>
+                    <textarea id="checkinNotes"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
+                              rows="3"
+                              placeholder="Tambahkan catatan checkin (kondisi kendaraan saat kembali, kerusakan, dll.)..."></textarea>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeCheckinModal()"
+                            class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg">
+                        Batal
+                    </button>
+                    <button type="button" onclick="confirmCheckin()"
+                            class="flex-1 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg">
+                        Checkin Kendaraan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
 /* Borrowing row styling */
 .borrowing-row {
@@ -739,4 +818,211 @@ document.addEventListener('DOMContentLoaded', function() {
     background: #94a3b8;
 }
 </style>
+
+<script>
+// Checkout Vehicle Function
+function checkoutVehicle(borrowingId) {
+    const notes = prompt('Catatan checkout (opsional):');
+
+    if (notes !== null) { // User didn't cancel
+        fetch(`/operator/borrowings/${borrowingId}/checkout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                notes: notes
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert(data.message || 'Terjadi kesalahan!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat memproses permintaan!');
+        });
+    }
+}
+
+// Checkin Vehicle Function
+function checkinVehicle(borrowingId) {
+    const notes = prompt('Catatan checkin/kondisi kendaraan (opsional):');
+
+    if (notes !== null) { // User didn't cancel
+        fetch(`/operator/borrowings/${borrowingId}/checkin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                notes: notes
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert(data.message || 'Terjadi kesalahan!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat memproses permintaan!');
+        });
+    }
+}
+
+// Variables untuk checkout/checkin
+let currentBorrowingId = null;
+
+// Function untuk membuka modal checkout
+function checkoutVehicle(borrowingId) {
+    currentBorrowingId = borrowingId;
+    document.getElementById('checkoutNotes').value = '';
+    document.getElementById('checkoutModal').classList.remove('hidden');
+}
+
+// Function untuk menutup modal checkout
+function closeCheckoutModal() {
+    document.getElementById('checkoutModal').classList.add('hidden');
+    currentBorrowingId = null;
+}
+
+// Function untuk konfirmasi checkout
+function confirmCheckout() {
+    if (!currentBorrowingId) return;
+
+    const notes = document.getElementById('checkoutNotes').value;
+
+    // Loading state
+    const checkoutBtn = document.querySelector('#checkoutModal button[onclick="confirmCheckout()"]');
+    const originalText = checkoutBtn.innerHTML;
+    checkoutBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Memproses...';
+    checkoutBtn.disabled = true;
+
+    fetch(`/operator/borrowings/${currentBorrowingId}/checkout`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            notes: notes
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Success feedback
+            checkoutBtn.innerHTML = '<svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Berhasil!';
+            checkoutBtn.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+            checkoutBtn.classList.add('bg-purple-500');
+
+            setTimeout(() => {
+                closeCheckoutModal();
+                window.location.reload();
+            }, 1500);
+        } else {
+            throw new Error(data.message || 'Terjadi kesalahan!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        checkoutBtn.innerHTML = originalText;
+        checkoutBtn.disabled = false;
+        alert('Terjadi kesalahan saat checkout kendaraan!');
+    });
+}
+
+// Function untuk membuka modal checkin
+function checkinVehicle(borrowingId) {
+    currentBorrowingId = borrowingId;
+    document.getElementById('checkinNotes').value = '';
+    document.getElementById('checkinModal').classList.remove('hidden');
+}
+
+// Function untuk menutup modal checkin
+function closeCheckinModal() {
+    document.getElementById('checkinModal').classList.add('hidden');
+    currentBorrowingId = null;
+}
+
+// Function untuk konfirmasi checkin
+function confirmCheckin() {
+    if (!currentBorrowingId) return;
+
+    const notes = document.getElementById('checkinNotes').value;
+
+    // Loading state
+    const checkinBtn = document.querySelector('#checkinModal button[onclick="confirmCheckin()"]');
+    const originalText = checkinBtn.innerHTML;
+    checkinBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Memproses...';
+    checkinBtn.disabled = true;
+
+    fetch(`/operator/borrowings/${currentBorrowingId}/checkin`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            notes: notes
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Success feedback
+            checkinBtn.innerHTML = '<svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Berhasil!';
+            checkinBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700');
+            checkinBtn.classList.add('bg-orange-500');
+
+            setTimeout(() => {
+                closeCheckinModal();
+                window.location.reload();
+            }, 1500);
+        } else {
+            throw new Error(data.message || 'Terjadi kesalahan!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        checkinBtn.innerHTML = originalText;
+        checkinBtn.disabled = false;
+        alert('Terjadi kesalahan saat checkin kendaraan!');
+    });
+}
+
+// Event listener untuk menutup modal ketika klik di luar modal
+document.addEventListener('click', function(event) {
+    const checkoutModal = document.getElementById('checkoutModal');
+    const checkinModal = document.getElementById('checkinModal');
+
+    if (event.target === checkoutModal) {
+        closeCheckoutModal();
+    }
+
+    if (event.target === checkinModal) {
+        closeCheckinModal();
+    }
+});
+
+// Event listener untuk ESC key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeCheckoutModal();
+        closeCheckinModal();
+    }
+});
+</script>
 @endsection

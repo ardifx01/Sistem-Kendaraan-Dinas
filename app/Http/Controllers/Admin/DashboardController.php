@@ -23,11 +23,13 @@ class DashboardController extends Controller
             'active_operators' => User::where('role', 'operator')->where('is_active', true)->count(),
             'total_services' => Service::count(),
             'pending_borrowings' => Borrowing::where('status', 'pending')->count(),
+            'awaiting_return' => Borrowing::awaitingReturn()->count(),
             'vehicles_tax_expiring' => Vehicle::taxExpiringSoon()->count(),
         ];
 
-        // Data kendaraan untuk tabel dengan pagination
+        // Data kendaraan yang tersedia untuk tabel dengan pagination
         $vehicles = Vehicle::with(['latestService'])
+            ->where('availability_status', 'tersedia')
             ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'vehicles_page');
 
@@ -36,6 +38,20 @@ class DashboardController extends Controller
             ->orderBy('tax_expiry_date', 'asc')
             ->paginate(10, ['*'], 'tax_page');
 
-        return view('admin.dashboard', compact('data', 'vehicles', 'expiring_tax_vehicles'));
+        // Peminjaman yang menunggu persetujuan
+        $pending_borrowings = Borrowing::with(['user', 'vehicle'])
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Pengembalian yang menunggu konfirmasi
+        $awaiting_returns = Borrowing::awaitingReturn()
+            ->with(['user', 'vehicle', 'checkedInBy'])
+            ->orderBy('checked_in_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('admin.dashboard', compact('data', 'vehicles', 'expiring_tax_vehicles', 'pending_borrowings', 'awaiting_returns'));
     }
 }

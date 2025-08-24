@@ -237,6 +237,42 @@
             display: none;
         }
 
+        /* Force show desktop navigation on desktop */
+        @media (min-width: 768px) {
+            nav .desktop-nav {
+                display: flex !important;
+            }
+
+            nav .desktop-nav a {
+                display: inline-flex !important;
+                visibility: visible !important;
+            }
+
+            .mobile-menu-btn {
+                display: none !important;
+            }
+        }
+
+        /* Hide desktop navigation on mobile */
+        @media (max-width: 767px) {
+            nav .desktop-nav {
+                display: none !important;
+            }
+
+            .mobile-menu-btn {
+                display: block !important;
+            }
+
+            /* Ensure proper mobile layout */
+            nav .flex.justify-between {
+                align-items: center;
+            }
+
+            nav .flex.items-center {
+                flex-shrink: 0;
+            }
+        }
+
         .sm\:table-cell {
             @media (min-width: 640px) {
                 display: table-cell;
@@ -271,72 +307,122 @@
         @if(auth()->check())
             <nav class="bg-blue-600 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16 items-center">
+                    <div class="flex justify-between h-16">
+                        <!-- Logo -->
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 flex items-center">
+                            <div class="flex-shrink-0">
                                 <h1 class="text-lg font-bold text-white">Kendaraan Dinas</h1>
+                                <p class="text-xs text-blue-100">Kementerian Pemuda dan Olahraga</p>
                             </div>
                         </div>
-                        <div class="flex lg:hidden">
-                            <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="hidden lg:flex items-center ml-10 space-x-8">
+
+                        <!-- Desktop Navigation -->
+                        <div class="desktop-nav hidden md:flex items-center space-x-6">
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('admin.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Dashboard</a>
-                                <a href="{{ route('admin.vehicles.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Data Kendaraan</a>
-                                <a href="{{ route('admin.operators.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('admin.operators.*')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-600 @endif">Data Operator</a>
+                                <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.dashboard')) bg-blue-700 @endif">
+                                    Dashboard
+                                </a>
+                                <a href="{{ route('admin.vehicles.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.vehicles.*')) bg-blue-700 @endif">
+                                    Kendaraan
+                                </a>
+                                <a href="{{ route('admin.operators.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.operators.*')) bg-blue-700 @endif">
+                                    Operator
+                                </a>
+                                <a href="{{ route('admin.borrowings.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.borrowings.*') && !request()->routeIs('admin.borrowings.history') && !request()->routeIs('admin.borrowings.awaiting-return')) bg-blue-700 @endif">
+                                    Peminjaman
+                                </a>
+                                <a href="{{ route('admin.borrowings.awaiting-return') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.borrowings.awaiting-return')) bg-blue-700 @endif">
+                                    Pengembalian
+                                </a>
+                                <a href="{{ route('admin.borrowings.history') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('admin.borrowings.history')) bg-blue-700 @endif">
+                                    History
+                                </a>
                             @elseif(auth()->user()->isOperator())
-                                <a href="{{ route('operator.dashboard') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-b-2 border-white text-white @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Dashboard</a>
-                                <a href="{{ route('operator.services.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Service Kendaraan</a>
-                                <a href="{{ route('operator.borrowings.index') }}" class="py-4 px-2 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-b-2 border-white text-gray-800 @else border-b-2 border-transparent text-white hover:text-gray-800 @endif">Peminjaman</a>
+                                <a href="{{ route('operator.dashboard') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.dashboard')) bg-blue-700 @endif">
+                                    Dashboard
+                                </a>
+                                <a href="{{ route('operator.services.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.*')) bg-blue-700 @endif">
+                                    Service
+                                </a>
+                                <a href="{{ route('operator.borrowings.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.borrowings.*')) bg-blue-700 @endif">
+                                    Peminjaman
+                                </a>
                             @endif
                         </div>
-                        <div class="hidden lg:flex items-center ml-6">
-                            <span class="text-white mr-2">{{ auth()->user()->name }}</span>
-                            <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-white text-red-700 @else bg-blue-100 text-blue-700 @endif">
-                                {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
-                            </span>
-                            <form method="POST" action="{{ route('logout') }}" class="ml-4" id="logoutFormDesktop">
-                                @csrf
-                                <button type="button" onclick="showLogoutConfirmation()" class="btn btn-danger">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                    </svg>
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="lg:hidden hidden" id="mobile-menu">
-                    <div class="px-2 pt-2 pb-3 space-y-1">
-                        @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.dashboard')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Dashboard</a>
-                            <a href="{{ route('admin.vehicles.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.vehicles.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Data Kendaraan</a>
-                            <a href="{{ route('admin.operators.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('admin.operators.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Data Operator</a>
-                        @elseif(auth()->user()->isOperator())
-                            <a href="{{ route('operator.dashboard') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.dashboard')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Dashboard</a>
-                            <a href="{{ route('operator.services.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.services.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Service Kendaraan</a>
-                            <a href="{{ route('operator.borrowings.index') }}" class="block py-2 px-4 text-sm font-medium transition-all @if(request()->routeIs('operator.borrowings.*')) border-l-4 border-white bg-blue-700 text-white @else border-l-4 border-transparent text-white hover:text-gray-200 hover:bg-blue-700 @endif">Peminjaman</a>
-                        @endif
-                        <div class="border-t border-blue-500 mt-3 pt-3">
-                            <div class="flex items-center px-4 py-2">
-                                <span class="text-white mr-2">{{ auth()->user()->name }}</span>
-                                <span class="px-2 py-1 text-xs rounded-full @if(auth()->user()->isAdmin()) bg-white text-blue-700 @else bg-blue-100 text-blue-700 @endif">
+                        <!-- User Profile & Mobile Button -->
+                        <div class="flex items-center">
+                            <!-- User Profile (Desktop) -->
+                            <div class="hidden md:flex items-center mr-4">
+                                <span class="text-sm text-white mr-2">{{ auth()->user()->name }}</span>
+                                <span class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
                                     {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
                                 </span>
                             </div>
-                            <form method="POST" action="{{ route('logout') }}" class="w-full px-4 py-2" id="logoutFormMobile">
-                                @csrf
-                                <button type="button" onclick="showLogoutConfirmation()" class="btn btn-danger w-full">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+
+                            <!-- Logout Button (Desktop) -->
+                            <div class="hidden md:block">
+                                <form method="POST" action="{{ route('logout') }}" id="logoutFormDesktop">
+                                    @csrf
+                                    <button type="button" onclick="showLogoutConfirmation()" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white text-sm rounded-md transition-colors">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Mobile menu button -->
+                            <div class="md:hidden mobile-menu-btn">
+                                <button type="button" class="p-2 rounded-md text-white hover:bg-blue-700" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                                     </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                <!-- Mobile Navigation -->
+                <div class="md:hidden hidden" id="mobile-menu">
+                    <div class="px-2 pt-2 pb-3 bg-blue-700">
+                        @if(auth()->user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.dashboard')) bg-blue-800 @endif">
+                                Dashboard
+                            </a>
+                            <a href="{{ route('admin.vehicles.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.vehicles.*')) bg-blue-800 @endif">
+                                Kendaraan
+                            </a>
+                            <a href="{{ route('admin.operators.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.operators.*')) bg-blue-800 @endif">
+                                Operator
+                            </a>
+                            <a href="{{ route('admin.borrowings.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.borrowings.*') && !request()->routeIs('admin.borrowings.history') && !request()->routeIs('admin.borrowings.awaiting-return')) bg-blue-800 @endif">
+                                Peminjaman
+                            </a>
+                            <a href="{{ route('admin.borrowings.awaiting-return') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.borrowings.awaiting-return')) bg-blue-800 @endif">
+                                Pengembalian
+                            </a>
+                            <a href="{{ route('admin.borrowings.history') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('admin.borrowings.history')) bg-blue-800 @endif">
+                                History
+                            </a>
+                        @elseif(auth()->user()->isOperator())
+                            <a href="{{ route('operator.dashboard') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.dashboard')) bg-blue-800 @endif">
+                                Dashboard
+                            </a>
+                            <a href="{{ route('operator.services.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.*')) bg-blue-800 @endif">
+                                Service
+                            </a>
+                            <a href="{{ route('operator.borrowings.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.borrowings.*')) bg-blue-800 @endif">
+                                Peminjaman
+                            </a>
+                        @endif
+
+                        <!-- Mobile User Info -->
+                        <div class="border-t border-blue-600 mt-3 pt-3">
+                            <div class="px-3 py-2">
+                                <p class="text-sm text-white">{{ auth()->user()->name }}</p>
+                                <p class="text-xs text-blue-200">{{ auth()->user()->role === 'admin' ? 'Administrator' : 'Operator' }}</p>
+                            </div>
+                            <form method="POST" action="{{ route('logout') }}" class="px-3" id="logoutFormMobile">
+                                @csrf
+                                <button type="button" onclick="showLogoutConfirmation()" class="w-full text-left py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md">
                                     Logout
                                 </button>
                             </form>

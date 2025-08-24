@@ -198,7 +198,7 @@ use Illuminate\Support\Facades\Storage;
                                         {{ ucfirst($displayVehicle->availability_status ?? 'tersedia') }}
                                     </span>
                                 </div>
-                                
+
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label class="text-xs font-medium text-gray-500">Kendaraan</label>
@@ -670,7 +670,7 @@ use Illuminate\Support\Facades\Storage;
                         <!-- Single Vehicle Summary -->
                         @php
                             $displayVehicle = null;
-                            
+
                             // Try to get vehicle from vehicles_data first (new format)
                             if ($vehiclesData && is_array($vehiclesData) && count($vehiclesData) > 0) {
                                 $firstVehicleData = $vehiclesData[0];
@@ -730,7 +730,7 @@ use Illuminate\Support\Facades\Storage;
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <p class="text-xs font-medium text-gray-900">
-                                                        {{ $vehicleData['vehicle_info']['brand'] ?? 'N/A' }} 
+                                                        {{ $vehicleData['vehicle_info']['brand'] ?? 'N/A' }}
                                                         {{ $vehicleData['vehicle_info']['model'] ?? 'N/A' }}
                                                     </p>
                                                     <p class="text-xs text-gray-600 font-mono">{{ $vehicleData['vehicle_info']['license_plate'] ?? 'N/A' }}</p>
@@ -782,7 +782,7 @@ use Illuminate\Support\Facades\Storage;
                                             </div>
                                         </div>
                                     @endfor
-                                    
+
                                     @if($borrowing->unit_count > 3)
                                         <div class="text-center py-1">
                                             <p class="text-xs text-yellow-600">dan {{ $borrowing->unit_count - 3 }} unit lainnya (data lama)</p>

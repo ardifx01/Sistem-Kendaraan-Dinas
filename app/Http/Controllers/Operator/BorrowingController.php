@@ -19,10 +19,11 @@ class BorrowingController extends Controller
     public function index()
     {
         $borrowings = Borrowing::with(['vehicle', 'user'])
+            ->notReturned()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        $totalBorrowings = Borrowing::count();
+        $totalBorrowings = Borrowing::notReturned()->count();
         $activeBorrowings = Borrowing::whereIn('status', ['approved', 'in_use'])->count();
         $pendingBorrowings = Borrowing::where('status', 'pending')->count();
 
@@ -39,11 +40,47 @@ class BorrowingController extends Controller
      */
     public function create()
     {
-        // Only show vehicles with 'tersedia' status and not currently being used
+        // Get all vehicle IDs that are currently borrowed (from both single and multiple vehicle bookings)
+        $borrowedVehicleIds = collect();
+
+        // Get vehicle IDs from single vehicle borrowings
+        $singleVehicleBorrowings = Borrowing::whereIn('status', ['pending', 'approved', 'in_use'])
+            ->whereNotNull('vehicle_id')
+            ->pluck('vehicle_id');
+
+        $borrowedVehicleIds = $borrowedVehicleIds->merge($singleVehicleBorrowings);
+
+        // Get vehicle IDs from multiple vehicle borrowings (vehicles_data)
+        $multipleVehicleBorrowings = Borrowing::whereIn('status', ['pending', 'approved', 'in_use'])
+            ->whereNotNull('vehicles_data')
+            ->get();
+
+        foreach ($multipleVehicleBorrowings as $borrowing) {
+            $vehiclesData = [];
+
+            // Handle both array (from cast) and string JSON format
+            if (is_array($borrowing->vehicles_data)) {
+                $vehiclesData = $borrowing->vehicles_data;
+            } elseif (is_string($borrowing->vehicles_data)) {
+                $decoded = json_decode($borrowing->vehicles_data, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $vehiclesData = $decoded;
+                }
+            }
+
+            foreach ($vehiclesData as $vehicleData) {
+                if (isset($vehicleData['vehicle_id'])) {
+                    $borrowedVehicleIds->push((int)$vehicleData['vehicle_id']);
+                }
+            }
+        }
+
+        // Remove duplicates and get unique borrowed vehicle IDs
+        $borrowedVehicleIds = $borrowedVehicleIds->unique()->values();
+
+        // Only show vehicles with 'tersedia' status and not currently being borrowed
         $availableVehicles = Vehicle::where('availability_status', 'tersedia')
-            ->whereDoesntHave('borrowings', function ($query) {
-                $query->whereIn('status', ['approved', 'in_use']);
-            })
+            ->whereNotIn('id', $borrowedVehicleIds->toArray())
             ->orderBy('brand')
             ->orderBy('model')
             ->get();
@@ -67,67 +104,11 @@ class BorrowingController extends Controller
         // Determine validation rules based on unit count
         $unitCount = (int) $request->input('unit_count', 1);
 
-        $rules = [
-            'borrower_type' => 'required|in:internal,eksternal',
-            'borrower_name' => 'required|string|max:255',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'purpose' => 'required|string|max:1000',
-            'location_type' => 'required|in:dalam_kota,luar_kota',
-            'unit_count' => 'required|integer|min:1|max:10',
-            'surat_permohonan' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'surat_tugas' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'notes' => 'nullable|string|max:1000',
-            'province' => 'nullable|string|max:255|required_if:location_type,luar_kota',
-            'city' => 'nullable|string|max:255|required_if:location_type,luar_kota',
-        ];
+        // Get validation rules and messages
+        $rules = $this->getValidationRules($unitCount, false);
+        $messages = $this->getValidationMessages(false);
 
-        // Add vehicle validation based on unit count
-        if ($unitCount > 1) {
-            $rules['vehicles'] = 'required|array|min:' . $unitCount . '|max:' . $unitCount;
-            $rules['vehicles.*.vehicle_id'] = 'required|exists:vehicles,id|distinct';
-        } else {
-            $rules['vehicle_id'] = 'required|exists:vehicles,id';
-        }
-
-                $messages = [
-            'borrower_type.required' => 'Jenis peminjam wajib dipilih.',
-            'borrower_type.in' => 'Jenis peminjam tidak valid.',
-            'borrower_name.required' => 'Nama peminjam wajib diisi.',
-            'borrower_name.max' => 'Nama peminjam maksimal 255 karakter.',
-            'start_date.required' => 'Tanggal mulai wajib diisi.',
-            'start_date.date' => 'Format tanggal mulai tidak valid.',
-            'start_date.after_or_equal' => 'Tanggal mulai tidak boleh kurang dari hari ini.',
-            'end_date.required' => 'Tanggal selesai wajib diisi.',
-            'end_date.date' => 'Format tanggal selesai tidak valid.',
-            'end_date.after_or_equal' => 'Tanggal selesai tidak boleh kurang dari tanggal mulai.',
-            'purpose.required' => 'Tujuan penggunaan wajib diisi.',
-            'purpose.max' => 'Tujuan penggunaan maksimal 1000 karakter.',
-            'location_type.required' => 'Jenis lokasi wajib dipilih.',
-            'location_type.in' => 'Jenis lokasi tidak valid.',
-            'unit_count.required' => 'Jumlah unit wajib diisi.',
-            'unit_count.integer' => 'Jumlah unit harus berupa angka.',
-            'unit_count.min' => 'Jumlah unit minimal 1.',
-            'unit_count.max' => 'Jumlah unit maksimal 10.',
-            'surat_permohonan.required' => 'Surat permohonan wajib diupload.',
-            'surat_permohonan.file' => 'Surat permohonan harus berupa file.',
-            'surat_permohonan.mimes' => 'Surat permohonan harus berformat PDF, JPG, JPEG, atau PNG.',
-            'surat_permohonan.max' => 'Ukuran surat permohonan maksimal 5MB.',
-            'surat_tugas.file' => 'Surat tugas harus berupa file.',
-            'surat_tugas.mimes' => 'Surat tugas harus berformat PDF, JPG, JPEG, atau PNG.',
-            'surat_tugas.max' => 'Ukuran surat tugas maksimal 5MB.',
-            'notes.max' => 'Catatan maksimal 1000 karakter.',
-            // Vehicle validation messages
-            'vehicle_id.required' => 'Pilih kendaraan yang akan dipinjam.',
-            'vehicle_id.exists' => 'Kendaraan yang dipilih tidak valid.',
-            'vehicles.required' => 'Pilih kendaraan untuk setiap unit.',
-            'vehicles.*.vehicle_id.required' => 'Pilih kendaraan untuk unit ini.',
-            'vehicles.*.vehicle_id.exists' => 'Kendaraan yang dipilih tidak valid.',
-            'vehicles.*.vehicle_id.distinct' => 'Setiap unit harus menggunakan kendaraan yang berbeda.',
-            'province.required_if' => 'Provinsi wajib dipilih untuk perjalanan luar kota.',
-            'city.required_if' => 'Kota/Kabupaten wajib dipilih untuk perjalanan luar kota.',
-        ];
-
+        // Perform validation
         try {
             $validatedData = $request->validate($rules, $messages);
             \Log::info('Validation passed successfully');
@@ -227,6 +208,7 @@ class BorrowingController extends Controller
                 'user_id' => Auth::id(),
                 'borrower_type' => $validatedData['borrower_type'],
                 'borrower_name' => $validatedData['borrower_name'],
+                'borrower_contact' => $validatedData['borrower_contact'],
                 'start_date' => $validatedData['start_date'],
                 'end_date' => $validatedData['end_date'],
                 'purpose' => $validatedData['purpose'],
@@ -315,18 +297,64 @@ class BorrowingController extends Controller
             }
         }
 
-        // Get available vehicles (not in use by other borrowings) + currently used by this borrowing
-        $availableVehicles = Vehicle::where(function ($query) use ($borrowing, $currentVehicleIds) {
-            $query->whereDoesntHave('borrowings', function ($subQuery) use ($borrowing) {
-                $subQuery->whereIn('status', ['approved', 'in_use'])
-                    ->where('id', '!=', $borrowing->id);
-            })->orWhereIn('id', $currentVehicleIds);
-        })->orderBy('brand')->orderBy('model')->get();
+        // Get all vehicle IDs that are currently borrowed (excluding current borrowing)
+        $borrowedVehicleIds = collect();
+
+        // Get vehicle IDs from single vehicle borrowings (excluding current borrowing)
+        $singleVehicleBorrowings = Borrowing::whereIn('status', ['pending', 'approved', 'in_use'])
+            ->where('id', '!=', $borrowing->id)
+            ->whereNotNull('vehicle_id')
+            ->pluck('vehicle_id');
+
+        $borrowedVehicleIds = $borrowedVehicleIds->merge($singleVehicleBorrowings);
+
+        // Get vehicle IDs from multiple vehicle borrowings (excluding current borrowing)
+        $multipleVehicleBorrowings = Borrowing::whereIn('status', ['pending', 'approved', 'in_use'])
+            ->where('id', '!=', $borrowing->id)
+            ->whereNotNull('vehicles_data')
+            ->get();
+
+        foreach ($multipleVehicleBorrowings as $otherBorrowing) {
+            $vehiclesData = [];
+
+            // Handle both array (from cast) and string JSON format
+            if (is_array($otherBorrowing->vehicles_data)) {
+                $vehiclesData = $otherBorrowing->vehicles_data;
+            } elseif (is_string($otherBorrowing->vehicles_data)) {
+                $decoded = json_decode($otherBorrowing->vehicles_data, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $vehiclesData = $decoded;
+                }
+            }
+
+            foreach ($vehiclesData as $vehicleData) {
+                if (isset($vehicleData['vehicle_id'])) {
+                    $borrowedVehicleIds->push((int)$vehicleData['vehicle_id']);
+                }
+            }
+        }
+
+        // Remove duplicates and get unique borrowed vehicle IDs
+        $borrowedVehicleIds = $borrowedVehicleIds->unique()->values();
+
+        // Get available vehicles (not borrowed by others) + currently used by this borrowing
+        $availableVehicles = Vehicle::where('availability_status', 'tersedia')
+            ->where(function ($query) use ($currentVehicleIds, $borrowedVehicleIds) {
+                $query->whereNotIn('id', $borrowedVehicleIds->toArray())
+                      ->orWhereIn('id', $currentVehicleIds);
+            })
+            ->orderBy('brand')
+            ->orderBy('model')
+            ->get();
 
         // Parse destination data for edit form
         $destinationData = [];
         if ($borrowing->destination && $borrowing->location_type === 'luar_kota') {
-            $destinationData = json_decode($borrowing->destination, true) ?? [];
+            if (is_string($borrowing->destination)) {
+                $destinationData = json_decode($borrowing->destination, true) ?? [];
+            } elseif (is_array($borrowing->destination)) {
+                $destinationData = $borrowing->destination;
+            }
         }
 
         return view('operator.borrowings.edit', compact('borrowing', 'availableVehicles', 'destinationData'));
@@ -343,34 +371,20 @@ class BorrowingController extends Controller
                 ->with('error', 'Hanya pengajuan dengan status pending yang dapat diedit.');
         }
 
-        $baseRules = [
-            'borrower_type' => 'required|in:internal,eksternal',
-            'borrower_name' => 'required|string|max:255',
-            'borrower_institution' => 'required_if:borrower_type,eksternal|string|max:255|nullable',
-            'borrower_contact' => 'required|string|max:255',
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'purpose' => 'required|string|min:10|max:500',
-            'location_type' => 'required|in:dalam_kota,luar_kota',
-            'unit_count' => 'required|integer|min:1|max:10',
-            'surat_permohonan' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'surat_tugas' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'notes' => 'nullable|string|max:300',
-            'province' => 'nullable|string|max:255|required_if:location_type,luar_kota',
-            'city' => 'nullable|string|max:255|required_if:location_type,luar_kota',
-        ];
+        // Determine validation rules based on unit count
+        $unitCount = (int) $request->input('unit_count', 1);
 
-        // Add validation rules based on unit count
-        if ($request->unit_count > 1) {
-            // For multiple vehicles
-            $baseRules['vehicles'] = 'required|array|min:1';
-            $baseRules['vehicles.*.vehicle_id'] = 'required|exists:vehicles,id|distinct';
-        } else {
-            // For single vehicle
-            $baseRules['vehicle_id'] = 'required|exists:vehicles,id';
+        // Get validation rules and messages
+        $rules = $this->getValidationRules($unitCount, true);
+        $messages = $this->getValidationMessages(true);
+
+        // Perform validation
+        try {
+            $validatedData = $request->validate($rules, $messages);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Update validation failed:', $e->errors());
+            throw $e;
         }
-
-        $validatedData = $request->validate($baseRules);
 
         // Check vehicle availability
         $unavailableVehicles = [];
@@ -547,5 +561,154 @@ class BorrowingController extends Controller
     {
         $borrowing->load(['vehicle', 'user']);
         return view('operator.borrowings.print', compact('borrowing'));
+    }
+
+    /**
+     * Get validation rules for borrowing forms
+     */
+    private function getValidationRules($unitCount, $isUpdate = false)
+    {
+        // Base validation rules
+        $rules = [
+            'borrower_type' => 'required|in:internal,eksternal',
+            'borrower_name' => 'required|string|max:255',
+            'borrower_contact' => 'required|string|max:255',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'purpose' => 'required|string|max:1000',
+            'location_type' => 'required|in:dalam_kota,luar_kota',
+            'unit_count' => 'required|integer|min:1|max:10',
+            'notes' => 'nullable|string|max:1000',
+            'province' => 'nullable|string|max:255|required_if:location_type,luar_kota',
+            'city' => 'nullable|string|max:255|required_if:location_type,luar_kota',
+        ];
+
+        // Add update-specific rules
+        if ($isUpdate) {
+            $rules['purpose'] = 'required|string|min:10|max:500';
+            $rules['surat_permohonan'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120';
+            $rules['surat_tugas'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120';
+        } else {
+            // Store-specific rules
+            $rules['surat_permohonan'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:5120';
+            $rules['surat_tugas'] = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120';
+        }
+
+        // Dynamic vehicle validation based on unit count
+        if ($unitCount > 1) {
+            $rules['vehicles'] = 'required|array|min:' . $unitCount . '|max:' . $unitCount;
+            $rules['vehicles.*.vehicle_id'] = 'required|exists:vehicles,id|distinct';
+        } else {
+            $rules['vehicle_id'] = 'required|exists:vehicles,id';
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Get custom validation messages
+     */
+    private function getValidationMessages($isUpdate = false)
+    {
+        $messages = [
+            // Borrower validation messages
+            'borrower_type.required' => 'Jenis peminjam wajib dipilih.',
+            'borrower_type.in' => 'Jenis peminjam tidak valid.',
+            'borrower_name.required' => 'Nama peminjam wajib diisi.',
+            'borrower_name.max' => 'Nama peminjam maksimal 255 karakter.',
+            'borrower_contact.required' => 'Kontak peminjam wajib diisi.',
+            'borrower_contact.max' => 'Kontak peminjam maksimal 255 karakter.',
+
+            // Date validation messages
+            'start_date.required' => 'Tanggal mulai wajib diisi.',
+            'start_date.date' => 'Format tanggal mulai tidak valid.',
+            'start_date.after_or_equal' => 'Tanggal mulai tidak boleh kurang dari hari ini.',
+            'end_date.required' => 'Tanggal selesai wajib diisi.',
+            'end_date.date' => 'Format tanggal selesai tidak valid.',
+            'end_date.after_or_equal' => 'Tanggal selesai tidak boleh kurang dari tanggal mulai.',
+
+            // Purpose and location validation messages
+            'purpose.required' => 'Tujuan penggunaan wajib diisi.',
+            'purpose.max' => 'Tujuan penggunaan maksimal 1000 karakter.',
+            'location_type.required' => 'Jenis lokasi wajib dipilih.',
+            'location_type.in' => 'Jenis lokasi tidak valid.',
+            'province.required_if' => 'Provinsi wajib dipilih untuk perjalanan luar kota.',
+            'city.required_if' => 'Kota/Kabupaten wajib dipilih untuk perjalanan luar kota.',
+
+            // Unit count validation messages
+            'unit_count.required' => 'Jumlah unit wajib diisi.',
+            'unit_count.integer' => 'Jumlah unit harus berupa angka.',
+            'unit_count.min' => 'Jumlah unit minimal 1.',
+            'unit_count.max' => 'Jumlah unit maksimal 10.',
+
+            // File upload validation messages (store)
+            'surat_permohonan.file' => 'Surat permohonan harus berupa file.',
+            'surat_permohonan.mimes' => 'Surat permohonan harus berformat PDF, JPG, JPEG, atau PNG.',
+            'surat_permohonan.max' => 'Ukuran surat permohonan maksimal 5MB.',
+            'surat_tugas.file' => 'Surat tugas harus berupa file.',
+            'surat_tugas.mimes' => 'Surat tugas harus berformat PDF, JPG, JPEG, atau PNG.',
+            'surat_tugas.max' => 'Ukuran surat tugas maksimal 5MB.',
+
+            // Vehicle validation messages
+            'vehicle_id.required' => 'Pilih kendaraan yang akan dipinjam.',
+            'vehicle_id.exists' => 'Kendaraan yang dipilih tidak valid.',
+            'vehicles.required' => 'Pilih kendaraan untuk setiap unit.',
+            'vehicles.array' => 'Data kendaraan tidak valid.',
+            'vehicles.min' => 'Jumlah kendaraan harus sesuai dengan jumlah unit.',
+            'vehicles.max' => 'Jumlah kendaraan tidak boleh melebihi jumlah unit.',
+            'vehicles.*.vehicle_id.required' => 'Pilih kendaraan untuk unit ini.',
+            'vehicles.*.vehicle_id.exists' => 'Kendaraan yang dipilih tidak valid.',
+            'vehicles.*.vehicle_id.distinct' => 'Setiap unit harus menggunakan kendaraan yang berbeda.',
+
+            // Notes validation messages
+            'notes.max' => 'Catatan maksimal 1000 karakter.',
+        ];
+
+        // Add update-specific messages
+        if ($isUpdate) {
+            $messages['purpose.min'] = 'Tujuan penggunaan minimal 10 karakter.';
+            $messages['purpose.max'] = 'Tujuan penggunaan maksimal 500 karakter.';
+            $messages['surat_permohonan.required'] = null; // Remove required message for update
+        } else {
+            $messages['surat_permohonan.required'] = 'Surat permohonan wajib diupload.';
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Check vehicle availability for given dates
+     */
+    private function checkVehicleAvailability($vehicleIds, $startDate, $endDate, $excludeBorrowingId = null)
+    {
+        $unavailableVehicles = [];
+
+        foreach ($vehicleIds as $vehicleId) {
+            $vehicle = Vehicle::find($vehicleId);
+            if (!$vehicle) {
+                continue;
+            }
+
+            // Check if vehicle is available
+            $hasActiveBorrowing = $vehicle->borrowings()
+                ->whereIn('status', ['pending', 'approved', 'in_use'])
+                ->when($excludeBorrowingId, function ($query) use ($excludeBorrowingId) {
+                    return $query->where('id', '!=', $excludeBorrowingId);
+                })
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('start_date', [$startDate, $endDate])
+                          ->orWhereBetween('end_date', [$startDate, $endDate])
+                          ->orWhere(function ($q) use ($startDate, $endDate) {
+                              $q->where('start_date', '<=', $startDate)
+                                ->where('end_date', '>=', $endDate);
+                          });
+                })->exists();
+
+            if ($hasActiveBorrowing) {
+                $unavailableVehicles[] = $vehicle->brand . ' ' . $vehicle->model . ' (' . $vehicle->license_plate . ')';
+            }
+        }
+
+        return $unavailableVehicles;
     }
 }
