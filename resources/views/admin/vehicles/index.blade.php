@@ -94,6 +94,7 @@ Carbon::setLocale('id');
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Pajak</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Driver</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Pengguna</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -158,6 +159,9 @@ Carbon::setLocale('id');
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $vehicle->driver_name ?: '-' }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ $vehicle->user_name ?: '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex items-center space-x-2">

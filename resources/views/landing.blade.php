@@ -5,16 +5,16 @@
 @section('content')
 <div class="min-h-screen bg-white">
     <!-- Navigation Header -->
-    <nav class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b-4 border-gray-100">
+    <nav class="fixed w-full top-0 z-50 bg-blue-600 backdrop-blur-md border-b-4 border-yellow-400">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex items-center">
-                        <span class="text-xl font-bold text-gray-700">Sistem Kendaraan Dinas</span>
+                        <span class="text-xl font-bold text-white">Sistem Kendaraan Dinas</span>
                     </div>
                 </div>
                 <div class="flex items-center">
-                    <a href="{{ route('login') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-2.5 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5">
+                    <a href="{{ route('login') }}" class="bg-yellow-400 hover:from-yellow-500 hover:to-yellow-500 text-white px-6 py-2.5 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5">
                         Masuk
                     </a>
                 </div>
@@ -25,33 +25,28 @@
     <!-- Hero Section -->
     <div class="pt-16 bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center py-20 lg:py-32">
-                <div class="space-y-10">
-                    <div class="space-y-7">
-                        <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                            Sistem Manajemen
-                            <span class="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">Kendaraan Dinas</span>
-                        </h1>
-                        <p class="text-xl text-gray-600 leading-relaxed max-w-xl">
-                            Sistem Pemantauan Kendaraan Dinas Operasional, Secara Real - Time.
-                        </p>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center py-16 md:py-24 lg:py-32">
+                <div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-8">
+                        Sistem Manajemen
+                        <span class="bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">Kendaraan Dinas</span>
+                    </h1>
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-blue-500/25 hover:-translate-y-1">
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 md:px-10 md:py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-xl hover:shadow-blue-500/25 hover:-translate-y-1 text-base md:text-lg">
                             <span>Login</span>
-                            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg class="ml-2 h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </a>
                     </div>
                 </div>
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-3xl blur-3xl"></div>
-                    <img class="relative rounded-3xl shadow-2xl w-full h-auto object-cover" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Kendaraan Dinas">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200 transition-transform duration-300 hover:-translate-y-1">
+                    <p class="text-lg md:text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                        Sistem Manajemen Kendaraan Dinas adalah platform digital terintegrasi yang dirancang untuk memudahkan pengelolaan, pemantauan, dan pelaporan seluruh kendaraan dinas operasional secara real-time. Dengan fitur lengkap seperti pencatatan data kendaraan, tracking service dan perbaikan, validasi peminjaman dan pengembalian, serta notifikasi pajak, sistem ini membantu menjaga efisiensi, transparansi, dan keamanan aset kendaraan.
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Features Section -->
     <div class="py-24 bg-white">
@@ -91,15 +86,15 @@
                 </div>
 
                 <div class="group relative bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl border border-gray-300 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 hover:-translate-y-2">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-green-600/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="relative">
-                        <div class="h-14 w-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <div class="h-14 w-14 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                             <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                <path fill-rule="evenodd" d="M15.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H7.5a.75.75 0 0 1 0-1.5h11.69l-3.22-3.22a.75.75 0 0 1 0-1.06Zm-7.94 9a.75.75 0 0 1 0 1.06l-3.22 3.22H16.5a.75.75 0 0 1 0 1.5H4.81l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Manajemen Pembayaran</h3>
-                        <p class="text-gray-600 leading-relaxed">Kelola Pembayaran Service dan Perbaikan dengan Tracking Sumber Dana yang Akurat.</p>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3">Validasi Peminjaman & Pengembalian</h3>
+                        <p class="text-gray-600 leading-relaxed">Proses validasi peminjaman dan pengembalian kendaraan dinas secara digital dan real-time.</p>
                     </div>
                 </div>
 

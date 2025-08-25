@@ -78,6 +78,26 @@
                     </div>
 
                     <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">No. BPKB</label>
+                        <p class="text-gray-900 font-medium">{{ $vehicle->bpkb_number }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">No. Rangka</label>
+                        <p class="text-gray-900 font-medium">{{ $vehicle->chassis_number }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">No. Mesin</label>
+                        <p class="text-gray-900 font-medium">{{ $vehicle->engine_number }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Jml CC</label>
+                        <p class="text-gray-900 font-medium">{{ $vehicle->cc_amount }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Plat Nomor</label>
                         <p class="text-gray-900 font-medium font-mono">{{ $vehicle->license_plate }}</p>
                     </div>

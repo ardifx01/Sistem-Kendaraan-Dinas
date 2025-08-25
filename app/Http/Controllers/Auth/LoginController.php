@@ -35,37 +35,16 @@ class LoginController extends Controller
             'captcha.size' => 'Kode verifikasi harus 5 karakter.',
         ]);
 
-        // Note: Frontend captcha validation is primary
-        // This is additional server-side validation for security
-
         $credentials = $request->only('username', 'password');
-
-        // Try to authenticate with username
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $user = Auth::user();
-
-            // Check if user is active
-            if (!$user->is_active) {
-                Auth::logout();
-                throw ValidationException::withMessages([
-                    'username' => 'Akun Anda tidak aktif. Hubungi administrator.',
-                ]);
-            }
-
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            // Redirect based on role
-            if ($user->isAdmin()) {
-                return redirect()->intended(route('admin.dashboard'));
-            } elseif ($user->isOperator()) {
-                return redirect()->intended(route('operator.dashboard'));
-            }
+            return redirect()->intended('/');
         }
-
         throw ValidationException::withMessages([
             'username' => 'Username atau password tidak valid.',
         ]);
     }
+
 
     /**
      * Handle logout request.

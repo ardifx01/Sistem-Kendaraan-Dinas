@@ -260,12 +260,13 @@
     <table class="table">
         <thead>
             <tr>
-                <th width="8%">No</th>
+                <th width="6%">No</th>
                 <th width="10%">Foto</th>
-                <th width="32%">Kendaraan</th>
-                <th width="18%">Plat Nomor</th>
-                <th width="16%">Pajak Kendaraan</th>
-                <th width="16%">Driver</th>
+                <th width="26%">Kendaraan</th>
+                <th width="14%">Plat Nomor</th>
+                <th width="14%">Pajak Kendaraan</th>
+                <th width="14%">Driver</th>
+                <th width="12%">Pengguna</th>
             </tr>
         </thead>
         <tbody>
@@ -312,6 +313,15 @@
                     @else
                         <div style="text-align: center; padding: 8px;">
                             <em style="color: #94a3b8; font-size: 10px;">— Tidak ada driver —</em>
+                        </div>
+                    @endif
+                </td>
+                <td>
+                    @if($vehicle->user_name)
+                        <strong>{{ $vehicle->user_name }}</strong>
+                    @else
+                        <div style="text-align: center; padding: 8px;">
+                            <em style="color: #94a3b8; font-size: 10px;">— Tidak ada pengguna —</em>
                         </div>
                     @endif
                 </td>

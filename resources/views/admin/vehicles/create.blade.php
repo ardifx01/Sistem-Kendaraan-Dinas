@@ -169,6 +169,54 @@
                         @enderror
                     </div>
 
+                        <!-- BPKB Number -->
+                        <div>
+                            <label for="bpkb_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor BPKB</label>
+                            <input type="text" name="bpkb_number" id="bpkb_number" value="{{ old('bpkb_number') }}" required
+                                   maxlength="100"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('bpkb_number') border-red-500 @enderror"
+                                   placeholder="Nomor BPKB">
+                            @error('bpkb_number')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Chassis Number -->
+                        <div>
+                            <label for="chassis_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor Rangka</label>
+                            <input type="text" name="chassis_number" id="chassis_number" value="{{ old('chassis_number') }}" required
+                                   maxlength="100"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('chassis_number') border-red-500 @enderror"
+                                   placeholder="Nomor rangka kendaraan">
+                            @error('chassis_number')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Engine Number -->
+                        <div>
+                            <label for="engine_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor Mesin</label>
+                            <input type="text" name="engine_number" id="engine_number" value="{{ old('engine_number') }}" required
+                                   maxlength="100"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('engine_number') border-red-500 @enderror"
+                                   placeholder="Nomor mesin kendaraan">
+                            @error('engine_number')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- CC Amount -->
+                        <div>
+                            <label for="cc_amount" class="block text-sm font-medium text-gray-700 mb-2">Isi Silinder (CC)</label>
+                            <input type="number" name="cc_amount" id="cc_amount" value="{{ old('cc_amount') }}" required
+                                   min="50" max="10000"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('cc_amount') border-red-500 @enderror"
+                                   placeholder="Contoh: 1500">
+                            @error('cc_amount')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                     <!-- Photo -->
                     <div class="md:col-span-2">
                         <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Foto Kendaraan</label>

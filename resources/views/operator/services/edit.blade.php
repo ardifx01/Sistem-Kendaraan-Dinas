@@ -220,6 +220,20 @@ select {
                         </div>
                     </div>
                     @endif
+                                    </div>
+
+                                    <!-- Payment Type -->
+                                    <div>
+                                        <label for="payment_type" class="block text-sm font-medium text-gray-700 mb-2">Pembayaran <span class="text-red-500">*</span></label>
+                                        <select name="payment_type" id="payment_type" required
+                                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('payment_type') border-red-500 @else border-gray-300 @enderror">
+                                            <option value="">Pilih Jenis Pembayaran</option>
+                                            <option value="asuransi" {{ old('payment_type', $service->payment_type) == 'asuransi' ? 'selected' : '' }}>Asuransi</option>
+                                            <option value="kantor" {{ old('payment_type', $service->payment_type) == 'kantor' ? 'selected' : '' }}>Pembayaran Kantor</option>
+                                        </select>
+                                        @error('payment_type')
+                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                        @enderror
 
                     <!-- Upload New Documents -->
                     <div class="sm:col-span-2">

@@ -112,6 +112,27 @@
                                     </span>
                                 </dd>
                             </div>
+
+                            <!-- Payment Type -->
+                            <div class="space-y-1">
+                                <dt class="text-sm font-medium text-gray-500 flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 10c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-18C5.48 0 0 5.48 0 12s5.48 12 12 12 12-5.48 12-12S18.52 0 12 0z" />
+                                    </svg>
+                                    Jenis Pembayaran
+                                </dt>
+                                <dd class="text-sm font-medium text-gray-900">
+                                    @php
+                                        $paymentTypeLabels = [
+                                            'asuransi' => 'Asuransi',
+                                            'kantor' => 'Pembayaran Kantor'
+                                        ];
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                                        {{ $paymentTypeLabels[$service->payment_type] ?? ($service->payment_type ?: '-') }}
+                                    </span>
+                                </dd>
+                            </div>
                         </div>
 
                         <!-- Detailed Descriptions -->

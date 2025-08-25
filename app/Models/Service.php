@@ -13,6 +13,7 @@ class Service extends Model
         'vehicle_id',
         'user_id',
         'service_type',
+        'payment_type',
         'damage_description',
         'repair_description',
         'parts_replaced',
@@ -26,6 +27,7 @@ class Service extends Model
         'service_date' => 'date',
         'documents' => 'array',
         'photos' => 'array',
+        'payment_type' => 'string',
     ];
 
     /**

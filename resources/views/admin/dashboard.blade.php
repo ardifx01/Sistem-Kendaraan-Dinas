@@ -5,32 +5,7 @@
 @push('styles')
 <style>
     /* Ensure navbar is always visible and properly positioned */
-    nav {
-        position: relative !important;
-        z-index: 1000 !important;
-        display: block !important;
-        width: 100% !important;
-    }
-
-    /* Ensure nav items are visible */
-    nav .flex,
-    nav .hidden.md\\:flex,
-    nav .md\\:hidden {
-        display: flex !important;
-    }
-
-    nav .md\\:hidden {
-        display: none !important;
-    }
-
-    @media (min-width: 768px) {
-        nav .hidden.md\\:flex {
-            display: flex !important;
-        }
-        nav .md\\:hidden {
-            display: none !important;
-        }
-    }
+    /* Hapus CSS yang override Tailwind hidden/md:flex agar navbar desktop normal */
 
     /* Custom Animations */
     @keyframes fadeInUp {

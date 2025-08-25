@@ -74,6 +74,10 @@ class VehicleController extends Controller
             'driver_name' => 'nullable|string|max:255',
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'bpkb_number' => 'required|string|max:100',
+            'chassis_number' => 'required|string|max:100',
+            'engine_number' => 'required|string|max:100',
+            'cc_amount' => 'required|integer|min:50|max:10000',
         ]);
 
         // Set default values for fields not in form
@@ -133,6 +137,10 @@ class VehicleController extends Controller
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
             'availability_status' => 'required|in:tersedia,dipinjam,service,tidak_tersedia',
+            'bpkb_number' => 'required|string|max:100',
+            'chassis_number' => 'required|string|max:100',
+            'engine_number' => 'required|string|max:100',
+            'cc_amount' => 'required|integer|min:50|max:10000',
         ]);
 
         // Handle photo upload

@@ -249,6 +249,35 @@ Carbon::setLocale('id');
                 <h3 class="text-lg font-semibold text-gray-900 mb-2 sm:mb-0">Informasi Kendaraan</h3>
             </div>
 
+            <!-- Card Pajak Hampir Habis -->
+            <div class="mb-6">
+                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-md font-semibold text-red-900 flex items-center">
+                            Kendaraan Pajak Hampir Habis
+                        </h4>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{{ $vehicles_tax_expiring->count() }} kendaraan</span>
+                    </div>
+                    @if($vehicles_tax_expiring->count() > 0)
+                        <div class="space-y-2 max-h-96 overflow-y-auto">
+                            @foreach($vehicles_tax_expiring as $vehicle)
+                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                        <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
+                                        <p class="text-xs text-red-600">Pajak habis: {{ \Carbon\Carbon::parse($vehicle->tax_expiry_date)->translatedFormat('d F Y') }}</p>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-semibold">Segera Perpanjang</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-sm text-red-600">Tidak ada kendaraan yang pajaknya akan habis dalam waktu dekat.</p>
+                    @endif
+                </div>
+            </div>
+
             <!-- Status Overview Cards -->
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <!-- Tersedia -->
@@ -267,14 +296,14 @@ Carbon::setLocale('id');
                 </div>
 
                 <!-- Service -->
-                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm font-medium text-red-600">Service</p>
-                            <p class="text-2xl font-bold text-red-900">{{ $vehicles_by_status['service'] ?? 0 }}</p>
+                            <p class="text-sm font-medium text-yellow-600">Service</p>
+                            <p class="text-2xl font-bold text-yellow-900">{{ $vehicles_by_status['service'] ?? 0 }}</p>
                         </div>
-                        <div class="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="w-8 h-8 bg-yellow-200 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
@@ -317,9 +346,9 @@ Carbon::setLocale('id');
                 </div>
 
                 <!-- Kendaraan Service -->
-                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
-                    <h4 class="text-md font-semibold text-red-900 mb-3 flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                    <h4 class="text-md font-semibold text-yellow-900 mb-3 flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
@@ -336,7 +365,7 @@ Carbon::setLocale('id');
                                             <p class="text-xs text-red-600">{{ $vehicle->latestService->service_type }}</p>
                                         @endif
                                     </div>
-                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Dalam Service</span>
+                                    <span class="text-xs bg-yellow-100 text-red-800 px-2 py-1 rounded">Dalam Service</span>
                                 </div>
                             @endforeach
                         </div>

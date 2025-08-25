@@ -55,6 +55,10 @@ class VehicleSeeder extends Seeder
                     'Staff IT', 'Staff Humas', 'Kepala Bagian Umum'
                 ]),
                 'availability_status' => $faker->randomElement($availStatuses),
+                'bpkb_number' => strtoupper($faker->bothify('BPKB####??')),
+                'chassis_number' => strtoupper($faker->bothify('CHS####??')),
+                'engine_number' => strtoupper($faker->bothify('ENG####??')),
+                'cc_amount' => $faker->numberBetween(100, 2500),
             ]);
         }
     }

@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="flex items-center space-x-2 relative z-10">
                                     <span id="captcha-text" class="text-xl font-bold text-gray-800 tracking-widest font-mono select-none transform skew-y-1 shadow-sm"></span>
-                                    <button type="button" id="refresh-captcha" 
+                                    <button type="button" id="refresh-captcha"
                                             class="ml-3 p-2 text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 transition-all duration-200 rounded-full hover:bg-white hover:shadow-md"
                                             title="Refresh Captcha">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,6 +122,7 @@
                         Masukkan kode yang ditampilkan untuk verifikasi keamanan
                     </p>
                 </div>
+
 
                 <!-- Error Messages -->
                 @if($errors->any())
@@ -249,46 +250,46 @@
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
         const submitButton = form.querySelector('button[type="submit"]');
-        
+
         // Captcha functionality
         let captchaCode = '';
-        
+
         function generateCaptcha() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             captchaCode = '';
             for (let i = 0; i < 5; i++) {
                 captchaCode += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            
+
             const captchaDisplay = document.getElementById('captcha-text');
-            
+
             // Add fade effect during generation
             captchaDisplay.style.opacity = '0';
             captchaDisplay.style.transform = 'scale(0.8) skew(-2deg)';
-            
+
             setTimeout(() => {
                 captchaDisplay.textContent = captchaCode;
                 captchaDisplay.style.opacity = '1';
                 captchaDisplay.style.transform = 'scale(1) skew(1deg)';
-                
+
                 // Add random colors for each character (keeping readability)
                 const colors = ['text-gray-800', 'text-blue-800', 'text-green-800', 'text-purple-800', 'text-red-800'];
                 captchaDisplay.className = `text-xl font-bold tracking-widest font-mono select-none transform skew-y-1 shadow-sm transition-all duration-300 ${colors[Math.floor(Math.random() * colors.length)]}`;
             }, 150);
-            
+
             // Clear previous input and error
             document.getElementById('captcha').value = '';
             document.getElementById('captcha-error').classList.add('hidden');
-            
+
             // Reset input field styling
             const captchaInput = document.getElementById('captcha');
             captchaInput.classList.remove('border-red-300', 'ring-red-500', 'border-green-300', 'ring-green-500');
             captchaInput.classList.add('border-gray-300');
         }
-        
+
         // Generate initial captcha
         generateCaptcha();
-        
+
         // Refresh captcha button
         document.getElementById('refresh-captcha').addEventListener('click', function() {
             // Add loading state
@@ -297,18 +298,18 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
             `;
-            
+
             // Generate new captcha after short delay
             setTimeout(() => {
                 generateCaptcha();
-                
+
                 // Restore original icon
                 this.innerHTML = `
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                 `;
-                
+
                 // Add success feedback
                 this.classList.add('text-green-600');
                 setTimeout(() => {
@@ -316,12 +317,12 @@
                 }, 1000);
             }, 500);
         });
-        
+
         // Validate captcha on input
         document.getElementById('captcha').addEventListener('input', function() {
             const userInput = this.value.toUpperCase();
             const errorDiv = document.getElementById('captcha-error');
-            
+
             if (userInput.length === 5) {
                 if (userInput !== captchaCode) {
                     errorDiv.classList.remove('hidden');
@@ -342,22 +343,22 @@
         form.addEventListener('submit', function(e) {
             const captchaInput = document.getElementById('captcha').value.toUpperCase();
             const errorDiv = document.getElementById('captcha-error');
-            
+
             // Validate captcha before submission
             if (captchaInput !== captchaCode) {
                 e.preventDefault();
                 errorDiv.classList.remove('hidden');
                 errorDiv.textContent = 'Kode verifikasi tidak cocok. Silakan coba lagi.';
-                
+
                 // Highlight error field
                 document.getElementById('captcha').classList.add('border-red-300', 'ring-red-500');
                 document.getElementById('captcha').focus();
-                
+
                 // Generate new captcha
                 generateCaptcha();
                 return false;
             }
-            
+
             // Show loading state
             submitButton.disabled = true;
             submitButton.classList.add('form-loading');
@@ -371,26 +372,84 @@
                 </div>
             `;
         });
-        
+
+        // OTP functionality (simulasi)
+        let otpCode = '482193';
+        function generateOtp() {
+            otpCode = '';
+            for (let i = 0; i < 6; i++) {
+                otpCode += Math.floor(Math.random() * 10);
+            }
+            document.getElementById('otp-code').textContent = otpCode;
+            document.getElementById('otp').value = '';
+            document.getElementById('otp-error').classList.add('hidden');
+        }
+        // Generate initial OTP
+        generateOtp();
+        // Refresh OTP button
+        document.getElementById('refresh-otp').addEventListener('click', function() {
+            this.innerHTML = `<svg class=\"w-4 h-4 animate-spin\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\" /></svg>`;
+            setTimeout(() => {
+                generateOtp();
+                this.innerHTML = `<svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\" /></svg>`;
+                this.classList.add('text-green-600');
+                setTimeout(() => { this.classList.remove('text-green-600'); }, 1000);
+            }, 500);
+        });
+        // Validasi OTP input
+        document.getElementById('otp').addEventListener('input', function() {
+            const userInput = this.value;
+            const errorDiv = document.getElementById('otp-error');
+            if (userInput.length === 6) {
+                if (userInput !== otpCode) {
+                    errorDiv.classList.remove('hidden');
+                    this.classList.add('border-red-300', 'ring-red-500');
+                    this.classList.remove('border-gray-300', 'ring-blue-500');
+                } else {
+                    errorDiv.classList.add('hidden');
+                    this.classList.remove('border-red-300', 'ring-red-500');
+                    this.classList.add('border-green-300', 'ring-green-500');
+                }
+            } else {
+                errorDiv.classList.add('hidden');
+                this.classList.remove('border-red-300', 'ring-red-500', 'border-green-300', 'ring-green-500');
+                this.classList.add('border-gray-300');
+            }
+        });
+        // Validasi OTP sebelum submit
+        form.addEventListener('submit', function(e) {
+            const otpInput = document.getElementById('otp').value;
+            const errorDiv = document.getElementById('otp-error');
+            if (otpInput !== otpCode) {
+                e.preventDefault();
+                errorDiv.classList.remove('hidden');
+                errorDiv.textContent = 'Kode OTP tidak valid. Silakan coba lagi.';
+                document.getElementById('otp').classList.add('border-red-300', 'ring-red-500');
+                document.getElementById('otp').focus();
+                generateOtp();
+                return false;
+            }
+        });
+
         // Add transition styles for refresh button and captcha
         const refreshButton = document.getElementById('refresh-captcha');
         const captchaDisplay = document.getElementById('captcha-text');
-        
+
         refreshButton.style.transition = 'all 0.2s ease-in-out';
         captchaDisplay.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-        
+
         // Add hover effects for captcha display
         const captchaContainer = captchaDisplay.parentElement.parentElement;
         captchaContainer.addEventListener('mouseenter', function() {
             this.style.transform = 'scale(1.02)';
             this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
         });
-        
+
         captchaContainer.addEventListener('mouseleave', function() {
             this.style.transform = 'scale(1)';
             this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         });
-        
+
         captchaContainer.style.transition = 'all 0.2s ease-in-out';
     });
 </script>

@@ -24,6 +24,10 @@ class Vehicle extends Model
         'user_name',
         'photo',
         'availability_status',
+        'bpkb_number',
+        'chassis_number',
+        'engine_number',
+        'cc_amount',
     ];
 
     protected $casts = [

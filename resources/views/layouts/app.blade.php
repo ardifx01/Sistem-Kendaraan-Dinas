@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Kendaraan Dinas') - Kementerian Pemuda dan Olahraga</title>
+    <title>@yield('title', 'Kendaraan Dinas') - Kendaraan Dinas</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -312,7 +312,6 @@
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                                 <h1 class="text-lg font-bold text-white">Kendaraan Dinas</h1>
-                                <p class="text-xs text-blue-100">Kementerian Pemuda dan Olahraga</p>
                             </div>
                         </div>
 
@@ -353,11 +352,13 @@
                         <!-- User Profile & Mobile Button -->
                         <div class="flex items-center">
                             <!-- User Profile (Desktop) -->
-                            <div class="hidden md:flex items-center mr-4">
-                                <span class="text-sm text-white mr-2">{{ auth()->user()->name }}</span>
-                                <span class="px-2 py-1 text-xs bg-blue-500 text-white rounded">
-                                    {{ auth()->user()->role === 'admin' ? 'Admin' : 'Operator' }}
-                                </span>
+                            <div class="flex items-center mr-4">
+                                <div class="flex flex-col items-end">
+                                    <span class="text-sm font-semibold text-white">{{ auth()->user()->name }}</span>
+                                    <span class="mt-1 px-2 py-1 text-xs font-semibold rounded @if(auth()->user()->role === 'admin') bg-blue-500 text-white @else bg-green-500 text-white @endif">
+                                        {{ auth()->user()->role === 'admin' ? 'Administrator' : 'Operator' }}
+                                    </span>
+                                </div>
                             </div>
 
                             <!-- Logout Button (Desktop) -->
@@ -415,18 +416,14 @@
                         @endif
 
                         <!-- Mobile User Info -->
-                        <div class="border-t border-blue-600 mt-3 pt-3">
-                            <div class="px-3 py-2">
-                                <p class="text-sm text-white">{{ auth()->user()->name }}</p>
-                                <p class="text-xs text-blue-200">{{ auth()->user()->role === 'admin' ? 'Administrator' : 'Operator' }}</p>
+                            <div class="border-t border-blue-600 mt-3 pt-3">
+                                <form method="POST" action="{{ route('logout') }}" class="px-3" id="logoutFormMobile">
+                                    @csrf
+                                    <button type="button" onclick="showLogoutConfirmation()" class="w-full text-left py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md">
+                                        Logout
+                                    </button>
+                                </form>
                             </div>
-                            <form method="POST" action="{{ route('logout') }}" class="px-3" id="logoutFormMobile">
-                                @csrf
-                                <button type="button" onclick="showLogoutConfirmation()" class="w-full text-left py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </nav>

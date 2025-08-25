@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Sistem Manajemen Kendaraan Dinas - Kementerian Pemuda dan Olahraga')</title>
+    <title>@yield('title', 'Sistem Manajemen Kendaraan Dinas')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,10 +13,10 @@
 
     <!-- Tailwind CSS CDN for immediate styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Try to load local assets if available -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <!-- Additional Styles -->
     @stack('styles')
 </head>
@@ -24,7 +24,7 @@
     <div class="min-h-screen bg-gray-100">
         @yield('content')
     </div>
-    
+
     <!-- Additional Scripts -->
     @stack('scripts')
 </body>

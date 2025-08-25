@@ -342,6 +342,23 @@
                     <span class="detail-value" style="font-weight: bold;">{{ $vehicle->license_plate }}</span>
                 </div>
 
+                    <div class="detail-item">
+                        <span class="detail-label">No. BPKB:</span>
+                        <span class="detail-value">{{ $vehicle->bpkb_number }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">No. Rangka:</span>
+                        <span class="detail-value">{{ $vehicle->chassis_number }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">No. Mesin:</span>
+                        <span class="detail-value">{{ $vehicle->engine_number }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Jml CC:</span>
+                        <span class="detail-value">{{ $vehicle->cc_amount }}</span>
+                    </div>
+
                 <div class="detail-item">
                     <span class="detail-label">Status:</span>
                     <span class="detail-value">
@@ -417,20 +434,6 @@
         </div>
     </div>
     @endif
-
-    <!-- Additional Information -->
-    <div class="additional-info">
-        <h4>Informasi Tambahan</h4>
-        <div class="detail-item" style="border: none; padding: 5px 0;">
-            <span class="detail-label">Tanggal Ditambahkan:</span>
-            <span class="detail-value">{{ $vehicle->created_at->format('d F Y') }}</span>
-        </div>
-
-        <div class="detail-item" style="border: none; padding: 5px 0;">
-            <span class="detail-label">Terakhir Diupdate:</span>
-            <span class="detail-value">{{ $vehicle->updated_at->format('d F Y') }}</span>
-        </div>
-    </div>
 
     <!-- Footer -->
     <div class="footer">

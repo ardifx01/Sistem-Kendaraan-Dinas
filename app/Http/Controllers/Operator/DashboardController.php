@@ -67,15 +67,17 @@ class DashboardController extends Controller
             ->orderBy('updated_at', 'desc')
             ->paginate(10, ['*'], 'vehicles_page');
 
-        // Kendaraan dengan pajak akan habis
-        $expiring_tax_vehicles = Vehicle::taxExpiringSoon()
+
+        // Kendaraan dengan pajak akan habis dalam 2 bulan ke depan
+        $vehicles_tax_expiring = Vehicle::whereDate('tax_expiry_date', '<=', now()->addMonths(2))
+            ->whereDate('tax_expiry_date', '>=', now())
             ->orderBy('tax_expiry_date', 'asc')
-            ->paginate(10, ['*'], 'tax_page');
+            ->get();
 
         return view('operator.dashboard', compact(
             'data',
             'vehicles',
-            'expiring_tax_vehicles',
+            'vehicles_tax_expiring',
             'vehicles_by_status',
             'vehicles_in_service',
             'vehicles_by_status_detailed',

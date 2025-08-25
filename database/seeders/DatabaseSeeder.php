@@ -8,16 +8,12 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         // Call the seeders
         $this->call([
             TestDataSeeder::class,
             VehicleSeeder::class
-            // ServiceSeeder::class, // Jalankan manual setelah admin menambahkan kendaraan
         ]);
     }
 }

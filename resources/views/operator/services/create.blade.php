@@ -173,6 +173,20 @@
                                 </div>
                                 <p class="text-xs text-gray-500">PDF, DOC, DOCX, JPG, PNG up to 10MB</p>
                             </div>
+                                </div>
+
+                                <!-- Payment Type -->
+                                <div>
+                                    <label for="payment_type" class="block text-sm font-medium text-gray-700 mb-2">Pembayaran <span class="text-red-500">*</span></label>
+                                    <select name="payment_type" id="payment_type" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('payment_type') border-red-500 @enderror">
+                                        <option value="">Pilih Jenis Pembayaran</option>
+                                        <option value="asuransi" {{ old('payment_type') == 'asuransi' ? 'selected' : '' }}>Asuransi</option>
+                                        <option value="kantor" {{ old('payment_type') == 'kantor' ? 'selected' : '' }}>Pembayaran Kantor</option>
+                                    </select>
+                                    @error('payment_type')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                         </div>
                         @error('documents')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
