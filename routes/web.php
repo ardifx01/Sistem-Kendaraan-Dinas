@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\BorrowingController as AdminBorrowingController;
 use App\Http\Controllers\Operator\DashboardController as OperatorDashboardController;
 use App\Http\Controllers\Operator\ServiceController;
 use App\Http\Controllers\Operator\BorrowingController;
-use App\Http\Controllers\Operator\PaymentController;
 use App\Http\Controllers\Operator\CheckoutController;
 
 // Public routes
@@ -70,8 +69,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:operator', 'active'])->prefix('operator')->name('operator.')->group(function () {
         Route::get('/dashboard', [OperatorDashboardController::class, 'index'])->name('dashboard');
 
-        // Service management
-        Route::resource('services', ServiceController::class);
+    // Service management
+    Route::resource('services', ServiceController::class);
         Route::get('/services/vehicles-by-status/{status?}', [ServiceController::class, 'vehiclesByStatus'])->name('services.vehicles-by-status');
 
         // Borrowing management
@@ -81,9 +80,6 @@ Route::middleware(['auth'])->group(function () {
         // Checkout/Checkin management
         Route::post('/borrowings/{borrowing}/checkout', [CheckoutController::class, 'checkout'])->name('borrowings.checkout');
         Route::post('/borrowings/{borrowing}/checkin', [CheckoutController::class, 'checkin'])->name('borrowings.checkin');
-
-        // Payment management
-        Route::resource('payments', PaymentController::class);
     });
 
     // Redirect based on role after login

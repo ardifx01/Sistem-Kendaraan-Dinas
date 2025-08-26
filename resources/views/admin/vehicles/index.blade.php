@@ -61,7 +61,7 @@ Carbon::setLocale('id');
                     <option value="tersedia" {{ request('availability') == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
                     <option value="dipinjam" {{ request('availability') == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
                     <option value="service" {{ request('availability') == 'service' ? 'selected' : '' }}>Service</option>
-                    <option value="tidak_tersedia" {{ request('availability') == 'tidak_tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
+                    <option value="digunakan_pejabat" {{ request('availability') == 'digunakan_pejabat' ? 'selected' : '' }}>Digunakan Pejabat/Operasional</option>
                 </select>
             </div>
             <div class="flex flex-col sm:flex-row items-end space-y-2 sm:space-y-0 sm:space-x-2">
@@ -134,13 +134,13 @@ Carbon::setLocale('id');
                                             'tersedia' => 'bg-green-100 text-green-800',
                                             'dipinjam' => 'bg-yellow-100 text-yellow-800',
                                             'service' => 'bg-red-100 text-red-800',
-                                            'tidak_tersedia' => 'bg-gray-100 text-gray-800'
+                                            'digunakan_pejabat' => 'bg-gray-100 text-gray-800'
                                         ];
                                         $statusTexts = [
                                             'tersedia' => 'Tersedia',
                                             'dipinjam' => 'Dipinjam',
                                             'service' => 'Service',
-                                            'tidak_tersedia' => 'Tidak Tersedia'
+                                            'digunakan_pejabat' => 'Digunakan Pejabat/Operasional'
                                         ];
                                     @endphp
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$vehicle->availability_status] ?? 'bg-gray-100 text-gray-800' }}">
@@ -267,13 +267,13 @@ Carbon::setLocale('id');
                                     'tersedia' => 'bg-green-100 text-green-800',
                                     'dipinjam' => 'bg-yellow-100 text-yellow-800',
                                     'service' => 'bg-red-100 text-red-800',
-                                    'tidak_tersedia' => 'bg-gray-100 text-gray-800'
+                                    'digunakan_pejabat' => 'bg-gray-100 text-gray-800'
                                 ];
                                 $statusTexts = [
                                     'tersedia' => 'Tersedia',
                                     'dipinjam' => 'Dipinjam',
                                     'service' => 'Service',
-                                    'tidak_tersedia' => 'Tidak Tersedia'
+                                    'digunakan_pejabat' => 'Digunakan Pejabat/Operasional'
                                 ];
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$vehicle->availability_status] ?? 'bg-gray-100 text-gray-800' }}">

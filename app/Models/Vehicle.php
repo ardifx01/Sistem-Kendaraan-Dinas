@@ -35,9 +35,6 @@ class Vehicle extends Model
         'year' => 'integer',
     ];
 
-    /**
-     * Check if tax is expiring soon (within 60 days or already expired)
-     */
     public function isTaxExpiringSoon(): bool
     {
         if (!$this->tax_expiry_date) {
@@ -48,9 +45,6 @@ class Vehicle extends Model
         return $daysUntilExpiry <= 60; // 2 bulan = 60 hari, termasuk yang sudah expired (negative)
     }
 
-    /**
-     * Check if tax is already expired
-     */
     public function isTaxExpired(): bool
     {
         if (!$this->tax_expiry_date) {
@@ -112,6 +106,6 @@ class Vehicle extends Model
     public function scopeTaxExpiringSoon($query)
     {
         return $query->whereDate('tax_expiry_date', '<=', Carbon::now()->addDays(60))
-                    ->whereDate('tax_expiry_date', '>=', Carbon::now()->subYears(1)); // Avoid very old expired dates
+                    ->whereDate('tax_expiry_date', '>=', Carbon::now()->subYears(1));
     }
 }

@@ -32,7 +32,7 @@ class VehicleSeeder extends Seeder
         ];
         $colors = ['Hitam', 'Putih', 'Merah', 'Biru', 'Silver', 'Abu-abu'];
         $docStatuses = ['lengkap', 'tidak_lengkap'];
-        $availStatuses = ['tersedia', 'dipinjam', 'service', 'tidak_tersedia'];
+    $availStatuses = ['tersedia', 'dipinjam', 'service', 'digunakan_pejabat'];
 
         for ($i = 0; $i < 50; $i++) {
             $type = $faker->randomElement($types);

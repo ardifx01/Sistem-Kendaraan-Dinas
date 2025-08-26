@@ -305,7 +305,7 @@
 <body style="background-color: #f9fafb;">
     <div style="min-height: 100vh;">
         @if(auth()->check())
-            <nav class="bg-blue-600 shadow-lg">
+            <nav class="bg-blue-600 shadow-lg w-full">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <!-- Logo -->

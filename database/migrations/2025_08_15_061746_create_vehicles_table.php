@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('driver_name')->nullable(); // Nama Pengemudi
             $table->string('user_name')->nullable(); // Pengguna Kendaraan
             $table->string('photo')->nullable(); // Foto Kendaraan
-            $table->enum('availability_status', ['tersedia', 'dipinjam', 'service', 'tidak_tersedia'])->default('tersedia');
+            $table->enum('availability_status', ['tersedia', 'dipinjam', 'service', 'digunakan_pejabat'])->default('tersedia');
             $table->timestamps();
         });
     }

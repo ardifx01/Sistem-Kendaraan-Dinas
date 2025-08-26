@@ -6,25 +6,23 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-            <div class="flex items-center space-x-4">
-                <a href="{{ route('admin.vehicles.index') }}"
-                   class="text-gray-500 hover:text-gray-700 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </a>
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Edit Kendaraan</h1>
-                    <p class="mt-1 text-sm text-gray-700">{{ $vehicle->brand }} {{ $vehicle->model }} - {{ $vehicle->license_plate }}</p>
-                </div>
+        <div class="flex items-center space-x-4">
+            <a href="{{ route('admin.vehicles.index') }}"
+               class="text-gray-500 hover:text-gray-700 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </a>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Edit Kendaraan</h1>
+                <p class="mt-2 text-sm text-gray-700">Perbarui data kendaraan</p>
             </div>
         </div>
     </div>
 
     <!-- Form -->
     <div class="card">
-        <form method="POST" action="{{ route('admin.vehicles.update', $vehicle) }}" enctype="multipart/form-data" class="p-6 space-y-6" onsubmit="return confirmAndUpdate(event)">
+        <form method="POST" action="{{ route('admin.vehicles.update', $vehicle) }}" enctype="multipart/form-data" class="p-6 space-y-6" onsubmit="return confirmAndSubmit(event)">
             @csrf
             @method('PUT')
 
@@ -107,11 +105,12 @@
             <!-- Document Information -->
             <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Dokumen</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Tax Expiry Date -->
                     <div>
                         <label for="tax_expiry_date" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Berakhir Pajak</label>
-                        <input type="date" name="tax_expiry_date" id="tax_expiry_date" value="{{ old('tax_expiry_date', $vehicle->tax_expiry_date?->format('Y-m-d')) }}" required
+                        <input type="date" name="tax_expiry_date" id="tax_expiry_date" value="{{ old('tax_expiry_date', optional($vehicle->tax_expiry_date)->format('Y-m-d')) }}" required
+                               min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('tax_expiry_date') border-red-500 @enderror">
                         @error('tax_expiry_date')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -147,25 +146,23 @@
 
             <!-- Additional Information -->
             <div>
+                <label for="availability_status" class="block text-sm font-medium text-gray-700 mb-2">Status Kendaraan</label>
+                <select name="availability_status" id="availability_status" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('availability_status') border-red-500 @enderror">
+                    <option value="">Pilih Status</option>
+                    <option value="tersedia" {{ old('availability_status', $vehicle->availability_status) == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
+                    <option value="dipinjam" {{ old('availability_status', $vehicle->availability_status) == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                    <option value="service" {{ old('availability_status', $vehicle->availability_status) == 'service' ? 'selected' : '' }}>Service</option>
+                    <option value="digunakan_pejabat" {{ old('availability_status', $vehicle->availability_status) == 'digunakan_pejabat' ? 'selected' : '' }}>Digunakan Pejabat/Operasional</option>
+                </select>
+                @error('availability_status')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Tambahan</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Availability Status -->
-                    <div>
-                        <label for="availability_status" class="block text-sm font-medium text-gray-700 mb-2">Status Ketersediaan</label>
-                        <select name="availability_status" id="availability_status" required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('availability_status') border-red-500 @enderror">
-                            <option value="tersedia" {{ old('availability_status', $vehicle->availability_status) == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
-                            <option value="dipinjam" {{ old('availability_status', $vehicle->availability_status) == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
-                            <option value="service" {{ old('availability_status', $vehicle->availability_status) == 'service' ? 'selected' : '' }}>Service</option>
-                            <option value="tidak_tersedia" {{ old('availability_status', $vehicle->availability_status) == 'tidak_tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
-                        </select>
-                        @error('availability_status')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div></div>
-
                     <!-- Driver Name -->
                     <div>
                         <label for="driver_name" class="block text-sm font-medium text-gray-700 mb-2">Nama Driver</label>
@@ -238,7 +235,7 @@
 
                     <!-- Current Photo -->
                     @if($vehicle->photo)
-                        <div class="md:col-span-2">
+                        <div class="md:col-span-2" id="current-photo-wrapper">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Foto Saat Ini</label>
                             <div class="flex items-center space-x-4">
                                 <img src="{{ Storage::url($vehicle->photo) }}"
@@ -248,63 +245,118 @@
                                     <p>Foto saat ini</p>
                                     <p class="text-xs text-gray-500">Pilih foto baru untuk mengganti</p>
                                 </div>
+                                <div class="ml-4">
+                                    <button type="button" id="remove-existing-photo" title="Hapus Foto" class="inline-flex items-center px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                        <!-- trash icon -->
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"></path>
+                                        </svg>
+                                        Hapus Foto
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     @endif
 
                     <!-- Photo -->
                     <div class="md:col-span-2">
-                        <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">
-                            {{ $vehicle->photo ? 'Ganti Foto Kendaraan' : 'Foto Kendaraan' }}
-                        </label>
-
-                        <!-- Photo Preview Container -->
-                        <div id="photo-preview-container" class="hidden mb-4">
-                            <div class="relative inline-block">
-                                <img id="photo-preview" src="" alt="Preview" class="h-32 w-32 object-cover rounded-lg border-2 border-gray-300">
-                                <button type="button" id="remove-photo"
-                                        class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm transition-colors duration-200">
-                                    ×
-                                </button>
-                            </div>
-                            <p class="mt-2 text-sm text-gray-600">Preview foto baru yang akan diupload</p>
-                        </div>
-
-                        <!-- Upload Area -->
-                        <div id="upload-area" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
-                            <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                                    <label for="photo" class="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 transition-colors">
-                                        <span>📁 {{ $vehicle->photo ? 'Pilih File Baru' : 'Pilih File' }}</span>
-                                        <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
-                                    </label>
-                                    <button type="button" onclick="openCamera()"
-                                            class="bg-green-600 text-white px-6 py-2 rounded-md font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-                                        <span>📷 Ambil Foto</span>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-600">atau drag and drop file di sini</p>
-                                <p class="text-xs text-gray-500">PNG, JPG hingga 5MB</p>
-                            </div>
+                        <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Foto Kendaraan</label>
+                        <!-- Area upload file -->
+                        <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center mb-4" style="min-height:160px;">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-2" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <label for="photo" class="text-blue-600 font-medium cursor-pointer hover:underline">Upload foto</label>
+                            <input id="photo" name="photo" type="file" accept="image/*" capture="environment" style="display:none;">
+                            <span class="text-gray-500 text-sm mt-2">atau drag and drop</span>
+                            <span class="text-xs text-gray-400 mt-1">PNG, JPG hingga 5MB</span>
                         </div>
                         @error('photo')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <div class="flex justify-center">
+                            <button type="button" id="openCamera" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Ambil Foto dengan Kamera
+                            </button>
+                        </div>
+                        <div id="photo-preview-container" style="display:none;" class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Preview foto:</label>
+                            <div style="position:relative;display:inline-block;">
+                                <img id="photo-preview" src="" alt="Preview" style="height:80px;width:120px;object-fit:cover;border-radius:8px;border:2px solid #e5e7eb;">
+                                <button type="button" id="remove-photo-preview" style="position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;" title="Hapus Foto">&times;</button>
+                            </div>
+                            <div id="photo-preview-filename" class="text-xs text-gray-700 mt-1"></div>
+                        </div>
+                        <input type="hidden" name="photo_data" id="photo_data">
+                        <input type="hidden" name="remove_existing_photo" id="remove_existing_photo" value="0">
+
+                        <!-- Modal Kamera (sama seperti di create) -->
+                        <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 p-4 items-center justify-center">
+                            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full max-h-full overflow-y-auto">
+                                <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                                        <h3 class="text-lg font-medium text-gray-900">Ambil Foto</h3>
+                                    <button type="button" id="closeCameraModal" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="space-y-4">
+                                        <!-- Camera preview -->
+                                        <div class="relative">
+                                            <video id="cameraPreview" class="w-full rounded-lg bg-gray-100" style="max-height: 300px;" autoplay muted playsinline></video>
+                                            <canvas id="cameraCanvas" class="hidden"></canvas>
+                                        </div>
+                                        <!-- Camera controls -->
+                                        <div class="flex justify-center space-x-4">
+                                            <button type="button" id="capturePhoto" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                                Ambil Foto
+                                            </button>
+                                            <button type="button" id="switchCamera" class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                </svg>
+                                                Flip
+                                            </button>
+                                        </div>
+                                        <!-- Captured photo preview -->
+                                        <div id="capturedPhotoPreview" class="hidden">
+                                            <h4 class="text-sm font-medium text-gray-700 mb-2">Foto yang diambil:</h4>
+                                            <img id="capturedPhoto" class="w-full rounded-lg" alt="Captured photo">
+                                            <div class="flex justify-center space-x-4 mt-4">
+                                                <button type="button" id="retakePhoto" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md">
+                                                    Ambil Ulang
+                                                </button>
+                                                <button type="button" id="usePhoto" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md">
+                                                    Gunakan Foto
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">PNG, JPG hingga 5MB. Bisa ambil langsung dari kamera (desktop & mobile) atau pilih file.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-gray-200">
                 <a href="{{ route('admin.vehicles.index') }}"
                    class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors text-center">
                     Batal
                 </a>
-                <button type="submit"
-                        class="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200 inline-flex items-center justify-center">
+                <button type="submit" class="w-full sm:w-auto btn btn-primary justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
@@ -321,15 +373,15 @@
         <div class="px-6 py-4 border-b border-gray-200">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
                 <h3 class="ml-3 text-lg font-medium text-gray-900">Konfirmasi Perbarui Kendaraan</h3>
             </div>
         </div>
         <div class="px-6 py-4">
-            <p class="text-sm text-gray-600 mb-4">Apakah Anda yakin ingin memperbarui data kendaraan berikut?</p>
+            <p class="text-sm text-gray-600 mb-4">Apakah Anda yakin ingin memperbarui kendaraan dengan data berikut?</p>
             <div class="bg-gray-50 rounded-lg p-4 space-y-2">
                 <div class="flex justify-between">
                     <span class="font-medium text-gray-700">Merek:</span>
@@ -355,9 +407,9 @@
                 Batal
             </button>
             <button type="button" onclick="submitForm()"
-                    class="w-full sm:w-auto px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors">
+                    class="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                 <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
                 Ya, Perbarui
             </button>
@@ -367,194 +419,399 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let formToSubmit = null;
+    let formToSubmit = null;
 
-        // Confirm and submit form (Global function for onsubmit)
-        window.confirmAndUpdate = function(event) {
-            event.preventDefault();
-            console.log('confirmAndUpdate called');
-            formToSubmit = event.target;
+    // Confirm and submit form
+    function confirmAndSubmit(event) {
+        event.preventDefault();
+        formToSubmit = event.target;
 
-            const brand = document.querySelector('[name="brand"]').value || '-';
-            const model = document.querySelector('[name="model"]').value || '-';
-            const licensePlate = document.querySelector('[name="license_plate"]').value || '-';
-            const year = document.querySelector('[name="year"]').value || '-';
+        const brand = document.querySelector('[name="brand"]').value || '-';
+        const model = document.querySelector('[name="model"]').value || '-';
+        const licensePlate = document.querySelector('[name="license_plate"]').value || '-';
+        const year = document.querySelector('[name="year"]').value || '-';
 
-            console.log('Form data:', { brand, model, licensePlate, year });
+        // Update modal content
+        document.getElementById('modal-brand').textContent = brand;
+        document.getElementById('modal-model').textContent = model;
+        document.getElementById('modal-license').textContent = licensePlate;
+        document.getElementById('modal-year').textContent = year;
 
-            // Update modal content
-            document.getElementById('modal-brand').textContent = brand;
-            document.getElementById('modal-model').textContent = model;
-            document.getElementById('modal-license').textContent = licensePlate;
-            document.getElementById('modal-year').textContent = year;
+        // Show modal
+        const modal = document.getElementById('confirmModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
 
-            // Show modal
-            const modal = document.getElementById('confirmModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                document.body.style.overflow = 'hidden';
-                console.log('Modal should be visible now');
-            } else {
-                console.error('Modal not found!');
+        return false;
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('confirmModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+        formToSubmit = null;
+    }
+
+    function submitForm() {
+        if (formToSubmit) {
+            formToSubmit.submit();
+        }
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('confirmModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Show/hide document notes based on document status
+    document.getElementById('document_status').addEventListener('change', function() {
+        const notesContainer = document.getElementById('document_notes_container');
+        const notesField = document.getElementById('document_notes');
+
+        if (this.value === 'tidak_lengkap') {
+            notesContainer.style.display = 'block';
+            notesField.setAttribute('required', 'required');
+        } else {
+            notesContainer.style.display = 'none';
+            notesField.removeAttribute('required');
+            notesField.value = '';
+        }
+    });
+
+    // Auto uppercase license plate
+    document.getElementById('license_plate').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+
+    // Photo preview function
+    function handlePhotoChange(input) {
+        const file = input.files[0];
+        const previewContainer = document.getElementById('photo-preview-container');
+        const previewImg = document.getElementById('photo-preview');
+        const uploadArea = document.getElementById('upload-area');
+
+        if (file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('File harus berupa gambar!');
+                input.value = '';
+                return;
             }
 
-            return false;
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file maksimal 5MB!');
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Clear any camera-base64 data (we now use file input)
+                const photoDataEl = document.getElementById('photo_data');
+                if (photoDataEl) photoDataEl.value = '';
+
+                // If there was an existing stored photo, mark as not-removed (we're replacing it)
+                const removeFlag = document.getElementById('remove_existing_photo');
+                if (removeFlag) removeFlag.value = '0';
+
+                // Hide current-photo wrapper (existing server photo) because user uploaded a new file
+                const currentWrapper = document.getElementById('current-photo-wrapper');
+                if (currentWrapper) currentWrapper.style.display = 'none';
+
+                previewImg.src = e.target.result;
+                // show preview container (uses inline style in this template)
+                previewContainer.style.display = 'block';
+                // set filename if available
+                const filenameEl = document.getElementById('photo-preview-filename');
+                if (filenameEl && file && file.name) filenameEl.innerText = file.name;
+                uploadArea.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Open camera function
+    function openCamera() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.capture = 'environment';
+
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Transfer file to main input
+                const photoInput = document.getElementById('photo');
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                photoInput.files = dt.files;
+
+                // Handle preview
+                handlePhotoChange(photoInput);
+            }
         };
 
-        // Close modal (Global function for onclick)
-        window.closeModal = function() {
-            console.log('closeModal called');
-            const modal = document.getElementById('confirmModal');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
+        input.click();
+    }
+
+    // Photo preview for file input
+    document.getElementById('photo').addEventListener('change', function() {
+            handlePhotoChange(this);
+            // Ensure filename shown if available
+            const file = this.files && this.files[0];
+            if (file) {
+                const filenameEl = document.getElementById('photo-preview-filename');
+                if (filenameEl) filenameEl.innerText = file.name;
+            }
+    });
+
+    // Remove photo preview
+    document.getElementById('remove-photo-preview').addEventListener('click', function() {
+        document.getElementById('photo-preview-container').style.display = 'none';
+        document.getElementById('photo-preview').src = '';
+        document.getElementById('photo-preview-filename').innerText = '';
+        document.getElementById('photo').value = '';
+        document.getElementById('photo_data').value = '';
+        document.getElementById('upload-area').classList.remove('hidden');
+    });
+
+    // Remove existing photo (from server) button
+    const removeExistingBtn = document.getElementById('remove-existing-photo');
+    if (removeExistingBtn) {
+        removeExistingBtn.addEventListener('click', function() {
+            // set flag for backend to remove existing photo
+            const flag = document.getElementById('remove_existing_photo');
+            if (flag) flag.value = '1';
+
+            // hide current photo wrapper
+            const currentWrapper = document.getElementById('current-photo-wrapper');
+            if (currentWrapper) currentWrapper.style.display = 'none';
+
+            // reset preview and show upload area
+            const previewContainer = document.getElementById('photo-preview-container');
+            if (previewContainer) previewContainer.style.display = 'none';
+            const uploadAreaEl = document.getElementById('upload-area');
+            if (uploadAreaEl) uploadAreaEl.classList.remove('hidden');
+
+            document.getElementById('photo-preview').src = '';
+            document.getElementById('photo-preview-filename').innerText = '';
+            document.getElementById('photo').value = '';
+            document.getElementById('photo_data').value = '';
+        });
+    }
+
+    // Drag and drop functionality
+    const uploadArea = document.getElementById('upload-area');
+
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.classList.add('border-indigo-500', 'bg-indigo-50');
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.classList.remove('border-indigo-500', 'bg-indigo-50');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.classList.remove('border-indigo-500', 'bg-indigo-50');
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const photoInput = document.getElementById('photo');
+            photoInput.files = files;
+
+            // Trigger change event
+            const event = new Event('change', { bubbles: true });
+            photoInput.dispatchEvent(event);
+        }
+    });
+
+    // Setup camera modal (same behavior as create view)
+    function setupCamera() {
+        let currentStream = null;
+        let currentFacingMode = 'environment'; // back camera
+
+        const openCameraBtn = document.getElementById('openCamera');
+        const cameraModal = document.getElementById('cameraModal');
+        const closeCameraBtn = document.getElementById('closeCameraModal');
+        const cameraPreview = document.getElementById('cameraPreview');
+        const cameraCanvas = document.getElementById('cameraCanvas');
+        const captureBtn = document.getElementById('capturePhoto');
+        const switchCameraBtn = document.getElementById('switchCamera');
+        const capturedPhotoPreview = document.getElementById('capturedPhotoPreview');
+        const capturedPhoto = document.getElementById('capturedPhoto');
+        const retakeBtn = document.getElementById('retakePhoto');
+        const usePhotoBtn = document.getElementById('usePhoto');
+
+        if (openCameraBtn) {
+            openCameraBtn.addEventListener('click', async function() {
+                try {
+                    await startCamera();
+                    cameraModal.classList.remove('hidden');
+                    cameraModal.classList.add('flex');
+                    document.body.style.overflow = 'hidden';
+                } catch (error) {
+                    console.error('Error accessing camera:', error);
+                    alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                }
+            });
+        }
+
+        if (closeCameraBtn) {
+            closeCameraBtn.addEventListener('click', function() {
+                stopCamera();
+                cameraModal.classList.add('hidden');
+                cameraModal.classList.remove('flex');
                 document.body.style.overflow = 'auto';
-                formToSubmit = null;
-                console.log('Modal closed');
+                resetCameraModal();
+            });
+        }
+
+        if (captureBtn) {
+            captureBtn.addEventListener('click', function() {
+                capturePhoto();
+            });
+        }
+
+        if (switchCameraBtn) {
+            switchCameraBtn.addEventListener('click', async function() {
+                currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+                await startCamera();
+            });
+        }
+
+        if (retakeBtn) {
+            retakeBtn.addEventListener('click', function() {
+                resetCameraModal();
+                startCamera();
+            });
+        }
+
+        if (usePhotoBtn) {
+            usePhotoBtn.addEventListener('click', function() {
+                addCapturedPhotoToInput();
+                stopCamera();
+                cameraModal.classList.add('hidden');
+                cameraModal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+                resetCameraModal();
+            });
+        }
+
+        async function startCamera() {
+            try {
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
+                }
+
+                const constraints = {
+                    video: {
+                        facingMode: currentFacingMode,
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                cameraPreview.srcObject = currentStream;
+            } catch (error) {
+                console.error('Error starting camera:', error);
+                throw error;
             }
-        };
+        }
 
-        // Submit form (Global function for onclick)
-        window.submitForm = function() {
-            console.log('submitForm called');
-            if (formToSubmit) {
-                console.log('Submitting form...');
-                formToSubmit.submit();
-            } else {
-                console.error('No form to submit!');
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
             }
-        };
+        }
 
-        // Camera functionality (Global function for onclick)
-        window.openCamera = function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.capture = 'environment';
+        function capturePhoto() {
+            const context = cameraCanvas.getContext('2d');
+            cameraCanvas.width = cameraPreview.videoWidth;
+            cameraCanvas.height = cameraPreview.videoHeight;
 
-            input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (file) {
+            context.drawImage(cameraPreview, 0, 0);
+
+            const dataURL = cameraCanvas.toDataURL('image/jpeg', 0.8);
+            capturedPhoto.src = dataURL;
+
+            // Hide camera preview and show captured photo
+            cameraPreview.style.display = 'none';
+            captureBtn.style.display = 'none';
+            switchCameraBtn.style.display = 'none';
+            capturedPhotoPreview.classList.remove('hidden');
+        }
+
+        function resetCameraModal() {
+            cameraPreview.style.display = 'block';
+            captureBtn.style.display = 'inline-flex';
+            switchCameraBtn.style.display = 'inline-flex';
+            capturedPhotoPreview.classList.add('hidden');
+            capturedPhoto.src = '';
+        }
+
+        function addCapturedPhotoToInput() {
+            const dataURL = capturedPhoto.src;
+
+            // Convert dataURL to blob
+            fetch(dataURL)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], `camera_photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+                    // Add to photo input
                     const photoInput = document.getElementById('photo');
                     const dataTransfer = new DataTransfer();
+
+                    // Add existing file if any
+                    if (photoInput.files && photoInput.files.length > 0) {
+                        Array.from(photoInput.files).forEach(existingFile => {
+                            dataTransfer.items.add(existingFile);
+                        });
+                    }
+
+                    // Add new file (replace any existing selection)
+                    dataTransfer.items.clear && dataTransfer.items.clear();
                     dataTransfer.items.add(file);
                     photoInput.files = dataTransfer.files;
 
-                    // Trigger change event
-                    const changeEvent = new Event('change', { bubbles: true });
-                    photoInput.dispatchEvent(changeEvent);
-                }
-            };
+                    // Clear any camera-data hidden field and reset remove flag
+                    const photoDataEl = document.getElementById('photo_data');
+                    if (photoDataEl) photoDataEl.value = '';
+                    const removeFlag = document.getElementById('remove_existing_photo');
+                    if (removeFlag) removeFlag.value = '0';
 
-            input.click();
-        };
+                    // Hide current stored photo wrapper
+                    const currentWrapper = document.getElementById('current-photo-wrapper');
+                    if (currentWrapper) currentWrapper.style.display = 'none';
 
-        // Close modal when clicking outside
-        const modal = document.getElementById('confirmModal');
-        if (modal) {
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
+                    // Trigger change event to update preview (this will call handlePhotoChange)
+                    photoInput.dispatchEvent(new Event('change'));
+                });
         }
+    }
 
-        // Close modal with ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Show/hide document notes based on document status
-        const documentStatus = document.getElementById('document_status');
-        if (documentStatus) {
-            documentStatus.addEventListener('change', function() {
-                const notesContainer = document.getElementById('document_notes_container');
-                if (this.value === 'tidak_lengkap') {
-                    notesContainer.style.display = 'block';
-                    document.getElementById('document_notes').setAttribute('required', '');
-                } else {
-                    notesContainer.style.display = 'none';
-                    document.getElementById('document_notes').removeAttribute('required');
-                }
-            });
-        }
-
-        // Photo preview functionality
-        const photoInput = document.getElementById('photo');
-        if (photoInput) {
-            photoInput.addEventListener('change', function(event) {
-                const file = event.target.files[0];
-                const preview = document.getElementById('photo-preview');
-                const previewContainer = document.getElementById('photo-preview-container');
-
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        preview.src = e.target.result;
-                        previewContainer.classList.remove('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    previewContainer.classList.add('hidden');
-                }
-            });
-        }
-
-        // Remove photo preview
-        const removePhotoBtn = document.getElementById('remove-photo');
-        if (removePhotoBtn) {
-            removePhotoBtn.addEventListener('click', function() {
-                const photoInput = document.getElementById('photo');
-                const previewContainer = document.getElementById('photo-preview-container');
-
-                photoInput.value = '';
-                previewContainer.classList.add('hidden');
-            });
-        }
-
-        // Auto uppercase license plate
-        const licensePlateInput = document.getElementById('license_plate');
-        if (licensePlateInput) {
-            licensePlateInput.addEventListener('input', function() {
-                this.value = this.value.toUpperCase();
-            });
-        }
-
-        // Drag and drop functionality
-        const uploadArea = document.getElementById('upload-area');
-        if (uploadArea) {
-            uploadArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.classList.add('border-indigo-500', 'bg-indigo-50');
-            });
-
-            uploadArea.addEventListener('dragleave', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.classList.remove('border-indigo-500', 'bg-indigo-50');
-            });
-
-            uploadArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.classList.remove('border-indigo-500', 'bg-indigo-50');
-
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    const photoInput = document.getElementById('photo');
-                    photoInput.files = files;
-
-                    // Trigger change event
-                    const event = new Event('change', { bubbles: true });
-                    photoInput.dispatchEvent(event);
-                }
-            });
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        setupCamera();
     });
 </script>
 @endpush

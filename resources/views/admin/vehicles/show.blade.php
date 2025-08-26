@@ -35,13 +35,13 @@
                             'tersedia' => 'bg-green-100 text-green-800',
                             'dipinjam' => 'bg-yellow-100 text-yellow-800',
                             'service' => 'bg-red-100 text-red-800',
-                            'tidak_tersedia' => 'bg-gray-100 text-gray-800'
+                            'digunakan_pejabat' => 'bg-gray-100 text-gray-800'
                         ];
                         $statusTexts = [
                             'tersedia' => 'Tersedia',
                             'dipinjam' => 'Dipinjam',
                             'service' => 'Service',
-                            'tidak_tersedia' => 'Tidak Tersedia'
+                            'digunakan_pejabat' => 'Digunakan Pejabat/Operasional'
                         ];
                     @endphp
                     <span class="px-3 py-1 rounded-full text-sm font-medium {{ $statusColors[$vehicle->availability_status ?? 'tersedia'] ?? 'bg-gray-100 text-gray-800' }}">
@@ -105,6 +105,15 @@
                     <div class="bg-gray-50 rounded-lg p-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Warna</label>
                         <p class="text-gray-900 font-medium">{{ $vehicle->color }}</p>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status Kendaraan</label>
+                        <p class="text-gray-900 font-medium">
+                            <span class="px-2 py-1 rounded-full text-sm font-medium {{ $statusColors[$vehicle->availability_status ?? 'tersedia'] ?? 'bg-gray-100 text-gray-800' }}">
+                                {{ $statusTexts[$vehicle->availability_status ?? 'tersedia'] ?? ($vehicle->availability_status ?? 'Tersedia') }}
+                            </span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -319,10 +328,12 @@
                                         Rp {{ number_format($service->cost ?? 0, 0, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                            @if($service->status === 'selesai') bg-green-100 text-green-800
-                                            @elseif($service->status === 'proses') bg-yellow-100 text-yellow-800
-                                            @else bg-gray-100 text-gray-800 @endif">
+                                        @php
+                                            $svcClass = $service->status === 'selesai'
+                                                ? 'bg-green-100 text-green-800'
+                                                : ($service->status === 'proses' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800');
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $svcClass }}">
                                             {{ ucfirst($service->status) }}
                                         </span>
                                     </td>
@@ -369,10 +380,12 @@
                                         {{ $borrowing->purpose }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                            @if($borrowing->status === 'dikembalikan') bg-green-100 text-green-800
-                                            @elseif($borrowing->status === 'dipinjam') bg-yellow-100 text-yellow-800
-                                            @else bg-gray-100 text-gray-800 @endif">
+                                        @php
+                                            $brwClass = $borrowing->status === 'dikembalikan'
+                                                ? 'bg-green-100 text-green-800'
+                                                : ($borrowing->status === 'dipinjam' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800');
+                                        @endphp
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $brwClass }}">
                                             {{ ucfirst($borrowing->status) }}
                                         </span>
                                     </td>

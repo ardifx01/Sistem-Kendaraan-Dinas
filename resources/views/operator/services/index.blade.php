@@ -678,6 +678,7 @@ function performDelete(deleteUrl) {
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = deleteUrl;
+    form.style.display = 'none';
 
     // Add CSRF token
     const csrfField = document.createElement('input');
@@ -693,38 +694,8 @@ function performDelete(deleteUrl) {
     methodField.value = 'DELETE';
     form.appendChild(methodField);
 
-    // Add to body and submit
     document.body.appendChild(form);
-
-    // Use fetch instead of form submission for better error handling
-    fetch(deleteUrl, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        hideLoading();
-        if (data.success) {
-            showSuccess('Data service berhasil dihapus!');
-            setTimeout(() => {
-                location.reload();
-            }, 1500);
-        } else {
-            showError(data.message || 'Terjadi kesalahan saat menghapus data');
-        }
-    })
-    .catch(error => {
-        hideLoading();
-        showError('Terjadi kesalahan koneksi. Silakan coba lagi.');
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        document.body.removeChild(form);
-    });
+    form.submit();
 }
 
 function showSuccess(message) {

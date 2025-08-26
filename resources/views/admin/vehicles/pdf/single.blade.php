@@ -164,7 +164,7 @@
             border: 1px solid #fca5a5;
         }
 
-        .status-tidak_tersedia {
+    .status-digunakan_pejabat {
             background-color: #f1f5f9;
             color: #475569;
             border: 1px solid #cbd5e1;
@@ -367,16 +367,16 @@
                                 'tersedia' => 'status-tersedia',
                                 'dipinjam' => 'status-dipinjam',
                                 'service' => 'status-service',
-                                'tidak_tersedia' => 'status-tidak_tersedia'
+                                'digunakan_pejabat' => 'status-digunakan_pejabat'
                             ];
                             $statusTexts = [
                                 'tersedia' => 'Tersedia',
                                 'dipinjam' => 'Dipinjam',
                                 'service' => 'Service',
-                                'tidak_tersedia' => 'Tidak Tersedia'
+                                'digunakan_pejabat' => 'Digunakan Pejabat/Operasional'
                             ];
                         @endphp
-                        <span class="status-badge {{ $statusClasses[$vehicle->availability_status] ?? 'status-tidak_tersedia' }}">
+                        <span class="status-badge {{ $statusClasses[$vehicle->availability_status] ?? 'status-digunakan_pejabat' }}">
                             {{ $statusTexts[$vehicle->availability_status] ?? $vehicle->availability_status }}
                         </span>
                     </span>

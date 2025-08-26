@@ -883,7 +883,7 @@ Carbon::setLocale('id');
                                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                                         Service
                                                     </span>
-                                                @elseif($vehicle->availability_status == 'tidak_tersedia')
+                                                @elseif($vehicle->availability_status == 'digunakan_pejabat')
                                                     <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                                                         Tidak Tersedia
                                                     </span>

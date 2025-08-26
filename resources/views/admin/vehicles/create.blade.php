@@ -144,6 +144,21 @@
             </div>
 
             <!-- Additional Information -->
+            <!-- Availability Status -->
+            <div>
+                <label for="availability_status" class="block text-sm font-medium text-gray-700 mb-2">Status Kendaraan</label>
+                <select name="availability_status" id="availability_status" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('availability_status') border-red-500 @enderror">
+                    <option value="">Pilih Status</option>
+                    <option value="tersedia" {{ old('availability_status') == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
+                    <option value="dipinjam" {{ old('availability_status') == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                    <option value="service" {{ old('availability_status') == 'service' ? 'selected' : '' }}>Service</option>
+                    <option value="digunakan_pejabat" {{ old('availability_status') == 'digunakan_pejabat' ? 'selected' : '' }}>Digunakan Pejabat/Operasional</option>
+                </select>
+                @error('availability_status')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
             <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Informasi Tambahan</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -220,40 +235,379 @@
                     <!-- Photo -->
                     <div class="md:col-span-2">
                         <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Foto Kendaraan</label>
-
-                        <!-- Photo Preview Container -->
-                        <div id="photo-preview-container" class="hidden mb-4">
-                            <div class="relative inline-block">
-                                <img id="photo-preview" src="" alt="Preview" class="h-32 w-32 object-cover rounded-lg border-2 border-gray-300">
-                                <button type="button" id="remove-photo" class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm transition-colors">
-                                    ×
-                                </button>
-                            </div>
-                            <p class="mt-2 text-sm text-gray-600">Preview foto yang akan diupload</p>
-                        </div>
-
-                        <!-- Upload Area -->
-                        <div id="upload-area" class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
-                            <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-4">
-                                    <label for="photo" class="cursor-pointer bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500 transition-colors">
-                                        <span>📁 Pilih File</span>
-                                        <input id="photo" name="photo" type="file" class="sr-only" accept="image/*">
-                                    </label>
-                                    <button type="button" onclick="openCamera()" class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-                                        <span>📷 Ambil Foto</span>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-600">atau drag and drop file di sini</p>
-                                <p class="text-xs text-gray-500">PNG, JPG hingga 5MB</p>
-                            </div>
+                        <!-- Area upload file -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center mb-4" style="min-height:160px;">
+                            <svg class="mx-auto h-12 w-12 text-gray-400 mb-2" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <label for="photo" class="text-blue-600 font-medium cursor-pointer hover:underline">Upload foto</label>
+                            <input id="photo" name="photo" type="file" accept="image/*" capture="environment" style="display:none;">
+                            <span class="text-gray-500 text-sm mt-2">atau drag and drop</span>
+                            <span class="text-xs text-gray-400 mt-1">PNG, JPG hingga 5MB</span>
                         </div>
                         @error('photo')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
+                        <!-- Tombol kamera -->
+                        <div class="flex justify-center">
+                            <button type="button" id="openCamera" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Ambil Foto dengan Kamera
+                            </button>
+                        </div>
+                        <div id="photo-preview-container" style="display:none;" class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Preview foto:</label>
+                            <div style="position:relative;display:inline-block;">
+                                <img id="photo-preview" src="" alt="Preview" style="height:80px;width:120px;object-fit:cover;border-radius:8px;border:2px solid #e5e7eb;">
+                                <button type="button" id="remove-photo-preview" style="position:absolute;top:4px;right:4px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;" title="Hapus Foto">&times;</button>
+                            </div>
+                            <div id="photo-preview-filename" class="text-xs text-gray-700 mt-1"></div>
+                        </div>
+                        <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Remove photo preview button
+                            var removeBtn = document.getElementById('remove-photo-preview');
+                            if (removeBtn) {
+                                removeBtn.addEventListener('click', function() {
+                                    previewContainer.style.display = 'none';
+                                    previewImg.src = '';
+                                    previewFilename.innerText = '';
+                                    photoInput.value = '';
+                                });
+                            }
+                            // Preview photo after upload or camera
+                            var photoInput = document.getElementById('photo');
+                            var previewContainer = document.getElementById('photo-preview-container');
+                            var previewImg = document.getElementById('photo-preview');
+                            var previewFilename = document.getElementById('photo-preview-filename');
+                            if (photoInput) {
+                                photoInput.addEventListener('change', function(e) {
+                                    var file = e.target.files[0];
+                                    if (!file) return;
+                                    var reader = new FileReader();
+                                    reader.onload = function(evt) {
+                                        previewImg.src = evt.target.result;
+                                        previewContainer.style.display = 'block';
+                                        previewFilename.innerText = file.name;
+                                    };
+                                    reader.readAsDataURL(file);
+                                });
+                            }
+                            // Preview dari kamera
+                            document.getElementById('modalSnap').addEventListener('click', function() {
+                                var video = document.getElementById('modalVideo');
+                                var canvas = document.getElementById('modalCanvas');
+                                var photoData = document.getElementById('photo_data');
+                                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                                var dataURL = canvas.toDataURL('image/png');
+                                photoData.value = dataURL;
+                                canvas.style.display = 'block';
+                                closeCameraModal();
+                                // Tampilkan preview hanya di form, bukan di modal
+                                setTimeout(function() {
+                                    var preview = document.getElementById('photo-preview');
+                                    var previewContainer = document.getElementById('photo-preview-container');
+                                    var filename = 'camera_photo_' + Date.now() + '.png';
+                                    preview.src = dataURL;
+                                    previewContainer.style.display = 'block';
+                                    document.getElementById('photo-preview-filename').innerText = filename;
+                                }, 300);
+                            });
+
+                            // Preview dari file upload
+                            document.getElementById('photo').addEventListener('change', function(e) {
+                                var file = e.target.files[0];
+                                if (!file) return;
+                                var reader = new FileReader();
+                                reader.onload = function(evt) {
+                                    var preview = document.getElementById('photo-preview');
+                                    var previewContainer = document.getElementById('photo-preview-container');
+                                    preview.src = evt.target.result;
+                                    previewContainer.style.display = 'block';
+                                    document.getElementById('photo-preview-filename').innerText = file.name;
+                                    // Kosongkan photo_data jika upload file
+                                    document.getElementById('photo_data').value = '';
+                                };
+                                reader.readAsDataURL(file);
+                            });
+
+                            // Hapus preview
+                            document.getElementById('remove-photo-preview').addEventListener('click', function() {
+                                document.getElementById('photo-preview-container').style.display = 'none';
+                                document.getElementById('photo-preview').src = '';
+                                document.getElementById('photo-preview-filename').innerText = '';
+                                document.getElementById('photo').value = '';
+                                document.getElementById('photo_data').value = '';
+                            });
+                        });
+                        </script>
+                        <!-- Modal Kamera -->
+                        <div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+                            <div class="bg-white rounded-lg shadow-lg max-w-lg w-full max-h-full overflow-y-auto">
+                                <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                                    <h3 class="text-lg font-medium text-gray-900">Ambil Foto</h3>
+                                    <button type="button" id="closeCameraModal" class="text-gray-400 hover:text-gray-600">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <div class="space-y-4">
+                                        <!-- Camera preview -->
+                                        <div class="relative">
+                                            <video id="cameraPreview" class="w-full rounded-lg bg-gray-100" style="max-height: 300px;" autoplay muted playsinline></video>
+                                            <canvas id="cameraCanvas" class="hidden"></canvas>
+                                        </div>
+                                        <!-- Camera controls -->
+                                        <div class="flex justify-center space-x-4">
+                                            <button type="button" id="capturePhoto" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                                Ambil Foto
+                                            </button>
+                                            <button type="button" id="switchCamera" class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                </svg>
+                                                Flip
+                                            </button>
+                                        </div>
+                                        <!-- Captured photo preview -->
+                                        <div id="capturedPhotoPreview" class="hidden">
+                                            <h4 class="text-sm font-medium text-gray-700 mb-2">Foto yang diambil:</h4>
+                                            <img id="capturedPhoto" class="w-full rounded-lg" alt="Captured photo">
+                                            <div class="flex justify-center space-x-4 mt-4">
+                                                <button type="button" id="retakePhoto" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-md">
+                                                    Ambil Ulang
+                                                </button>
+                                                <button type="button" id="usePhoto" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md">
+                                                    Gunakan Foto
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                        // Camera functionality (copied from operator/services/create.blade.php)
+                        function setupCamera() {
+                            let currentStream = null;
+                            let currentFacingMode = 'environment'; // back camera
+
+                            const openCameraBtn = document.getElementById('openCamera');
+                            const cameraModal = document.getElementById('cameraModal');
+                            const closeCameraBtn = document.getElementById('closeCameraModal');
+                            const cameraPreview = document.getElementById('cameraPreview');
+                            const cameraCanvas = document.getElementById('cameraCanvas');
+                            const captureBtn = document.getElementById('capturePhoto');
+                            const switchCameraBtn = document.getElementById('switchCamera');
+                            const capturedPhotoPreview = document.getElementById('capturedPhotoPreview');
+                            const capturedPhoto = document.getElementById('capturedPhoto');
+                            const retakeBtn = document.getElementById('retakePhoto');
+                            const usePhotoBtn = document.getElementById('usePhoto');
+
+                            if (openCameraBtn) {
+                                openCameraBtn.addEventListener('click', async function() {
+                                    try {
+                                        await startCamera();
+                                        cameraModal.classList.remove('hidden');
+                                        document.body.style.overflow = 'hidden';
+                                    } catch (error) {
+                                        console.error('Error accessing camera:', error);
+                                        alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                                    }
+                                });
+                            }
+
+                            if (closeCameraBtn) {
+                                closeCameraBtn.addEventListener('click', function() {
+                                    stopCamera();
+                                    cameraModal.classList.add('hidden');
+                                    document.body.style.overflow = 'auto';
+                                    resetCameraModal();
+                                });
+                            }
+
+                            if (captureBtn) {
+                                captureBtn.addEventListener('click', function() {
+                                    capturePhoto();
+                                });
+                            }
+
+                            if (switchCameraBtn) {
+                                switchCameraBtn.addEventListener('click', async function() {
+                                    currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+                                    await startCamera();
+                                });
+                            }
+
+                            if (retakeBtn) {
+                                retakeBtn.addEventListener('click', function() {
+                                    resetCameraModal();
+                                    startCamera();
+                                });
+                            }
+
+                            if (usePhotoBtn) {
+                                usePhotoBtn.addEventListener('click', function() {
+                                    addCapturedPhotoToInput();
+                                    stopCamera();
+                                    cameraModal.classList.add('hidden');
+                                    document.body.style.overflow = 'auto';
+                                    resetCameraModal();
+                                });
+                            }
+
+                            async function startCamera() {
+                                try {
+                                    if (currentStream) {
+                                        currentStream.getTracks().forEach(track => track.stop());
+                                    }
+
+                                    const constraints = {
+                                        video: {
+                                            facingMode: currentFacingMode,
+                                            width: { ideal: 1280 },
+                                            height: { ideal: 720 }
+                                        }
+                                    };
+
+                                    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                                    cameraPreview.srcObject = currentStream;
+                                } catch (error) {
+                                    console.error('Error starting camera:', error);
+                                    throw error;
+                                }
+                            }
+
+                            function stopCamera() {
+                                if (currentStream) {
+                                    currentStream.getTracks().forEach(track => track.stop());
+                                    currentStream = null;
+                                }
+                            }
+
+                            function capturePhoto() {
+                                const context = cameraCanvas.getContext('2d');
+                                cameraCanvas.width = cameraPreview.videoWidth;
+                                cameraCanvas.height = cameraPreview.videoHeight;
+
+                                context.drawImage(cameraPreview, 0, 0);
+
+                                const dataURL = cameraCanvas.toDataURL('image/jpeg', 0.8);
+                                capturedPhoto.src = dataURL;
+
+                                // Hide camera preview and show captured photo
+                                cameraPreview.style.display = 'none';
+                                captureBtn.style.display = 'none';
+                                switchCameraBtn.style.display = 'none';
+                                capturedPhotoPreview.classList.remove('hidden');
+                            }
+
+                            function resetCameraModal() {
+                                cameraPreview.style.display = 'block';
+                                captureBtn.style.display = 'inline-flex';
+                                switchCameraBtn.style.display = 'inline-flex';
+                                capturedPhotoPreview.classList.add('hidden');
+                                capturedPhoto.src = '';
+                            }
+
+                            function addCapturedPhotoToInput() {
+                                const dataURL = capturedPhoto.src;
+
+                                // Convert dataURL to blob
+                                fetch(dataURL)
+                                    .then(res => res.blob())
+                                    .then(blob => {
+                                        const file = new File([blob], `camera_photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+
+                                        // Add to photo input
+                                        const photoInput = document.getElementById('photo');
+                                        const dataTransfer = new DataTransfer();
+
+                                        // Add existing file if any
+                                        if (photoInput.files && photoInput.files.length > 0) {
+                                            Array.from(photoInput.files).forEach(existingFile => {
+                                                dataTransfer.items.add(existingFile);
+                                            });
+                                        }
+
+                                        // Add new file
+                                        dataTransfer.items.add(file);
+                                        photoInput.files = dataTransfer.files;
+
+                                        // Trigger change event to update preview
+                                        photoInput.dispatchEvent(new Event('change'));
+                                    });
+                            }
+                        }
+                        document.addEventListener('DOMContentLoaded', function() {
+                            setupCamera();
+                        });
+                        </script>
+                        <div id="camera-area" class="mb-2" style="display:none;">
+                            <video id="video" width="320" height="240" autoplay style="border-radius:8px;"></video>
+                            <button type="button" id="snap" class="bg-green-600 text-white px-4 py-2 rounded-md mt-2">📸 Simpan Foto</button>
+                            <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                            <input type="hidden" name="photo_data" id="photo_data">
+                        </div>
+                        <script>
+                        function showPhotoOptions() {
+                            if (confirm('Ambil foto dari kamera? Pilih "OK" untuk kamera, "Cancel" untuk upload file.')) {
+                                document.getElementById('camera-area').style.display = 'block';
+                                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                    navigator.mediaDevices.getUserMedia({ video: true })
+                                        .then(function(stream) {
+                                            document.getElementById('video').srcObject = stream;
+                                            document.getElementById('video').play();
+                                        });
+                                }
+                            } else {
+                                document.getElementById('photo').click();
+                            }
+                        }
+                        document.getElementById('snap').addEventListener('click', function() {
+                            var video = document.getElementById('video');
+                            var canvas = document.getElementById('canvas');
+                            var photoData = document.getElementById('photo_data');
+                            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                            var dataURL = canvas.toDataURL('image/png');
+                            photoData.value = dataURL;
+                            canvas.style.display = 'block';
+                        });
+                        </script>
+                        <p class="text-xs text-gray-500 mt-1">PNG, JPG hingga 5MB. Bisa ambil langsung dari kamera (desktop & mobile) atau pilih file.</p>
+                        @error('photo')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                        <script>
+                        function showCamera() {
+                            document.getElementById('camera-area').style.display = 'block';
+                            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                navigator.mediaDevices.getUserMedia({ video: true })
+                                    .then(function(stream) {
+                                        document.getElementById('video').srcObject = stream;
+                                        document.getElementById('video').play();
+                                    });
+                            }
+                        }
+                        document.getElementById('snap').addEventListener('click', function() {
+                            var video = document.getElementById('video');
+                            var canvas = document.getElementById('canvas');
+                            var photoData = document.getElementById('photo_data');
+                            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+                            var dataURL = canvas.toDataURL('image/png');
+                            photoData.value = dataURL;
+                            canvas.style.display = 'block';
+                        });
+                        </script>
                     </div>
                 </div>
             </div>

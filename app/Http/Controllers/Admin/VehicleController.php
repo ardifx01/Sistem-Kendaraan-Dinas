@@ -61,6 +61,7 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'type' => 'required|in:motor,mobil',
             'brand' => 'required|string|max:255',
@@ -74,6 +75,7 @@ class VehicleController extends Controller
             'driver_name' => 'nullable|string|max:255',
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
             'bpkb_number' => 'required|string|max:100',
             'chassis_number' => 'required|string|max:100',
             'engine_number' => 'required|string|max:100',
@@ -83,7 +85,6 @@ class VehicleController extends Controller
         // Set default values for fields not in form
         $validated['status'] = 'tersedia'; // Default status
         $validated['condition'] = 'baik'; // Default condition
-        $validated['availability_status'] = 'tersedia'; // Default availability
 
         // Handle photo upload
         if ($request->hasFile('photo')) {
@@ -136,7 +137,7 @@ class VehicleController extends Controller
             'driver_name' => 'nullable|string|max:255',
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
-            'availability_status' => 'required|in:tersedia,dipinjam,service,tidak_tersedia',
+            'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
             'bpkb_number' => 'required|string|max:100',
             'chassis_number' => 'required|string|max:100',
             'engine_number' => 'required|string|max:100',

@@ -137,7 +137,7 @@ class ServiceController extends Controller
 
         $service = Service::create([
             'vehicle_id' => $request->vehicle_id,
-            'user_id' => auth()->id(), // User yang sedang login
+            'user_id' => auth()->id(),
             'service_date' => $request->service_date,
             'service_type' => $request->service_type,
             'payment_type' => $request->payment_type,
