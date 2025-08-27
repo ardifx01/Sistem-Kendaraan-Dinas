@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ServiceController extends Controller
 {
@@ -40,6 +41,68 @@ class ServiceController extends Controller
         $totalServices = Service::count();
 
         return view('operator.services.index', compact('services', 'totalServices'));
+    }
+
+    /**
+     * Display service history for operators with a simple navbar filter.
+     */
+    public function history(Request $request)
+    {
+        $query = Service::with(['vehicle', 'user'])->orderBy('service_date', 'desc');
+
+        // optional filter by service_type
+        if ($request->filled('type')) {
+            $query->where('service_type', $request->type);
+        }
+
+        $services = $query->paginate(12)->withQueryString();
+
+        // counts for navbar
+        $counts = [
+            'all' => Service::count(),
+            'service_rutin' => Service::where('service_type', 'service_rutin')->count(),
+            'kerusakan' => Service::where('service_type', 'kerusakan')->count(),
+            'perbaikan' => Service::where('service_type', 'perbaikan')->count(),
+            'penggantian_part' => Service::where('service_type', 'penggantian_part')->count(),
+        ];
+
+        return view('operator.services.history', compact('services', 'counts'));
+    }
+
+    /**
+     * Export the filtered service history as PDF.
+     */
+    public function exportHistoryPdf(Request $request)
+    {
+        $query = Service::with(['vehicle', 'user'])->orderBy('service_date', 'desc');
+
+        // optional filter by service_type
+        if ($request->filled('type')) {
+            $query->where('service_type', $request->type);
+        }
+
+        // optional search filter (same as index)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('service_type', 'like', "%{$search}%")
+                  ->orWhere('damage_description', 'like', "%{$search}%")
+                  ->orWhere('repair_description', 'like', "%{$search}%")
+                  ->orWhere('garage_name', 'like', "%{$search}%")
+                  ->orWhereHas('vehicle', function($vehicleQuery) use ($search) {
+                      $vehicleQuery->where('license_plate', 'like', "%{$search}%")
+                                   ->orWhere('brand', 'like', "%{$search}%")
+                                   ->orWhere('model', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $services = $query->get();
+
+        $datePart = now()->format('Ymd_His');
+        $pdf = PDF::loadView('operator.services.pdf', compact('services'));
+
+        return $pdf->setPaper('a4', 'portrait')->download("riwayat-servis_{$datePart}.pdf");
     }
 
     /**

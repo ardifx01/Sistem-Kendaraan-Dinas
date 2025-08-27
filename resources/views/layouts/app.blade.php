@@ -340,8 +340,11 @@
                                 <a href="{{ route('operator.dashboard') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.dashboard')) bg-blue-700 @endif">
                                     Dashboard
                                 </a>
-                                <a href="{{ route('operator.services.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.*')) bg-blue-700 @endif">
+                                <a href="{{ route('operator.services.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.*') && !request()->routeIs('operator.services.history')) bg-blue-700 @endif">
                                     Service
+                                </a>
+                                <a href="{{ route('operator.services.history') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.history')) bg-blue-700 @endif">
+                                    Riwayat Servis
                                 </a>
                                 <a href="{{ route('operator.borrowings.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.borrowings.*')) bg-blue-700 @endif">
                                     Peminjaman
@@ -355,7 +358,8 @@
                             <div class="flex items-center mr-4">
                                 <div class="flex flex-col items-end">
                                     <span class="text-sm font-semibold text-white">{{ auth()->user()->name }}</span>
-                                    <span class="mt-1 px-2 py-1 text-xs font-semibold rounded @if(auth()->user()->role === 'admin') bg-blue-500 text-white @else bg-green-500 text-white @endif">
+                                    @php $roleBg = auth()->user()->role === 'admin' ? 'bg-blue-500' : 'bg-green-500'; @endphp
+                                    <span class="mt-1 px-2 py-1 text-xs font-semibold rounded text-white {{ $roleBg }}">
                                         {{ auth()->user()->role === 'admin' ? 'Administrator' : 'Operator' }}
                                     </span>
                                 </div>
@@ -407,8 +411,11 @@
                             <a href="{{ route('operator.dashboard') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.dashboard')) bg-blue-800 @endif">
                                 Dashboard
                             </a>
-                            <a href="{{ route('operator.services.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.*')) bg-blue-800 @endif">
+                            <a href="{{ route('operator.services.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.*') && !request()->routeIs('operator.services.history')) bg-blue-800 @endif">
                                 Service
+                            </a>
+                            <a href="{{ route('operator.services.history') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.history')) bg-blue-800 @endif">
+                                Riwayat Servis
                             </a>
                             <a href="{{ route('operator.borrowings.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.borrowings.*')) bg-blue-800 @endif">
                                 Peminjaman

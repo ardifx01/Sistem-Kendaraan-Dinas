@@ -78,6 +78,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Service management
     Route::resource('services', ServiceController::class);
+    Route::get('/services-history', [ServiceController::class, 'history'])->name('services.history');
+    Route::get('/services-history/export-pdf', [ServiceController::class, 'exportHistoryPdf'])->name('services.history.export-pdf');
         Route::get('/services/vehicles-by-status/{status?}', [ServiceController::class, 'vehiclesByStatus'])->name('services.vehicles-by-status');
 
         // Borrowing management
