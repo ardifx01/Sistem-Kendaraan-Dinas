@@ -155,6 +155,7 @@
                     <option value="service" {{ old('availability_status') == 'service' ? 'selected' : '' }}>Service</option>
                     <option value="digunakan_pejabat" {{ old('availability_status') == 'digunakan_pejabat' ? 'selected' : '' }}>Digunakan Pejabat/Operasional</option>
                 </select>
+                <p>Bila Kendaraan Tidak Memiliki Pengemudi Pilih Status Tersedia</p>
                 @error('availability_status')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
