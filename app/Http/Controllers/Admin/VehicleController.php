@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -104,6 +105,71 @@ class VehicleController extends Controller
     {
         $vehicle->load(['services.user', 'borrowings.user']);
         return view('admin.vehicles.show', compact('vehicle'));
+    }
+
+    /**
+     * Show form to add a service record for a vehicle (admin).
+     */
+    public function createService(Vehicle $vehicle)
+    {
+        return view('admin.vehicles.services.create', compact('vehicle'));
+    }
+
+    /**
+     * Store a service record for a vehicle (admin).
+     */
+    public function storeService(Request $request, Vehicle $vehicle)
+    {
+        $validated = $request->validate([
+            'service_date' => 'required|date',
+            'service_type' => 'nullable|string',
+            'payment_type' => 'nullable|string',
+            'damage_description' => 'nullable|string',
+            'repair_description' => 'nullable|string',
+            'parts_replaced' => 'nullable|string',
+            'description' => 'nullable|string',
+            'documents.*' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240',
+            'photos.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+        ]);
+
+        $documentPaths = [];
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $doc) {
+                $documentPaths[] = $doc->store('service-documents', 'public');
+            }
+        }
+
+        $photoPaths = [];
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $photoPaths[] = $photo->store('service-photos', 'public');
+            }
+        }
+
+        $serviceData = [
+            'vehicle_id' => $vehicle->id,
+            'user_id' => auth()->id(),
+            'service_date' => $validated['service_date'],
+            'service_type' => $validated['service_type'] ?? null,
+            'payment_type' => $validated['payment_type'] ?? null,
+            'damage_description' => $validated['damage_description'] ?? null,
+            'repair_description' => $validated['repair_description'] ?? null,
+            'parts_replaced' => $validated['parts_replaced'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'documents' => $documentPaths,
+            'photos' => $photoPaths,
+            // snapshot fields
+            'license_plate' => $vehicle->license_plate,
+            'brand' => $vehicle->brand,
+            'model' => $vehicle->model,
+        ];
+
+        Service::create($serviceData);
+
+        // Optionally set vehicle availability to 'service'
+        $vehicle->update(['availability_status' => 'service']);
+
+        return redirect()->route('admin.vehicles.show', $vehicle)->with('success', 'Record service berhasil ditambahkan.');
     }
 
     /**

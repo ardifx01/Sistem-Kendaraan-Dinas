@@ -242,8 +242,11 @@
                     <div class="bg-yellow-50 rounded-lg p-4 text-center">
                         <div class="text-sm font-medium text-yellow-600">Service Terakhir</div>
                         <div class="text-xs text-yellow-600">
-                            @if($vehicle->services->count() > 0)
-                                {{ $vehicle->services->latest()->first()->created_at->format('d M Y') }}
+                            @php
+                                $lastService = $vehicle->services()->latest()->first();
+                            @endphp
+                            @if($lastService)
+                                {{ $lastService->created_at->format('d M Y') }}
                             @else
                                 Belum ada
                             @endif
@@ -252,8 +255,11 @@
                     <div class="bg-purple-50 rounded-lg p-4 text-center">
                         <div class="text-sm font-medium text-purple-600">Pinjam Terakhir</div>
                         <div class="text-xs text-purple-600">
-                            @if($vehicle->borrowings->count() > 0)
-                                {{ $vehicle->borrowings->latest()->first()->created_at->format('d M Y') }}
+                            @php
+                                $lastBorrow = $vehicle->borrowings()->latest()->first();
+                            @endphp
+                            @if($lastBorrow)
+                                {{ $lastBorrow->created_at->format('d M Y') }}
                             @else
                                 Belum ada
                             @endif
@@ -305,37 +311,39 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Service</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operator</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Servis</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Servis</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Pembayaran</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach($vehicle->services->take(5) as $service)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $service->service_date->format('d M Y') }}
+                                        {{ $service->service_date?->format('d M Y') ?? ($service->created_at?->format('d M Y') ?? '-') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $service->service_type }}
+                                        {{ $service->service_type ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $service->user->name }}
+                                        {{ $service->payment_type ? ucfirst(str_replace('_', ' ', $service->payment_type)) : '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        Rp {{ number_format($service->cost ?? 0, 0, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        @php
-                                            $svcClass = $service->status === 'selesai'
-                                                ? 'bg-green-100 text-green-800'
-                                                : ($service->status === 'proses' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800');
-                                        @endphp
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $svcClass }}">
-                                            {{ ucfirst($service->status) }}
-                                        </span>
+                                        <div class="flex items-center space-x-2">
+                                            <a href="{{ route('admin.services.show', $service) }}" class="text-indigo-600 hover:text-indigo-900 inline-flex items-center" title="Lihat">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                            </a>
+
+                                            <a href="{{ route('admin.services.download', $service) }}" class="text-gray-600 hover:text-gray-900 inline-flex items-center" title="Download PDF">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v12m0 0l4-4m-4 4l-4-4M21 21H3" />
+                                                </svg>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

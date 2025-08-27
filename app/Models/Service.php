@@ -21,6 +21,9 @@ class Service extends Model
         'documents',
         'photos',
         'service_date',
+    'license_plate',
+    'brand',
+    'model',
     ];
 
     protected $casts = [

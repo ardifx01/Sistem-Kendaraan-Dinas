@@ -41,6 +41,13 @@ Route::middleware(['auth'])->group(function () {
 
             // Vehicle management
             Route::resource('vehicles', AdminVehicleController::class);
+            // Admin: add service record for a specific vehicle
+            Route::get('/vehicles/{vehicle}/services/create', [AdminVehicleController::class, 'createService'])->name('vehicles.services.create');
+            Route::post('/vehicles/{vehicle}/services', [AdminVehicleController::class, 'storeService'])->name('vehicles.services.store');
+            // Admin: view a single service record (admin controller)
+            Route::get('/services/{service}', [\App\Http\Controllers\Admin\ServiceController::class, 'show'])->name('services.show');
+            // Admin: download service record as PDF
+            Route::get('/services/{service}/download', [\App\Http\Controllers\Admin\ServiceController::class, 'download'])->name('services.download');
             Route::get('/vehicles/export/pdf', [AdminVehicleController::class, 'exportPdf'])->name('vehicles.export.pdf');
             Route::get('/vehicles/{vehicle}/export/pdf', [AdminVehicleController::class, 'exportSinglePdf'])->name('vehicles.export.single.pdf');
 
