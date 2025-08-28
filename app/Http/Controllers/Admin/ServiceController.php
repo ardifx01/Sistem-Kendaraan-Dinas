@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class ServiceController extends Controller
 {
@@ -26,7 +27,7 @@ class ServiceController extends Controller
 
         $pdf = Pdf::loadView('admin.services.pdf', compact('service'));
 
-    $datePart = $service->service_date ? $service->service_date->format('Ymd') : now()->format('Ymd');
+    $datePart = $service->service_date ? Carbon::parse($service->service_date)->format('Ymd') : now()->format('Ymd');
     $filename = sprintf('service-%d-%s.pdf', $service->id, $datePart);
 
         return $pdf->download($filename);

@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $data = [
             'total_vehicles' => Vehicle::count(),
             'vehicles_in_service' => Vehicle::where('availability_status', 'service')->count(),
-            'total_service_records' => Service::whereHas('vehicle', function($q) {
+            'total_service_records' => Service::withTrashed()->whereHas('vehicle', function($q) {
                 $q->where('availability_status', 'service');
             })->count(),
             'total_operators' => User::where('role', 'operator')->count(),
@@ -34,7 +34,7 @@ class DashboardController extends Controller
         ];
 
         // Kendaraan yang sedang dalam service dengan detailnya
-        $vehicles_in_service = Vehicle::with(['latestService', 'latestService.user'])
+    $vehicles_in_service = Vehicle::with(['latestService', 'latestService.user'])
             ->where('availability_status', 'service')
             ->orderBy('updated_at', 'desc')
             ->limit(10)
@@ -53,7 +53,7 @@ class DashboardController extends Controller
         ];
 
         // Service terbaru untuk kendaraan yang sedang service
-        $recent_services = Service::with(['vehicle', 'user'])
+    $recent_services = Service::withTrashed()->with(['vehicle', 'user'])
             ->whereHas('vehicle', function($q) {
                 $q->where('availability_status', 'service');
             })
@@ -62,7 +62,7 @@ class DashboardController extends Controller
             ->get();
 
         // Data kendaraan untuk tabel dengan pagination - fokus pada kendaraan yang sedang service
-        $vehicles = Vehicle::with(['latestService'])
+    $vehicles = Vehicle::with(['latestService'])
             ->where('availability_status', 'service')
             ->orderBy('updated_at', 'desc')
             ->paginate(10, ['*'], 'vehicles_page');

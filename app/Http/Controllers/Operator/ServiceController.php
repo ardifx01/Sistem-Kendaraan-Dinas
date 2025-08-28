@@ -15,7 +15,7 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        // Base query untuk service records
+        // Base query untuk service records (exclude soft-deleted for index)
         $query = Service::with(['vehicle', 'user'])
             ->orderBy('created_at', 'desc');
 
@@ -37,8 +37,8 @@ class ServiceController extends Controller
 
         $services = $query->paginate(10)->withQueryString();
 
-        // Total service records
-        $totalServices = Service::count();
+        // Total service records (exclude soft-deleted on index)
+    $totalServices = Service::count();
 
         return view('operator.services.index', compact('services', 'totalServices'));
     }
@@ -48,7 +48,7 @@ class ServiceController extends Controller
      */
     public function history(Request $request)
     {
-        $query = Service::with(['vehicle', 'user'])->orderBy('service_date', 'desc');
+    $query = Service::withTrashed()->with(['vehicle', 'user'])->orderBy('service_date', 'desc');
 
         // optional filter by service_type
         if ($request->filled('type')) {
@@ -59,11 +59,11 @@ class ServiceController extends Controller
 
         // counts for navbar
         $counts = [
-            'all' => Service::count(),
-            'service_rutin' => Service::where('service_type', 'service_rutin')->count(),
-            'kerusakan' => Service::where('service_type', 'kerusakan')->count(),
-            'perbaikan' => Service::where('service_type', 'perbaikan')->count(),
-            'penggantian_part' => Service::where('service_type', 'penggantian_part')->count(),
+            'all' => Service::withTrashed()->count(),
+            'service_rutin' => Service::withTrashed()->where('service_type', 'service_rutin')->count(),
+            'kerusakan' => Service::withTrashed()->where('service_type', 'kerusakan')->count(),
+            'perbaikan' => Service::withTrashed()->where('service_type', 'perbaikan')->count(),
+            'penggantian_part' => Service::withTrashed()->where('service_type', 'penggantian_part')->count(),
         ];
 
         return view('operator.services.history', compact('services', 'counts'));
@@ -74,7 +74,7 @@ class ServiceController extends Controller
      */
     public function exportHistoryPdf(Request $request)
     {
-        $query = Service::with(['vehicle', 'user'])->orderBy('service_date', 'desc');
+    $query = Service::withTrashed()->with(['vehicle', 'user'])->orderBy('service_date', 'desc');
 
         // optional filter by service_type
         if ($request->filled('type')) {

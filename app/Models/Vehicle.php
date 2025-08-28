@@ -79,7 +79,7 @@ class Vehicle extends Model
      */
     public function services()
     {
-        return $this->hasMany(Service::class);
+    return $this->hasMany(Service::class);
     }
 
     public function borrowings()
@@ -92,7 +92,37 @@ class Vehicle extends Model
      */
     public function latestService()
     {
-        return $this->hasOne(Service::class)->latest();
+    return $this->hasOne(Service::class)->latest();
+    }
+
+    /**
+     * Get all services including soft-deleted ones.
+     * Use this when building history views or admin queries that must include trashed records.
+     */
+    public function servicesWithTrashed()
+    {
+        return $this->hasMany(Service::class)->withTrashed();
+    }
+
+    /**
+     * Get latest service including soft-deleted ones.
+     */
+    public function latestServiceWithTrashed()
+    {
+        return $this->hasOne(Service::class)->latest()->withTrashed();
+    }
+
+    /**
+     * Days since last service (integer). Returns null if no service found.
+     */
+    public function daysSinceLastService(): ?int
+    {
+        $latest = $this->latestService()->first();
+        if (!$latest || !$latest->service_date) {
+            return null;
+        }
+
+        return (int) \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($latest->service_date));
     }
 
     /**

@@ -33,6 +33,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+    // Temporarily disable foreign key checks to avoid "cannot delete or update a parent row"
+    // errors when other tables still reference `services` during a refresh/rollback.
+    Schema::disableForeignKeyConstraints();
+    Schema::dropIfExists('services');
+    Schema::enableForeignKeyConstraints();
     }
 };

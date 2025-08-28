@@ -42,8 +42,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+    // Temporarily disable foreign key checks so dropping these tables does not
+    // fail when other tables still reference them (useful during migrate:refresh).
+    Schema::disableForeignKeyConstraints();
+    Schema::dropIfExists('users');
+    Schema::dropIfExists('password_reset_tokens');
+    Schema::dropIfExists('sessions');
+    Schema::enableForeignKeyConstraints();
     }
 };

@@ -227,12 +227,12 @@
             @endif
 
             <!-- Statistics Section -->
-            @if($vehicle->services->count() > 0 || $vehicle->borrowings->count() > 0)
+            @if($vehicle->servicesWithTrashed->count() > 0 || $vehicle->borrowings->count() > 0)
             <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Statistik Penggunaan</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-blue-50 rounded-lg p-4 text-center">
-                        <div class="text-2xl font-bold text-blue-600">{{ $vehicle->services->count() }}</div>
+                        <div class="text-2xl font-bold text-blue-600">{{ $vehicle->servicesWithTrashed->count() }}</div>
                         <div class="text-sm text-blue-600">Total Service</div>
                     </div>
                     <div class="bg-green-50 rounded-lg p-4 text-center">
@@ -243,7 +243,8 @@
                         <div class="text-sm font-medium text-yellow-600">Service Terakhir</div>
                         <div class="text-xs text-yellow-600">
                             @php
-                                $lastService = $vehicle->services()->latest()->first();
+                                // include soft-deleted services so admin can still see deleted records
+                                $lastService = $vehicle->servicesWithTrashed()->latest()->first();
                             @endphp
                             @if($lastService)
                                 {{ $lastService->created_at->format('d M Y') }}
@@ -301,7 +302,7 @@
     </div>
 
     <!-- Service History -->
-    @if($vehicle->services->count() > 0)
+    @if($vehicle->servicesWithTrashed->count() > 0)
         <div class="mt-8">
             <div class="card">
                 <div class="px-6 py-4 border-b border-gray-200">
@@ -318,7 +319,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($vehicle->services->take(5) as $service)
+                            @foreach($vehicle->servicesWithTrashed->take(5) as $service)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {{ $service->service_date?->format('d M Y') ?? ($service->created_at?->format('d M Y') ?? '-') }}

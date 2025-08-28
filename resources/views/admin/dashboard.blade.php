@@ -475,6 +475,8 @@ Carbon::setLocale('id');
             </div>
         @endif
 
+    {{-- Service due section removed — compact card is shown under Quick Actions. --}}
+
         <!-- Stats Cards with Enhanced Responsive Design -->
         <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-6 mb-6 sm:mb-8">
             <!-- Total Kendaraan -->
@@ -719,6 +721,110 @@ Carbon::setLocale('id');
                 </div>
             </div>
         </div>
+
+        <!-- Service Due Card (placed under Quick Actions) -->
+        <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 bg-gradient-to-r from-yellow-50 to-yellow-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-yellow-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Kendaraan Butuh Service</h3>
+                            <p class="ml-3 text-sm text-yellow-800 hidden sm:inline">(≥ 90 hari sejak service terakhir)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+                    @if(isset($service_due_vehicles) && $service_due_vehicles->count() > 0)
+                        @foreach($service_due_vehicles as $vehicle)
+                            <div class="px-4 sm:px-6 py-3 sm:py-4 hover:bg-yellow-50 transition-colors duration-150">
+                                <div class="flex items-center justify-between">
+                                    <div class="min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 truncate">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                        <p class="text-xs text-gray-500">{{ $vehicle->license_plate }}</p>
+                                    </div>
+                                    <div class="text-right ml-4">
+                                        @php
+                                            $latest = $vehicle->latestService;
+                                            if ($latest && $latest->service_date) {
+                                                $signed = \Carbon\Carbon::parse($latest->service_date)->diffInDays(now(), false);
+                                                $days = (int) abs($signed);
+                                                $days_since_created = null;
+                                            } else {
+                                                $days = null;
+                                                // jika tidak ada riwayat servis, hitung juga hari sejak kendaraan dibuat
+                                                $days_since_created = $vehicle->created_at ? \Carbon\Carbon::parse($vehicle->created_at)->diffInDays(now(), false) : null;
+                                            }
+                                        @endphp
+                                        @if($days !== null)
+                                            @php
+                                                $urgent = $days >= 90;
+                                                $dayClass = $urgent ? 'text-sm font-semibold text-red-600' : 'text-sm font-semibold text-yellow-800';
+                                                $serviceDateLabel = $latest && $latest->service_date ? \Carbon\Carbon::parse($latest->service_date)->format('d M Y') : null;
+                                            @endphp
+                                            <p class="{{ $dayClass }}" title="Terakhir servis: {{ $serviceDateLabel ?? 'N/A' }}">{{ number_format($days, 0, ',', '.') }} hari</p>
+                                            <p class="text-xs text-gray-500">sejak service</p>
+                                        @else
+                                            <p class="text-sm font-semibold text-yellow-800">—</p>
+                                            @if($days_since_created !== null)
+                                                <p class="text-xs text-gray-500">tanpa riwayat • {{ number_format($days_since_created, 0, ',', '.') }} hari sejak dibuat</p>
+                                            @else
+                                                <p class="text-xs text-gray-500">tanpa riwayat</p>
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <div class="px-4 sm:px-6 py-3 bg-white">
+                            <div class="mt-1 text-xs text-gray-400">Menampilkan halaman {{ $service_due_vehicles->currentPage() }} dari {{ $service_due_vehicles->lastPage() }} — total {{ $service_due_vehicles->total() }} item</div>
+                            <!-- PAGINATOR_DEBUG: total={{ $service_due_vehicles->total() }}, perPage={{ $service_due_vehicles->perPage() }}, currentPage={{ $service_due_vehicles->currentPage() }}, lastPage={{ $service_due_vehicles->lastPage() }} -->
+                            <div class="mt-2 flex flex-col sm:flex-row sm:justify-end sm:items-center gap-1">
+                                @php
+                                    $current = $service_due_vehicles->currentPage();
+                                    $last = $service_due_vehicles->lastPage();
+                                    $baseQuery = request()->except('service_due_page');
+                                @endphp
+
+                                {{-- Previous button --}}
+                                @if($current > 1)
+                                    <a href="{{ request()->fullUrlWithQuery(array_merge($baseQuery, ['service_due_page' => $current - 1])) }}" class="px-1 sm:px-2 py-1 rounded bg-white border border-gray-200 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 min-w-[32px] text-center">Prev</a>
+                                @else
+                                    <span class="px-1 sm:px-2 py-1 rounded bg-gray-100 border border-gray-200 text-xs sm:text-sm text-gray-400 min-w-[32px] text-center">Prev</span>
+                                @endif
+
+                                {{-- Page number buttons (wrap on small screens) --}}
+                                <div class="inline-flex flex-wrap items-center gap-1">
+                                    @for($p = 1; $p <= $last; $p++)
+                                        @php $url = request()->fullUrlWithQuery(array_merge($baseQuery, ['service_due_page' => $p])); @endphp
+                                        @if($p == $current)
+                                            <span class="px-1 sm:px-2 py-1 rounded bg-yellow-600 text-white text-xs sm:text-sm font-medium min-w-[32px] text-center">{{ $p }}</span>
+                                        @else
+                                            <a href="{{ $url }}" class="px-1 sm:px-2 py-1 rounded bg-white border border-gray-200 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 min-w-[32px] text-center">{{ $p }}</a>
+                                        @endif
+                                    @endfor
+                                </div>
+
+                                {{-- Next button --}}
+                                @if($current < $last)
+                                    <a href="{{ request()->fullUrlWithQuery(array_merge($baseQuery, ['service_due_page' => $current + 1])) }}" class="px-1 sm:px-2 py-1 rounded bg-white border border-gray-200 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 min-w-[32px] text-center">Next</a>
+                                @else
+                                    <span class="px-1 sm:px-2 py-1 rounded bg-gray-100 border border-gray-200 text-xs sm:text-sm text-gray-400 min-w-[32px] text-center">Next</span>
+                                @endif
+                            </div>
+                        </div>
+                    @else
+                        <div class="px-4 sm:px-6 py-6 text-center text-sm text-gray-500">
+                            Tidak ada kendaraan yang butuh service.
+                        </div>
+                    @endif
+                </div>
 
         <!-- Konfirmasi Pengembalian Kendaraan - New Section -->
         @if(isset($awaiting_returns) && $awaiting_returns->count() > 0)

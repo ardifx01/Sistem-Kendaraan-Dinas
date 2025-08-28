@@ -98,10 +98,15 @@
                         <!-- New Password -->
                         <div class="space-y-2">
                             <label for="password" class="block text-sm font-medium text-gray-700">Password Baru</label>
-                            <input type="password"
-                                   name="password"
-                                   id="password"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('password') border-red-500 @enderror">
+                            <div class="relative">
+                                <input type="password"
+                                       name="password"
+                                       id="password"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('password') border-red-500 @enderror">
+                                <button type="button" onclick="togglePassword('password')" class="absolute right-2 top-2 text-gray-500 focus:outline-none" aria-label="Toggle password visibility">
+                                    <span id="toggle-password-icon" class="material-icons" style="font-size:20px;">visibility</span>
+                                </button>
+                            </div>
                             @error('password')
                                 <p class="text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -110,10 +115,15 @@
                         <!-- Password Confirmation -->
                         <div class="space-y-2">
                             <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password Baru</label>
-                            <input type="password"
-                                   name="password_confirmation"
-                                   id="password_confirmation"
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <div class="relative">
+                                <input type="password"
+                                       name="password_confirmation"
+                                       id="password_confirmation"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                <button type="button" onclick="togglePassword('password_confirmation')" class="absolute right-2 top-2 text-gray-500 focus:outline-none" aria-label="Toggle password visibility">
+                                    <span id="toggle-password_confirmation-icon" class="material-icons" style="font-size:20px;">visibility</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -264,6 +274,23 @@
             }
         });
     });
+
+    // Toggle show/hide password (available globally)
+    function togglePassword(fieldId) {
+        const input = document.getElementById(fieldId);
+        const icon = document.getElementById('toggle-' + fieldId + '-icon');
+        if (!input) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            if (icon) icon.textContent = 'visibility_off';
+        } else {
+            input.type = 'password';
+            if (icon) icon.textContent = 'visibility';
+        }
+    }
 </script>
+@endpush
+@push('styles')
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 @endpush
 @endsection
