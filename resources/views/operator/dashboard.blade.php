@@ -243,141 +243,224 @@ Carbon::setLocale('id');
             </div>
         </div>
 
-        <!-- Kendaraan Berdasarkan Status -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2 sm:mb-0">Informasi Kendaraan</h3>
-            </div>
-
-            <!-- Card Pajak Hampir Habis -->
-            <div class="mb-6">
-                <div class="bg-red-50 rounded-lg p-4 border border-red-200">
-                    <div class="flex items-center justify-between mb-3">
-                        <h4 class="text-md font-semibold text-red-900 flex items-center">
-                            Kendaraan Pajak Hampir Habis
-                        </h4>
-                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{{ $vehicles_tax_expiring->count() }} kendaraan</span>
+        <!-- Combined Service Card: Kendaraan Butuh Service + Service Terakhir -->
+        <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
+            <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 bg-gradient-to-r from-orange-400 to-orange-300">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-yellow-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-900">Kendaraan &amp; Riwayat Service</h3>
+                            <p class="ml-3 text-sm text-yellow-800 hidden sm:inline">Ringkasan: Kendaraan yang butuh service dan riwayat service terakhir</p>
+                        </div>
                     </div>
-                    @if($vehicles_tax_expiring->count() > 0)
-                        <div class="space-y-2 max-h-96 overflow-y-auto">
-                            @foreach($vehicles_tax_expiring as $vehicle)
-                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
-                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
-                                        <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
-                                        <p class="text-xs text-red-600">Pajak habis: {{ \Carbon\Carbon::parse($vehicle->tax_expiry_date)->translatedFormat('d F Y') }}</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h4 class="text-sm font-semibold text-gray-900">Kendaraan Butuh Service</h4>
+                    <p class="mt-1 text-xs text-yellow-800 hidden sm:inline">(≥ 90 hari sejak service terakhir)</p>
+                    <div class="mt-4">
+                        @if(isset($service_due_vehicles) && $service_due_vehicles->count() > 0)
+                            <div class="space-y-2">
+                                @foreach($service_due_vehicles as $vehicle)
+                                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-md border border-yellow-100 hover:shadow-sm transition-shadow">
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 truncate">{{ $vehicle->brand }} {{ $vehicle->model }} <span class="text-xs text-gray-500">• {{ $vehicle->license_plate }}</span></p>
+                                            @if($vehicle->latestService && $vehicle->latestService->service_date)
+                                                <p class="text-xxs text-gray-500">Terakhir servis: {{ \Carbon\Carbon::parse($vehicle->latestService->service_date)->translatedFormat('d F Y') }}</p>
+                                            @else
+                                                <p class="text-xxs text-gray-500">Tanpa riwayat servis</p>
+                                            @endif
+                                        </div>
+                                        <div class="text-right ml-4">
+                                            @php
+                                                $latest = $vehicle->latestService;
+                                                if ($latest && $latest->service_date) {
+                                                    $signed = \Carbon\Carbon::parse($latest->service_date)->diffInDays(now(), false);
+                                                    $days = (int) abs($signed);
+                                                }
+                                            @endphp
+                                            <div class="px-4 sm:px-6 py-3 sm:py-4">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <div class="flex items-center">
+                                                        <h4 class="text-sm font-semibold text-gray-900">Kendaraan Butuh Service</h4>
+                                                        <p class="ml-3 text-xs text-yellow-800 hidden sm:inline">(≥ 90 hari sejak service terakhir)</p>
+                                                    </div>
+                                                    <div class="text-xs text-gray-500">Total: {{ $data['vehicles_service_due'] ?? ($service_due_vehicles->total() ?? 0) }} kendaraan</div>
+                                                </div>
+
+                                                @if($days !== null)
+                                                    @php $urgent = $days >= 90; $dayClass = $urgent ? 'text-sm font-semibold text-red-600' : 'text-sm font-semibold text-yellow-800'; @endphp
+                                                    <p class="{{ $dayClass }}">{{ number_format($days, 0, ',', '.') }} hari</p>
+                                                    <p class="text-xs text-gray-500">sejak service</p>
+                                                @else
+                                                    <p class="text-sm font-semibold text-yellow-800">—</p>
+                                                    @if(!empty($days_since_created))
+                                                        <p class="text-xs text-gray-500">tanpa riwayat • {{ number_format($days_since_created, 0, ',', '.') }} hari sejak dibuat</p>
+                                                    @else
+                                                        <p class="text-xs text-gray-500">tanpa riwayat</p>
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-semibold">Segera Perpanjang</span>
+                                @endforeach
+                            </div>
+
+                            <!-- Pagination for service due vehicles -->
+                            <div class="mt-3 px-0 sm:px-6 py-3 bg-white border-t border-gray-100">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                    <div class="text-xs text-gray-500">
+                                        Menampilkan {{ $service_due_vehicles->firstItem() }}–{{ $service_due_vehicles->lastItem() }} dari {{ $service_due_vehicles->total() }} kendaraan
+                                    </div>
+                                    <div>
+                                        {{-- Laravel paginator (Tailwind) --}}
+                                        {{ $service_due_vehicles->withQueryString()->links() }}
+                                    </div>
                                 </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-sm text-red-600">Tidak ada kendaraan yang pajaknya akan habis dalam waktu dekat.</p>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Status Overview Cards -->
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <!-- Tersedia -->
-                <div class="bg-green-50 rounded-lg p-4 border border-green-200">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-green-600">Tersedia</p>
-                            <p class="text-2xl font-bold text-green-900">{{ $vehicles_by_status['tersedia'] ?? 0 }}</p>
-                        </div>
-                        <div class="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service -->
-                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-yellow-600">Service</p>
-                            <p class="text-2xl font-bold text-yellow-900">{{ $vehicles_by_status['service'] ?? 0 }}</p>
-                        </div>
-                        <div class="w-8 h-8 bg-yellow-200 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                        </div>
+                            </div>
+                        @else
+                            <div class="py-3 text-sm text-gray-500">Tidak ada kendaraan yang butuh service.</div>
+                        @endif
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Detail Kendaraan per Status -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Semua Kendaraan Tersedia -->
-                <div class="bg-green-50 rounded-lg p-4 border border-green-200">
-                    <h4 class="text-md font-semibold text-green-900 mb-3 flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-2 sm:mb-0">Informasi Kendaraan</h3>
+        </div>
+
+        <!-- Card Pajak Hampir Habis -->
+        <div class="mb-6">
+            <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-md font-semibold text-red-900 flex items-center">
+                        Kendaraan Pajak Hampir Habis
+                    </h4>
+                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">{{ $vehicles_tax_expiring->count() }} kendaraan</span>
+                </div>
+                @if($vehicles_tax_expiring->count() > 0)
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        @foreach($vehicles_tax_expiring as $vehicle)
+                            <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                    <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                    <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
+                                    <p class="text-xs text-red-600">Pajak habis: {{ \Carbon\Carbon::parse($vehicle->tax_expiry_date)->translatedFormat('d F Y') }}</p>
+                                </div>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded font-semibold">Segera Perpanjang</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-sm text-red-600">Tidak ada kendaraan yang pajaknya akan habis dalam waktu dekat.</p>
+                @endif
+            </div>
+        </div>
+
+        <!-- Status Overview Cards -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <!-- Tersedia -->
+            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-green-600">Tersedia</p>
+                        <p class="text-2xl font-bold text-green-900">{{ $vehicles_by_status['tersedia'] ?? 0 }}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-green-200 rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
-                        Semua Kendaraan Tersedia
-                    </h4>
-                    @if($vehicles_by_status_detailed['tersedia']->count() > 0)
-                        <div class="space-y-2 max-h-96 overflow-y-auto">
-                            @foreach($vehicles_by_status_detailed['tersedia'] as $vehicle)
-                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
-                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
-                                        <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
-                                    </div>
-                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Siap Pakai</span>
-                                </div>
-                            @endforeach
-                        </div>
-                        @if($vehicles_by_status['tersedia'] > $vehicles_by_status_detailed['tersedia']->count())
-                            <p class="text-xs text-gray-500 mt-2 text-center">
-                                Dan {{ $vehicles_by_status['tersedia'] - $vehicles_by_status_detailed['tersedia']->count() }} kendaraan lainnya...
-                            </p>
-                        @endif
-                    @else
-                        <p class="text-sm text-green-600">Tidak ada kendaraan tersedia</p>
-                    @endif
+                    </div>
                 </div>
+            </div>
 
-                <!-- Kendaraan Service -->
-                <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
-                    <h4 class="text-md font-semibold text-yellow-900 mb-3 flex items-center">
-                        <svg class="w-4 h-4 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Service -->
+            <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-yellow-600">Service</p>
+                        <p class="text-2xl font-bold text-yellow-900">{{ $vehicles_by_status['service'] ?? 0 }}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-yellow-200 rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
-                        Kendaraan Dalam Service
-                    </h4>
-                    @if($vehicles_by_status_detailed['service']->count() > 0)
-                        <div class="space-y-2 max-h-96 overflow-y-auto">
-                            @foreach($vehicles_by_status_detailed['service'] as $vehicle)
-                                <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
-                                        <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
-                                        @if($vehicle->latestService)
-                                            <p class="text-xs text-red-600">{{ $vehicle->latestService->service_type }}</p>
-                                        @endif
-                                    </div>
-                                    <span class="text-xs bg-yellow-100 text-red-800 px-2 py-1 rounded">Dalam Service</span>
-                                </div>
-                            @endforeach
-                        </div>
-                        @if($vehicles_by_status['service'] > $vehicles_by_status_detailed['service']->count())
-                            <p class="text-xs text-gray-500 mt-2 text-center">
-                                Dan {{ $vehicles_by_status['service'] - $vehicles_by_status_detailed['service']->count() }} kendaraan lainnya...
-                            </p>
-                        @endif
-                    @else
-                        <p class="text-sm text-red-600">Tidak ada kendaraan dalam service</p>
-                    @endif
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Detail Kendaraan per Status -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Semua Kendaraan Tersedia -->
+            <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                <h4 class="text-md font-semibold text-green-900 mb-3 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Semua Kendaraan Tersedia
+                </h4>
+                @if($vehicles_by_status_detailed['tersedia']->count() > 0)
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        @foreach($vehicles_by_status_detailed['tersedia'] as $vehicle)
+                            <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                    <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                    <p class="text-xs text-gray-500">{{ $vehicle->type }}</p>
+                                </div>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Siap Pakai</span>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if($vehicles_by_status['tersedia'] > $vehicles_by_status_detailed['tersedia']->count())
+                        <p class="text-xs text-gray-500 mt-2 text-center">
+                            Dan {{ $vehicles_by_status['tersedia'] - $vehicles_by_status_detailed['tersedia']->count() }} kendaraan lainnya...
+                        </p>
+                    @endif
+                @else
+                    <p class="text-sm text-green-600">Tidak ada kendaraan tersedia</p>
+                @endif
+            </div>
+
+            <!-- Kendaraan Service -->
+            <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+                <h4 class="text-md font-semibold text-yellow-900 mb-3 flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Kendaraan Dalam Service
+                </h4>
+                @if($vehicles_by_status_detailed['service']->count() > 0)
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        @foreach($vehicles_by_status_detailed['service'] as $vehicle)
+                            <div class="flex items-center justify-between p-3 bg-white rounded border hover:shadow-sm transition-shadow">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $vehicle->license_plate }}</p>
+                                    <p class="text-xs text-gray-600">{{ $vehicle->brand }} {{ $vehicle->model }}</p>
+                                    @if($vehicle->latestService)
+                                        <p class="text-xs text-red-600">{{ $vehicle->latestService->service_type }}</p>
+                                    @endif
+                                </div>
+                                <span class="text-xs bg-yellow-100 text-red-800 px-2 py-1 rounded">Dalam Service</span>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if($vehicles_by_status['service'] > $vehicles_by_status_detailed['service']->count())
+                        <p class="text-xs text-gray-500 mt-2 text-center">
+                            Dan {{ $vehicles_by_status['service'] - $vehicles_by_status_detailed['service']->count() }} kendaraan lainnya...
+                        </p>
+                    @endif
+                @else
+                    <p class="text-sm text-red-600">Tidak ada kendaraan dalam service</p>
+                @endif
             </div>
         </div>
     </div>
@@ -780,475 +863,6 @@ async function updateStatus(name, newStatus, url) {
     );
 }
 
-// Test modals (uncomment untuk test)
-// setTimeout(() => {
-//     showInfo('Test Modal', 'Modal berfungsi dengan baik!');
-// }, 1000);
-</script>
-@endpush
-<!-- 1. Modal Konfirmasi Hapus -->
-<div id="deleteModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Konfirmasi Hapus
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500" id="deleteMessage">
-                                Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" id="confirmDelete" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                    Hapus
-                </button>
-                <button type="button" id="cancelDelete" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                    Batal
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 2. Modal Konfirmasi Status -->
-<div id="statusModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="status-modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="status-modal-title">
-                            Konfirmasi Perubahan Status
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500" id="statusMessage">
-                                Apakah Anda yakin ingin mengubah status ini?
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" id="confirmStatus" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 sm:ml-3 sm:w-auto sm:text-sm">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Konfirmasi
-                </button>
-                <button type="button" id="cancelStatus" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                    Batal
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 3. Modal Success -->
-<div id="successModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="success-modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="success-modal-title">
-                            Berhasil!
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500" id="successMessage">
-                                Operasi berhasil dilakukan.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" id="closeSuccess" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 4. Modal Error -->
-<div id="errorModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="error-modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="error-modal-title">
-                            Terjadi Kesalahan!
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500" id="errorMessage">
-                                Operasi gagal dilakukan.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" id="closeError" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 5. Modal Loading -->
-<div id="loadingModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="loading-modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-        <div class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="text-center">
-                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
-                        <svg class="animate-spin h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">
-                        Memproses...
-                    </h3>
-                    <p class="text-sm text-gray-500" id="loadingMessage">
-                        Mohon tunggu sebentar.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@push('scripts')
-<script>
-// Modal Utilities
-class ModalManager {
-    constructor() {
-        this.modals = {
-            delete: document.getElementById('deleteModal'),
-            status: document.getElementById('statusModal'),
-            success: document.getElementById('successModal'),
-            error: document.getElementById('errorModal'),
-            loading: document.getElementById('loadingModal')
-        };
-
-        this.initializeEventListeners();
-    }
-
-    initializeEventListeners() {
-        // Delete Modal
-        const cancelDelete = document.getElementById('cancelDelete');
-        if (cancelDelete) {
-            cancelDelete.addEventListener('click', () => this.hide('delete'));
-        }
-
-        // Status Modal
-        const cancelStatus = document.getElementById('cancelStatus');
-        if (cancelStatus) {
-            cancelStatus.addEventListener('click', () => this.hide('status'));
-        }
-
-        // Success Modal
-        const closeSuccess = document.getElementById('closeSuccess');
-        if (closeSuccess) {
-            closeSuccess.addEventListener('click', () => this.hide('success'));
-        }
-
-        // Error Modal
-        const closeError = document.getElementById('closeError');
-        if (closeError) {
-            closeError.addEventListener('click', () => this.hide('error'));
-        }
-
-        // Close modals when clicking backdrop
-        Object.values(this.modals).forEach(modal => {
-            if (modal) {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        this.hideAll();
-                    }
-                });
-            }
-        });
-
-        // Close modals with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                this.hideAll();
-            }
-        });
-    }
-
-    show(type) {
-        if (this.modals[type]) {
-            this.modals[type].classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    hide(type) {
-        if (this.modals[type]) {
-            this.modals[type].classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-    }
-
-    hideAll() {
-        Object.keys(this.modals).forEach(type => this.hide(type));
-    }
-
-    // Show delete confirmation
-    confirmDelete(message, onConfirm) {
-        const messageEl = document.getElementById('deleteMessage');
-        const confirmBtn = document.getElementById('confirmDelete');
-
-        if (messageEl) messageEl.textContent = message;
-
-        // Remove previous event listeners
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        // Add new event listener
-        newConfirmBtn.addEventListener('click', () => {
-            this.hide('delete');
-            if (onConfirm) onConfirm();
-        });
-
-        this.show('delete');
-    }
-
-    // Show status confirmation
-    confirmStatus(message, onConfirm) {
-        const messageEl = document.getElementById('statusMessage');
-        const confirmBtn = document.getElementById('confirmStatus');
-
-        if (messageEl) messageEl.textContent = message;
-
-        // Remove previous event listeners
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        // Add new event listener
-        newConfirmBtn.addEventListener('click', () => {
-            this.hide('status');
-            if (onConfirm) onConfirm();
-        });
-
-        this.show('status');
-    }
-
-    // Show success message
-    showSuccess(message) {
-        const messageEl = document.getElementById('successMessage');
-        if (messageEl) messageEl.textContent = message;
-        this.show('success');
-
-        // Auto hide after 3 seconds
-        setTimeout(() => this.hide('success'), 3000);
-    }
-
-    // Show error message
-    showError(message) {
-        const messageEl = document.getElementById('errorMessage');
-        if (messageEl) messageEl.textContent = message;
-        this.show('error');
-    }
-
-    // Show loading
-    showLoading(message = 'Memproses...') {
-        const messageEl = document.getElementById('loadingMessage');
-        if (messageEl) messageEl.textContent = message;
-        this.show('loading');
-    }
-
-    // Hide loading
-    hideLoading() {
-        this.hide('loading');
-    }
-}
-
-// Initialize modal manager
-const modalManager = new ModalManager();
-
-// Global functions for easy access
-window.showDeleteConfirm = (message, onConfirm) => modalManager.confirmDelete(message, onConfirm);
-window.showStatusConfirm = (message, onConfirm) => modalManager.confirmStatus(message, onConfirm);
-window.showSuccess = (message) => modalManager.showSuccess(message);
-window.showError = (message) => modalManager.showError(message);
-window.showLoading = (message) => modalManager.showLoading(message);
-window.hideLoading = () => modalManager.hideLoading();
-
-// Example usage functions
-function deleteItem(id, name) {
-    showDeleteConfirm(
-        `Apakah Anda yakin ingin menghapus "${name}"? Tindakan ini tidak dapat dibatalkan.`,
-        () => {
-            showLoading('Menghapus data...');
-
-            // Simulate API call
-            fetch(`/api/delete/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideLoading();
-                if (data.success) {
-                    showSuccess('Data berhasil dihapus!');
-                    // Refresh page or remove element
-                    setTimeout(() => location.reload(), 1500);
-                } else {
-                    showError(data.message || 'Terjadi kesalahan saat menghapus data');
-                }
-            })
-            .catch(error => {
-                hideLoading();
-                showError('Terjadi kesalahan koneksi');
-                console.error('Error:', error);
-            });
-        }
-    );
-}
-
-function changeStatus(id, newStatus, currentStatus) {
-    showStatusConfirm(
-        `Apakah Anda yakin ingin mengubah status dari "${currentStatus}" ke "${newStatus}"?`,
-        () => {
-            showLoading('Mengubah status...');
-
-            // Simulate API call
-            fetch(`/api/change-status/${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ status: newStatus })
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideLoading();
-                if (data.success) {
-                    showSuccess('Status berhasil diubah!');
-                    setTimeout(() => location.reload(), 1500);
-                } else {
-                    showError(data.message || 'Terjadi kesalahan saat mengubah status');
-                }
-            })
-            .catch(error => {
-                hideLoading();
-                showError('Terjadi kesalahan koneksi');
-                console.error('Error:', error);
-            });
-        }
-    );
-}
-
-// Form submission with validation
-function submitFormWithValidation(formId, successMessage) {
-    const form = document.getElementById(formId);
-    if (!form) return;
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        showLoading('Menyimpan data...');
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-            method: form.method,
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            hideLoading();
-            if (data.success) {
-                showSuccess(successMessage || 'Data berhasil disimpan!');
-                setTimeout(() => {
-                    if (data.redirect) {
-                        window.location.href = data.redirect;
-                    } else {
-                        location.reload();
-                    }
-                }, 1500);
-            } else {
-                showError(data.message || 'Terjadi kesalahan saat menyimpan data');
-            }
-        })
-        .catch(error => {
-            hideLoading();
-            showError('Terjadi kesalahan koneksi');
-            console.error('Error:', error);
-        });
-    });
-}
-
 // Status card click handlers untuk navigasi ke halaman services dengan filter
 document.addEventListener('DOMContentLoaded', function() {
     // Add click handlers untuk status cards
@@ -1257,7 +871,8 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('click', function() {
             const status = this.getAttribute('data-status');
             if (status) {
-                window.location.href = `{{ route('operator.services.index') }}?status=${status}`;
+                // Use concatenation to avoid mixing Blade echos with JS template literals
+                window.location.href = "{{ route('operator.services.index') }}" + '?status=' + encodeURIComponent(status);
             }
         });
     });

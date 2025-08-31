@@ -24,7 +24,6 @@ class VehicleSeeder extends Seeder
             'mobil' => ['Toyota', 'Honda', 'Mitsubishi', 'Suzuki', 'Nissan'],
             'motor' => ['Honda', 'Yamaha', 'Suzuki', 'Kawasaki']
         ];
-
         $models = [
             'Toyota' => ['Avanza', 'Innova', 'Fortuner'],
             'Honda' => ['HR-V', 'CR-V', 'Jazz', 'Beat', 'PCX'],
@@ -34,7 +33,6 @@ class VehicleSeeder extends Seeder
             'Yamaha' => ['NMAX', 'Aerox', 'Mio'],
             'Kawasaki' => ['Ninja 250', 'W175']
         ];
-
         $colors = ['Hitam', 'Putih', 'Merah', 'Biru', 'Silver', 'Abu-abu'];
         $docStatuses = ['lengkap', 'tidak_lengkap'];
         $availStatuses = ['tersedia', 'dipinjam', 'service', 'digunakan_pejabat'];
