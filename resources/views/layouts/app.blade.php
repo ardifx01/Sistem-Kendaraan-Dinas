@@ -340,9 +340,12 @@
                                 <a href="{{ route('operator.dashboard') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.dashboard')) bg-blue-700 @endif">
                                     Dashboard
                                 </a>
-                                <a href="{{ route('operator.services.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.*') && !request()->routeIs('operator.services.history')) bg-blue-700 @endif">
+                                    <a href="{{ route('operator.services.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.*') && !request()->routeIs('operator.services.history')) bg-blue-700 @endif">
                                     Service
                                 </a>
+                                    <a href="{{ route('operator.vehicles.index') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.vehicles.*')) bg-blue-700 @endif">
+                                        Kendaraan
+                                    </a>
                                 <a href="{{ route('operator.services.history') }}" class="px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 rounded-md transition-colors @if(request()->routeIs('operator.services.history')) bg-blue-700 @endif">
                                     Riwayat Servis
                                 </a>
@@ -413,6 +416,9 @@
                             </a>
                             <a href="{{ route('operator.services.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.*') && !request()->routeIs('operator.services.history')) bg-blue-800 @endif">
                                 Service
+                            </a>
+                            <a href="{{ route('operator.vehicles.index') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.vehicles.*')) bg-blue-800 @endif">
+                                Kendaraan
                             </a>
                             <a href="{{ route('operator.services.history') }}" class="block px-3 py-2 text-base font-medium text-white hover:bg-blue-800 rounded-md @if(request()->routeIs('operator.services.history')) bg-blue-800 @endif">
                                 Riwayat Servis

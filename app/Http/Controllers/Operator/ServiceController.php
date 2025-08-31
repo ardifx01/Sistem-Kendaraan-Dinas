@@ -231,6 +231,25 @@ class ServiceController extends Controller
     }
 
     /**
+     * Download a PDF representation of the service record (operator).
+     */
+    public function download(Service $service)
+    {
+    $service->load(['vehicle', 'user']);
+
+    // The shared PDF view expects a collection named $services (used for exporting history).
+    // Wrap the single service in a collection so the same view can be reused.
+    $services = collect([$service]);
+
+    $pdf = PDF::loadView('operator.services.pdf', compact('services'));
+
+    $datePart = $service->service_date ? \Carbon\Carbon::parse($service->service_date)->format('Ymd') : now()->format('Ymd_His');
+    $filename = sprintf('service-%d-%s.pdf', $service->id, $datePart);
+
+    return $pdf->download($filename);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Service $service)

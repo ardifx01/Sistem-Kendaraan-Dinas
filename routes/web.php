@@ -14,6 +14,7 @@ use App\Http\Controllers\Operator\DashboardController as OperatorDashboardContro
 use App\Http\Controllers\Operator\ServiceController;
 use App\Http\Controllers\Operator\BorrowingController;
 use App\Http\Controllers\Operator\CheckoutController;
+use App\Http\Controllers\Operator\VehicleController as OperatorVehicleController;
 
 // Public routes
 Route::get('/', [LandingController::class, 'index'])->name('landing');
@@ -78,7 +79,14 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('services', ServiceController::class);
     Route::get('/services-history', [ServiceController::class, 'history'])->name('services.history');
     Route::get('/services-history/export-pdf', [ServiceController::class, 'exportHistoryPdf'])->name('services.history.export-pdf');
+    // Download single service record as PDF (operator)
+    Route::get('/services/{service}/download', [ServiceController::class, 'download'])->name('services.download');
         Route::get('/services/vehicles-by-status/{status?}', [ServiceController::class, 'vehiclesByStatus'])->name('services.vehicles-by-status');
+
+        // Vehicle management for operator (CRUD + PDF export)
+        Route::resource('vehicles', OperatorVehicleController::class);
+        Route::get('/vehicles/export/pdf', [OperatorVehicleController::class, 'exportPdf'])->name('vehicles.export.pdf');
+        Route::get('/vehicles/{vehicle}/export/pdf', [OperatorVehicleController::class, 'exportSinglePdf'])->name('vehicles.export.single.pdf');
 
         // Borrowing management
         Route::resource('borrowings', BorrowingController::class);

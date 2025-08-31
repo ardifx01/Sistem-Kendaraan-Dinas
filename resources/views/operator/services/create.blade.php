@@ -846,157 +846,36 @@ function previewImage(src, name) {
     document.body.style.overflow = 'hidden';
 }
 
-// Camera functionality
+// Camera functionality (use file-input capture for broader compatibility)
 function setupCamera() {
-    let currentStream = null;
-    let currentFacingMode = 'environment'; // back camera
-
     const openCameraBtn = document.getElementById('openCamera');
-    const cameraModal = document.getElementById('cameraModal');
-    const closeCameraBtn = document.getElementById('closeCameraModal');
-    const cameraPreview = document.getElementById('cameraPreview');
-    const cameraCanvas = document.getElementById('cameraCanvas');
-    const captureBtn = document.getElementById('capturePhoto');
-    const switchCameraBtn = document.getElementById('switchCamera');
-    const capturedPhotoPreview = document.getElementById('capturedPhotoPreview');
-    const capturedPhoto = document.getElementById('capturedPhoto');
-    const retakeBtn = document.getElementById('retakePhoto');
-    const usePhotoBtn = document.getElementById('usePhoto');
+    const photosInput = document.getElementById('photos');
 
-    if (openCameraBtn) {
-        openCameraBtn.addEventListener('click', async function() {
-            try {
-                await startCamera();
-                cameraModal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-                alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
-            }
+    if (!openCameraBtn || !photosInput) return;
+
+    openCameraBtn.addEventListener('click', function() {
+        // Create a temporary file input that requests the device camera
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.capture = 'environment';
+
+        input.addEventListener('change', function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            // Append captured file to existing photos[] input
+            const dt = new DataTransfer();
+            Array.from(photosInput.files || []).forEach(f => dt.items.add(f));
+            dt.items.add(file);
+            photosInput.files = dt.files;
+
+            // Trigger change to update previews
+            photosInput.dispatchEvent(new Event('change'));
         });
-    }
 
-    if (closeCameraBtn) {
-        closeCameraBtn.addEventListener('click', function() {
-            stopCamera();
-            cameraModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            resetCameraModal();
-        });
-    }
-
-    if (captureBtn) {
-        captureBtn.addEventListener('click', function() {
-            capturePhoto();
-        });
-    }
-
-    if (switchCameraBtn) {
-        switchCameraBtn.addEventListener('click', async function() {
-            currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
-            await startCamera();
-        });
-    }
-
-    if (retakeBtn) {
-        retakeBtn.addEventListener('click', function() {
-            resetCameraModal();
-            startCamera();
-        });
-    }
-
-    if (usePhotoBtn) {
-        usePhotoBtn.addEventListener('click', function() {
-            addCapturedPhotoToInput();
-            stopCamera();
-            cameraModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-            resetCameraModal();
-        });
-    }
-
-    async function startCamera() {
-        try {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-            }
-
-            const constraints = {
-                video: {
-                    facingMode: currentFacingMode,
-                    width: { ideal: 1280 },
-                    height: { ideal: 720 }
-                }
-            };
-
-            currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-            cameraPreview.srcObject = currentStream;
-        } catch (error) {
-            console.error('Error starting camera:', error);
-            throw error;
-        }
-    }
-
-    function stopCamera() {
-        if (currentStream) {
-            currentStream.getTracks().forEach(track => track.stop());
-            currentStream = null;
-        }
-    }
-
-    function capturePhoto() {
-        const context = cameraCanvas.getContext('2d');
-        cameraCanvas.width = cameraPreview.videoWidth;
-        cameraCanvas.height = cameraPreview.videoHeight;
-
-        context.drawImage(cameraPreview, 0, 0);
-
-        const dataURL = cameraCanvas.toDataURL('image/jpeg', 0.8);
-        capturedPhoto.src = dataURL;
-
-        // Hide camera preview and show captured photo
-        cameraPreview.style.display = 'none';
-        captureBtn.style.display = 'none';
-        switchCameraBtn.style.display = 'none';
-        capturedPhotoPreview.classList.remove('hidden');
-    }
-
-    function resetCameraModal() {
-        cameraPreview.style.display = 'block';
-        captureBtn.style.display = 'inline-flex';
-        switchCameraBtn.style.display = 'inline-flex';
-        capturedPhotoPreview.classList.add('hidden');
-        capturedPhoto.src = '';
-    }
-
-    function addCapturedPhotoToInput() {
-        const dataURL = capturedPhoto.src;
-
-        // Convert dataURL to blob
-        fetch(dataURL)
-            .then(res => res.blob())
-            .then(blob => {
-                const file = new File([blob], `camera_photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
-
-                // Add to photos input
-                const photosInput = document.getElementById('photos');
-                const dataTransfer = new DataTransfer();
-
-                // Add existing files
-                if (photosInput.files) {
-                    Array.from(photosInput.files).forEach(existingFile => {
-                        dataTransfer.items.add(existingFile);
-                    });
-                }
-
-                // Add new file
-                dataTransfer.items.add(file);
-                photosInput.files = dataTransfer.files;
-
-                // Trigger change event to update preview
-                photosInput.dispatchEvent(new Event('change'));
-            });
-    }
+        input.click();
+    });
 }
 </script>
 @endsection

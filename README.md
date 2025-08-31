@@ -1,61 +1,237 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Kendaraan Dinas — Panduan Setup & Menjalankan Lokal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Panduan ini menjelaskan cara membuat dan menjalankan proyek Laravel ini dari awal (clone, instal dependensi, konfigurasi environment, migrasi, seed, build aset, dan menjalankan server) pada mesin pengembangan (Windows PowerShell contoh).
 
-## About Laravel
+## Prasyarat
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   PHP >= 8.0 (disarankan 8.1+), extensions: BCMath, Ctype, Fileinfo, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML, GD/imagick (untuk image ops)
+-   Composer (https://getcomposer.org)
+-   Node.js (16+) dan npm/yarn
+-   SQLite (opsional) atau MySQL/Postgres
+-   Git
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Jika menggunakan Windows, jalankan perintah di PowerShell. Contoh perintah ada di bawah dengan sintaks PowerShell.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 1) Membuat proyek dari awal (opsional)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Jika Anda ingin membuat proyek baru Laravel dari awal (tidak perlu jika sudah meng-clone repositori):
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```powershell
+composer create-project laravel/laravel nama-proyek
+cd nama-proyek
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Jika Anda sudah meng-clone repo ini, lompat ke bagian berikutnya.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 2) Clone repository
 
-### Premium Partners
+```powershell
+git clone <repo-url> kendaraan-dinas-app
+cd kendaraan-dinas-app
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 3) Install dependensi PHP (Composer)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```powershell
+composer install --no-interaction --prefer-dist
+```
 
-## Code of Conduct
+Jika Anda memakai Windows dan menemui masalah ekstensi, pastikan PHP CLI yang dipakai sesuai (php -v).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 4) Salin file environment dan generate app key
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```powershell
+copy .env.example .env
+php artisan key:generate
+```
 
-## License
+Edit file `.env` sesuai kebutuhan (database, mail, storage, dsb). Contoh pengaturan database:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   Untuk SQLite (cepat untuk development):
+
+1. Buat file database:
+
+```powershell
+mkdir database; type nul > database\database.sqlite
+```
+
+2. Di `.env` set:
+
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=${PWD}\\database\\database.sqlite
+```
+
+-   Untuk MySQL, ubah di `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=root
+DB_PASSWORD=secret
+```
+
+Setelah mengubah `.env`, jalankan `php artisan config:clear` bila perlu.
+
+---
+
+## 5) Install dependensi front-end (Node / npm)
+
+```powershell
+npm install
+# atau menggunakan yarn
+# yarn install
+```
+
+Proyek ini menggunakan Vite untuk build frontend. Untuk development jalankan:
+
+```powershell
+npm run dev
+```
+
+Untuk build produksi:
+
+```powershell
+npm run build
+```
+
+---
+
+## 6) Migrasi database & seeder
+
+Jalankan migrasi dan seeder untuk membuat tabel dan data contoh (jika tersedia):
+
+```powershell
+php artisan migrate
+php artisan db:seed
+```
+
+Jika Anda ingin menjalankan migrasi fresh (menghapus semua tabel lalu migrate + seed):
+
+```powershell
+php artisan migrate:fresh --seed
+```
+
+---
+
+## 7) Storage link
+
+Jika aplikasi menyimpan file (upload foto, file publik), jalankan:
+
+```powershell
+php artisan storage:link
+```
+
+---
+
+## 8) Menjalankan server development
+
+Untuk menjalankan server lokal (untuk testing cepat):
+
+```powershell
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Buka browser pada http://127.0.0.1:8000
+
+Jika Anda sedang menjalankan `npm run dev` (Vite), biasanya URL akan meng-serve aset dari Vite HMR; pastikan kedua proses berjalan (Vite & Artisan) di dua terminal terpisah.
+
+---
+
+## 9) Perintah berguna lainnya
+
+-   Clear cache config/view/routes: `php artisan config:clear; php artisan cache:clear; php artisan view:clear;`
+-   Queue worker: `php artisan queue:work`
+-   Menjalankan test: `php artisan test` atau `vendor/bin/phpunit`
+
+---
+
+## 10) Troubleshooting singkat
+
+-   Jika composer install bermasalah: pastikan ekstensi PHP terinstall dan versi PHP CLI cocok.
+-   Jika node/npm error: update Node ke versi LTS (16+) atau gunakan nvm untuk mengelola versi.
+-   Permission/storage: pada Windows jangan lupa jalankan terminal dengan hak akses yang sesuai jika perlu.
+
+---
+
+## Dependensi utama (ringkasan)
+
+Berikut paket utama yang digunakan proyek ini (diambil dari `composer.json` dan `package.json`).
+
+-   PHP / Composer (production)
+
+    -   `laravel/framework` ^12.0
+    -   `barryvdh/laravel-dompdf` ^3.1 (DomPDF wrapper untuk generate PDF)
+    -   `laravel/tinker`
+
+-   PHP / Composer (development)
+
+    -   `fakerphp/faker`, `laravel/pail`, `laravel/pint`, `laravel/sail`, `mockery/mockery`, `nunomaduro/collision`, `phpunit/phpunit`
+
+-   JavaScript / frontend (devDependencies)
+    -   `vite`, `laravel-vite-plugin`
+    -   `tailwindcss`, `@tailwindcss/forms`, `@tailwindcss/typography`
+    -   `postcss`, `autoprefixer`
+    -   `axios`
+    -   `concurrently`
+
+Jika Anda ingin daftar lengkap versi, buka `composer.json` dan `package.json` di root repo.
+
+---
+
+## Menggunakan DomPDF di proyek ini
+
+Proyek ini sudah menggunakan paket `barryvdh/laravel-dompdf` untuk menghasilkan file PDF. Paket ini biasanya auto-discovered oleh Laravel. Jika Anda perlu menginstall atau memperbaruinya, jalankan:
+
+```powershell
+composer require barryvdh/laravel-dompdf:^3.1
+```
+
+Contoh pola penggunaan di sebuah controller (contoh file: `app/Http/Controllers/Operator/ServiceController.php`):
+
+```php
+<?php
+namespace App\Http\Controllers\Operator;
+
+use App\Models\Service;
+use Barryvdh\DomPDF\Facade\Pdf; // alias Pdf atau gunakan PDF facade jika dikonfigurasi
+use Illuminate\Http\Request;
+
+class ServiceController
+{
+		public function download(Service $service)
+		{
+				$data = ['service' => $service];
+				$pdf = Pdf::loadView('operator.services.pdf', $data);
+				return $pdf->download("service-{$service->id}.pdf");
+		}
+}
+```
+
+Catatan:
+
+-   View yang dipakai untuk layout PDF di repositori ini berada di `resources/views/operator/services/pdf.blade.php`.
+-   Anda bisa menggunakan `stream()` jika ingin menampilkan PDF di browser alih-alih mendownload: `$pdf->stream('nama.pdf');`.
+
+---
+
+Jika Anda mau, saya bisa juga:
+
+-   tambahkan potongan contoh lengkap yang menampilkan koleksi (history) vs single item PDF, atau
+-   tambahkan langkah troubleshooting DomPDF (font, gambar, locale) di README.
+
+---
+
+Terakhir, catatan: beberapa langkah (mis. konfigurasi mail, third-party services) tergantung lingkungan Anda — sesuaikan `.env` sesuai kebutuhan.
+
+Happy coding!

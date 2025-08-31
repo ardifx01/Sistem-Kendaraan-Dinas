@@ -158,6 +158,9 @@
     .min-w-0 { min-width: 0px; }
     .flex-shrink-0 { flex-shrink: 0; }
     .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Allow breaking long vehicle names onto multiple lines */
+    .break-words { word-wrap: break-word; word-break: break-word; }
+    .whitespace-normal { white-space: normal; }
     .p-4 { padding: 1rem; }
     .mb-1 { margin-bottom: 0.25rem; }
     .mt-1 { margin-top: 0.25rem; }
@@ -267,7 +270,7 @@ Carbon::setLocale('id');
                                 @foreach($service_due_vehicles as $vehicle)
                                     <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-md border border-yellow-100 hover:shadow-sm transition-shadow">
                                         <div class="min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 truncate">{{ $vehicle->brand }} {{ $vehicle->model }} <span class="text-xs text-gray-500">• {{ $vehicle->license_plate }}</span></p>
+                                            <p class="text-sm font-medium text-gray-900 break-words whitespace-normal">{{ $vehicle->brand }} {{ $vehicle->model }} <span class="text-xs text-gray-500">• {{ $vehicle->license_plate }}</span></p>
                                             @if($vehicle->latestService && $vehicle->latestService->service_date)
                                                 <p class="text-xxs text-gray-500">Terakhir servis: {{ \Carbon\Carbon::parse($vehicle->latestService->service_date)->translatedFormat('d F Y') }}</p>
                                             @else
@@ -277,18 +280,26 @@ Carbon::setLocale('id');
                                         <div class="text-right ml-4">
                                             @php
                                                 $latest = $vehicle->latestService;
+                                                // Ensure variables are always defined to prevent Blade errors
+                                                $days = null;
+                                                $days_since_created = null;
+
                                                 if ($latest && $latest->service_date) {
                                                     $signed = \Carbon\Carbon::parse($latest->service_date)->diffInDays(now(), false);
                                                     $days = (int) abs($signed);
+                                                } else {
+                                                    if (!empty($vehicle->created_at)) {
+                                                        $signedCreated = \Carbon\Carbon::parse($vehicle->created_at)->diffInDays(now(), false);
+                                                        $days_since_created = (int) abs($signedCreated);
+                                                    }
                                                 }
                                             @endphp
                                             <div class="px-4 sm:px-6 py-3 sm:py-4">
                                                 <div class="flex items-center justify-between mb-2">
                                                     <div class="flex items-center">
                                                         <h4 class="text-sm font-semibold text-gray-900">Kendaraan Butuh Service</h4>
-                                                        <p class="ml-3 text-xs text-yellow-800 hidden sm:inline">(≥ 90 hari sejak service terakhir)</p>
                                                     </div>
-                                                    <div class="text-xs text-gray-500">Total: {{ $data['vehicles_service_due'] ?? ($service_due_vehicles->total() ?? 0) }} kendaraan</div>
+                                                    <div class="text-xs text-gray-500"></div>
                                                 </div>
 
                                                 @if($days !== null)

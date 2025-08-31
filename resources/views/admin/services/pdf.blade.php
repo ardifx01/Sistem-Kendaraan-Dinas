@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
     <title>Service #{{ $service->id }}</title>
     <style>
         /* General */
-        body { font-family: DejaVu Sans, sans-serif; color: #0f172a; margin: 0; padding: 0; }
+        body { font-family: DejaVu Sans, sans-serif; color: #0f172a; margin: 0; padding: 0; font-size: 12px; }
         .page { width: 100%; padding: 20px 28px; box-sizing: border-box; }
 
         /* Header */
@@ -22,9 +22,9 @@ use Illuminate\Support\Str;
         .card { border: 1px solid #e6edf3; padding: 12px; border-radius: 6px; background: #ffffff; }
 
         /* Info grid */
-        .info { width: 100%; margin-top: 10px; margin-bottom: 12px; }
-        .info td.label { width: 160px; padding: 8px 6px; font-weight: 700; color: #0f172a; vertical-align: top; }
-        .info td.value { padding: 8px 6px; vertical-align: top; color: #0f172a; }
+        .info { width: 100%; margin-top: 10px; margin-bottom: 12px; border-collapse: collapse; }
+        .info td.label { width: 160px; padding: 6px; font-weight: 700; color: #0f172a; vertical-align: top; }
+        .info td.value { padding: 6px; vertical-align: top; color: #0f172a; }
 
         .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
         .badge.green { background:#ecfdf5; color:#064e3b; }
@@ -37,7 +37,7 @@ use Illuminate\Support\Str;
         .muted { color: #64748b; font-size: 12px; }
 
         ul.docs { margin: 6px 0 0 0; padding-left: 18px; }
-        ul.docs li { margin-bottom: 4px; }
+        ul.docs li { margin-bottom: 4px; font-size: 12px; }
 
         .footer { margin-top: 18px; font-size: 11px; color: #64748b; text-align: right; }
     </style>
@@ -59,7 +59,11 @@ use Illuminate\Support\Str;
             <table class="info" cellpadding="0" cellspacing="0">
                 <tr>
                     <td class="label">Kendaraan</td>
-                    <td class="value">{{ $service->license_plate ?? ($service->vehicle?->license_plate ?? '-') }} — {{ $service->brand ?? ($service->vehicle?->brand ?? '-') }} {{ $service->model ?? ($service->vehicle?->model ?? '-') }}</td>
+                    <td class="value">
+                        {{ $service->license_plate ?? ($service->vehicle?->license_plate ?? '-') }} —
+                        {{ $service->brand ?? ($service->vehicle?->brand ?? '-') }}
+                        {{ $service->model ?? ($service->vehicle?->model ?? '-') }}
+                    </td>
                 </tr>
                 <tr>
                     <td class="label">Jenis Servis</td>
@@ -79,41 +83,72 @@ use Illuminate\Support\Str;
                             ];
                             $stype = $service->service_type;
                         @endphp
-                        <span class="badge {{ $serviceTypeColors[$stype] ?? 'blue' }}">{{ $serviceTypeLabels[$stype] ?? ($stype ?: '-') }}</span>
+                        <span class="badge {{ $serviceTypeColors[$stype] ?? 'blue' }}">
+                            {{ $serviceTypeLabels[$stype] ?? ($stype ?: '-') }}
+                        </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="label">Jenis Pembayaran</td>
                     <td class="value">
                         @php $paymentTypeLabels = [ 'asuransi' => 'Asuransi', 'kantor' => 'Pembayaran Kantor' ]; @endphp
-                        <span class="badge blue">{{ $paymentTypeLabels[$service->payment_type] ?? ($service->payment_type ? ucfirst(str_replace('_', ' ', $service->payment_type)) : '-') }}</span>
+                        <span class="badge blue">
+                            {{ $paymentTypeLabels[$service->payment_type] ?? ($service->payment_type ? ucfirst(str_replace('_', ' ', $service->payment_type)) : '-') }}
+                        </span>
                     </td>
+                </tr>
+                <tr>
+                    <td class="label">Bengkel</td>
+                    <td class="value">{{ $service->garage_name ?? '-' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Teknisi</td>
+                    <td class="value">{{ $service->user?->name ?? '-' }}</td>
                 </tr>
             </table>
 
             <div class="section">
                 <div class="section-title">Deskripsi Ringkas</div>
-                <div class="small">{{ $service->description ?? '-' }}</div>
+                <div>{{ $service->description ?? '-' }}</div>
             </div>
 
             @if($service->damage_description)
             <div class="section">
                 <div class="section-title">Deskripsi Kerusakan</div>
-                <div class="small">{{ $service->damage_description }}</div>
+                <div>{{ $service->damage_description }}</div>
             </div>
             @endif
 
             @if($service->repair_description)
             <div class="section">
                 <div class="section-title">Deskripsi Perbaikan</div>
-                <div class="small">{{ $service->repair_description }}</div>
+                <div>{{ $service->repair_description }}</div>
             </div>
             @endif
 
             @if($service->parts_replaced)
             <div class="section">
                 <div class="section-title">Part yang Diganti</div>
-                <div class="small">{{ $service->parts_replaced }}</div>
+                <div>{{ $service->parts_replaced }}</div>
+            </div>
+            @endif
+
+            {{-- Dokumen Pendukung (contoh file upload) --}}
+            @if(!empty($service->documents) && is_array($service->documents))
+            <div class="section">
+                <div class="section-title">Dokumen Pendukung</div>
+                <ul class="docs">
+                    @foreach($service->documents as $doc)
+                        <li>
+                            {{ Str::limit(basename($doc), 40) }}
+                            @if(Storage::exists($doc))
+                                (tersimpan)
+                            @else
+                                (tidak ditemukan)
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
             </div>
             @endif
 
