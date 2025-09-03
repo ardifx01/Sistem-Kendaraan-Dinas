@@ -204,7 +204,7 @@ Contoh pola penggunaan di sebuah controller (contoh file: `app/Http/Controllers/
 namespace App\Http\Controllers\Operator;
 
 use App\Models\Service;
-use Barryvdh\DomPDF\Facade\Pdf; // alias Pdf atau gunakan PDF facade jika dikonfigurasi
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class ServiceController

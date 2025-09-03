@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -36,6 +37,15 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('username', 'password');
+
+        // If the account is an operator and is not active, block login with a clear message.
+        $user = User::where('username', $request->input('username'))->first();
+        if ($user && $user->isOperator() && ! $user->is_active) {
+            throw ValidationException::withMessages([
+                'username' => 'Akun telah dinonaktifkan. Silakan hubungi administrator.',
+            ]);
+        }
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/');
