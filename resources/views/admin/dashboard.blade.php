@@ -722,6 +722,39 @@ Carbon::setLocale('id');
             </div>
         </div>
 
+    <!-- Charts: Borrowings & Services -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-6 mb-6 items-start">
+            <!-- Borrowings Chart Card -->
+            <div class="w-full bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">Peminjaman</h3>
+                    <div class="inline-flex items-center space-x-2">
+                        <button data-target="borrowings" data-range="week" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Minggu</button>
+                        <button data-target="borrowings" data-range="month" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Bulan</button>
+                        <button data-target="borrowings" data-range="year" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Tahun</button>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6 h-56">
+                    <canvas id="chart-borrowings" class="w-full h-full"></canvas>
+                </div>
+            </div>
+
+            <!-- Services Chart Card -->
+            <div class="w-full bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">Servis</h3>
+                    <div class="inline-flex items-center space-x-2">
+                        <button data-target="services" data-range="week" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Minggu</button>
+                        <button data-target="services" data-range="month" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Bulan</button>
+                        <button data-target="services" data-range="year" class="chart-range-btn px-2 py-1 text-xs bg-gray-100 rounded text-gray-700">Tahun</button>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6 h-56">
+                    <canvas id="chart-services" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Service Due Card (placed under Quick Actions) -->
         <div class="mt-6 sm:mt-8 mb-6 sm:mb-8">
             <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -1576,5 +1609,68 @@ function showNotification(message, type = 'info') {
         }, 300);
     }, 5000);
 }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Chart data from backend
+const chartsData = @json($charts ?? []);
+console.log('chartsData (debug):', chartsData);
+
+function createLineChart(ctx, labels, data, label, color) {
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: label,
+                data: data,
+                borderColor: color,
+                backgroundColor: color.replace('rgb', 'rgba').replace(')', ',0.08)'),
+                fill: true,
+                tension: 0.2,
+                pointRadius: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, ticks: { precision:0 } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Borrowings chart
+    const bCtx = document.getElementById('chart-borrowings').getContext('2d');
+    const borrowingsChart = createLineChart(bCtx, chartsData.borrowings.week.labels, chartsData.borrowings.week.data, 'Peminjaman', 'rgb(99,102,241)');
+
+    // Services chart
+    const sCtx = document.getElementById('chart-services').getContext('2d');
+    const servicesChart = createLineChart(sCtx, chartsData.services.week.labels, chartsData.services.week.data, 'Servis', 'rgb(34,197,94)');
+
+    // Range buttons
+    document.querySelectorAll('.chart-range-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            const range = this.getAttribute('data-range');
+            const chart = target === 'borrowings' ? borrowingsChart : servicesChart;
+            const datasetLabel = target === 'borrowings' ? 'Peminjaman' : 'Servis';
+            const color = target === 'borrowings' ? 'rgb(99,102,241)' : 'rgb(34,197,94)';
+
+            const newLabels = chartsData[target][range].labels;
+            const newData = chartsData[target][range].data;
+
+            chart.data.labels = newLabels;
+            chart.data.datasets[0].data = newData;
+            chart.data.datasets[0].label = datasetLabel;
+            chart.data.datasets[0].borderColor = color;
+            chart.data.datasets[0].backgroundColor = color.replace('rgb', 'rgba').replace(')', ',0.08)');
+            chart.update();
+        });
+    });
+});
 </script>
 @endpush

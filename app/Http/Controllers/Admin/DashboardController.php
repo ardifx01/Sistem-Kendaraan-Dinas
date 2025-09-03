@@ -80,6 +80,75 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-    return view('admin.dashboard', compact('data', 'vehicles', 'expiring_tax_vehicles', 'pending_borrowings', 'awaiting_returns', 'service_due_vehicles'));
+        // Chart data: Borrowings and Services per week / month / year
+        // Borrowings - last 7 days
+        $borrowings_week_labels = [];
+        $borrowings_week_data = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->copy()->subDays($i);
+            $borrowings_week_labels[] = $date->format('d M');
+            $borrowings_week_data[] = Borrowing::whereDate('created_at', $date->toDateString())->count();
+        }
+
+        // Borrowings - last 12 months
+        $borrowings_month_labels = [];
+        $borrowings_month_data = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $dt = now()->copy()->subMonths($i);
+            $borrowings_month_labels[] = $dt->format('M Y');
+            $borrowings_month_data[] = Borrowing::whereYear('created_at', $dt->year)->whereMonth('created_at', $dt->month)->count();
+        }
+
+        // Borrowings - last 5 years
+        $borrowings_year_labels = [];
+        $borrowings_year_data = [];
+        for ($i = 4; $i >= 0; $i--) {
+            $y = now()->copy()->subYears($i)->year;
+            $borrowings_year_labels[] = (string) $y;
+            $borrowings_year_data[] = Borrowing::whereYear('created_at', $y)->count();
+        }
+
+        // Services - using service_date field
+        // Services - last 7 days
+        $services_week_labels = [];
+        $services_week_data = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->copy()->subDays($i);
+            $services_week_labels[] = $date->format('d M');
+            $services_week_data[] = Service::whereDate('service_date', $date->toDateString())->count();
+        }
+
+        // Services - last 12 months
+        $services_month_labels = [];
+        $services_month_data = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $dt = now()->copy()->subMonths($i);
+            $services_month_labels[] = $dt->format('M Y');
+            $services_month_data[] = Service::whereYear('service_date', $dt->year)->whereMonth('service_date', $dt->month)->count();
+        }
+
+        // Services - last 5 years
+        $services_year_labels = [];
+        $services_year_data = [];
+        for ($i = 4; $i >= 0; $i--) {
+            $y = now()->copy()->subYears($i)->year;
+            $services_year_labels[] = (string) $y;
+            $services_year_data[] = Service::whereYear('service_date', $y)->count();
+        }
+
+        $charts = [
+            'borrowings' => [
+                'week' => ['labels' => $borrowings_week_labels, 'data' => $borrowings_week_data],
+                'month' => ['labels' => $borrowings_month_labels, 'data' => $borrowings_month_data],
+                'year' => ['labels' => $borrowings_year_labels, 'data' => $borrowings_year_data],
+            ],
+            'services' => [
+                'week' => ['labels' => $services_week_labels, 'data' => $services_week_data],
+                'month' => ['labels' => $services_month_labels, 'data' => $services_month_data],
+                'year' => ['labels' => $services_year_labels, 'data' => $services_year_data],
+            ],
+        ];
+
+    return view('admin.dashboard', compact('data', 'vehicles', 'expiring_tax_vehicles', 'pending_borrowings', 'awaiting_returns', 'service_due_vehicles', 'charts'));
     }
 }
