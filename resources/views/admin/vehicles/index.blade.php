@@ -95,13 +95,13 @@ Carbon::setLocale('id');
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Pajak</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Driver</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Pengguna</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider sticky right-0 z-30 bg-blue-500">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($vehicles as $vehicle)
                             <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4">
                                     @if($vehicle->photo)
                                         <img src="{{ Storage::url($vehicle->photo) }}"
                                              alt="Foto {{ $vehicle->brand }} {{ $vehicle->model }}"
@@ -143,7 +143,7 @@ Carbon::setLocale('id');
                                             'digunakan_pejabat' => 'Digunakan Pejabat/Operasional'
                                         ];
                                     @endphp
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$vehicle->availability_status] ?? 'bg-gray-100 text-gray-800' }}">
+                                    <span class="inline-block max-w-[160px] whitespace-normal break-words px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$vehicle->availability_status] ?? 'bg-gray-100 text-gray-800' }}">
                                         {{ $statusTexts[$vehicle->availability_status] ?? $vehicle->availability_status }}
                                     </span>
                                 </td>
@@ -163,7 +163,7 @@ Carbon::setLocale('id');
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $vehicle->user_name ?: '-' }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium sticky right-0 bg-white z-20 border-l border-gray-200">
                                     <div class="flex items-center space-x-2">
                                         <a href="{{ route('admin.vehicles.show', $vehicle) }}"
                                            class="text-indigo-600 hover:text-indigo-900 transition-colors"
@@ -206,7 +206,7 @@ Carbon::setLocale('id');
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                <td colspan="8" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                     <div class="flex flex-col items-center justify-center py-8">
                                         <svg class="w-12 h-12 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
