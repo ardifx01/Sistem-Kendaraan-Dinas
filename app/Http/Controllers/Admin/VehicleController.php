@@ -77,6 +77,8 @@ class VehicleController extends Controller
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
             'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
+            'kedudukan' => 'nullable|in:BMN,Sewa,Lainnya',
+            'kedudukan_detail' => 'nullable|string|max:500',
             'bpkb_number' => 'required|string|max:100',
             'chassis_number' => 'required|string|max:100',
             'engine_number' => 'required|string|max:100',
@@ -204,6 +206,8 @@ class VehicleController extends Controller
             'user_name' => 'nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
             'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
+            'kedudukan' => 'nullable|in:BMN,Sewa,Lainnya',
+            'kedudukan_detail' => 'nullable|string|max:500',
             'bpkb_number' => 'required|string|max:100',
             'chassis_number' => 'required|string|max:100',
             'engine_number' => 'required|string|max:100',
@@ -217,6 +221,10 @@ class VehicleController extends Controller
                 Storage::disk('public')->delete($vehicle->photo);
             }
             $validated['photo'] = $request->file('photo')->store('vehicles', 'public');
+        }
+        // ensure kedudukan_detail set to null when empty
+        if (empty($validated['kedudukan_detail'] ?? null)) {
+            $validated['kedudukan_detail'] = null;
         }
 
         $vehicle->update($validated);

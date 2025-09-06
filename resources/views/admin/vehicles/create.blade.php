@@ -55,6 +55,7 @@
                     </div>
 
                     <!-- Model -->
+
                     <div>
                         <label for="model" class="block text-sm font-medium text-gray-700 mb-2">Model</label>
                         <input type="text" name="model" id="model" value="{{ old('model') }}" required
@@ -129,6 +130,36 @@
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                        <script>
+                        // Defensive init: ensure kedudukan toggle works even if earlier scripts threw errors
+                        document.addEventListener('DOMContentLoaded', function(){
+                            try{
+                                var sel = document.getElementById('kedudukan');
+                                var cont = document.getElementById('kedudukan_detail_container');
+                                var inp = document.getElementById('kedudukan_detail');
+                                if(!sel || !cont || !inp) return;
+
+                                function setKedudukan(v){
+                                    if(v){
+                                        cont.style.display = '';
+                                        inp.setAttribute('required','required');
+                                        if(v === 'BMN') inp.placeholder = 'Nomor BMN atau Tahun BMN';
+                                        else if(v === 'Sewa') inp.placeholder = 'Nama perusahaan penyewa';
+                                        else inp.placeholder = 'Keterangan lain';
+                                    } else {
+                                        cont.style.display = 'none';
+                                        inp.removeAttribute('required');
+                                        inp.value = '';
+                                    }
+                                }
+
+                                sel.removeEventListener && sel.removeEventListener('change', setKedudukan);
+                                sel.addEventListener('change', function(){ setKedudukan(this.value); });
+                                setKedudukan(sel.value || '');
+                                window.toggleKedudukan = setKedudukan;
+                            }catch(e){ console.error('defensive kedudukan init failed', e); }
+                        });
+                        </script>
 
                     <!-- Document Notes -->
                     <div class="md:col-span-2" id="document_notes_container" style="display: {{ old('document_status') == 'tidak_lengkap' ? 'block' : 'none' }};">
@@ -185,6 +216,29 @@
                         @enderror
                     </div>
 
+                    <!-- Kedudukan Kendaraan -->
+                    <div>
+                        <label for="kedudukan" class="block text-sm font-medium text-gray-700 mb-2">Kedudukan Kendaraan</label>
+                        <select name="kedudukan" id="kedudukan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Pilih Kedudukan</option>
+                            <option value="BMN" {{ old('kedudukan') == 'BMN' ? 'selected' : '' }}>BMN</option>
+                            <option value="Sewa" {{ old('kedudukan') == 'Sewa' ? 'selected' : '' }}>Sewa</option>
+                            <option value="Lainnya" {{ old('kedudukan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                        @error('kedudukan')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div id="kedudukan_detail_container" style="display: {{ old('kedudukan') ? 'block' : 'none' }};" class="md:col-span-2">
+                        <label for="kedudukan_detail" class="block text-sm font-medium text-gray-700 mb-2">Rincian Kedudukan (Nomor BMN / Nama Penyewa / Keterangan lain)</label>
+                        <input type="text" name="kedudukan_detail" id="kedudukan_detail" value="{{ old('kedudukan_detail') }}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        @error('kedudukan_detail')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                         <!-- BPKB Number -->
                         <div>
                             <label for="bpkb_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor BPKB</label>
@@ -237,7 +291,7 @@
                     <div class="md:col-span-2">
                         <label for="photo" class="block text-sm font-medium text-gray-700 mb-2">Foto Kendaraan</label>
                         <!-- Area upload file -->
-                        <div class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center mb-4" style="min-height:160px;">
+                        <div id="upload-area" class="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center justify-center mb-4" style="min-height:160px;">
                             <svg class="mx-auto h-12 w-12 text-gray-400 mb-2" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
@@ -269,56 +323,39 @@
                         </div>
                         <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            // Remove photo preview button
-                            var removeBtn = document.getElementById('remove-photo-preview');
-                            if (removeBtn) {
-                                removeBtn.addEventListener('click', function() {
-                                    previewContainer.style.display = 'none';
-                                    previewImg.src = '';
-                                    previewFilename.innerText = '';
-                                    photoInput.value = '';
-                                });
-                            }
-                            // Preview photo after upload or camera
-                            var photoInput = document.getElementById('photo');
-                            var previewContainer = document.getElementById('photo-preview-container');
-                            var previewImg = document.getElementById('photo-preview');
-                            var previewFilename = document.getElementById('photo-preview-filename');
-                            if (photoInput) {
-                                photoInput.addEventListener('change', function(e) {
-                                    var file = e.target.files[0];
-                                    if (!file) return;
-                                    var reader = new FileReader();
-                                    reader.onload = function(evt) {
-                                        previewImg.src = evt.target.result;
-                                        previewContainer.style.display = 'block';
-                                        previewFilename.innerText = file.name;
-                                    };
-                                    reader.readAsDataURL(file);
-                                });
-                            }
-                            // Preview dari kamera
-                            document.getElementById('modalSnap').addEventListener('click', function() {
-                                var video = document.getElementById('modalVideo');
-                                var canvas = document.getElementById('modalCanvas');
-                                var photoData = document.getElementById('photo_data');
-                                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                                var dataURL = canvas.toDataURL('image/png');
-                                photoData.value = dataURL;
-                                canvas.style.display = 'block';
-                                closeCameraModal();
-                                // Tampilkan preview hanya di form, bukan di modal
-                                setTimeout(function() {
-                                    var preview = document.getElementById('photo-preview');
-                                    var previewContainer = document.getElementById('photo-preview-container');
-                                    var filename = 'camera_photo_' + Date.now() + '.png';
-                                    preview.src = dataURL;
-                                    previewContainer.style.display = 'block';
-                                    document.getElementById('photo-preview-filename').innerText = filename;
-                                }, 300);
-                            });
+                            // photo preview handlers moved to consolidated handlers below to avoid duplicates
 
-                            // Preview dari file upload
+                            // Show/hide kedudukan detail field (initialize + on change)
+                            var kedudukanSelect = document.getElementById('kedudukan');
+                            var detailContainer = document.getElementById('kedudukan_detail_container');
+                            var detailInput = document.getElementById('kedudukan_detail');
+
+                            function updateKedudukan(v){
+                                if(!detailContainer || !detailInput) return;
+                                if(v){
+                                    detailContainer.style.display = '';
+                                    detailInput.setAttribute('required','required');
+                                    if(v === 'BMN') detailInput.placeholder = 'Nomor BMN atau Tahun BMN';
+                                    else if(v === 'Sewa') detailInput.placeholder = 'Nama perusahaan penyewa';
+                                    else detailInput.placeholder = 'Keterangan lain';
+                                } else {
+                                    detailContainer.style.display = 'none';
+                                    detailInput.removeAttribute('required');
+                                    detailInput.value = '';
+                                }
+                            }
+
+                            if(kedudukanSelect){
+                                kedudukanSelect.addEventListener('change', function(){ updateKedudukan(this.value); });
+                                // initialize based on current value
+                                updateKedudukan(kedudukanSelect.value || '');
+                            }
+
+                            // expose global helper if other code calls it
+                            window.toggleKedudukan = updateKedudukan;
+                        });
+
+                            // Preview dari file upload (kept simple - modal camera handled by setupCamera())
                             document.getElementById('photo').addEventListener('change', function(e) {
                                 var file = e.target.files[0];
                                 if (!file) return;
@@ -329,8 +366,8 @@
                                     preview.src = evt.target.result;
                                     previewContainer.style.display = 'block';
                                     document.getElementById('photo-preview-filename').innerText = file.name;
-                                    // Kosongkan photo_data jika upload file
-                                    document.getElementById('photo_data').value = '';
+                                    // Clear any legacy base64 field when uploading a file
+                                    var pd = document.getElementById('photo_data'); if(pd) pd.value = '';
                                 };
                                 reader.readAsDataURL(file);
                             });
@@ -529,18 +566,9 @@
                                     .then(blob => {
                                         const file = new File([blob], `camera_photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
 
-                                        // Add to photo input
+                                        // Add to photo input — replace any existing files so captured photo becomes the active file
                                         const photoInput = document.getElementById('photo');
                                         const dataTransfer = new DataTransfer();
-
-                                        // Add existing file if any
-                                        if (photoInput.files && photoInput.files.length > 0) {
-                                            Array.from(photoInput.files).forEach(existingFile => {
-                                                dataTransfer.items.add(existingFile);
-                                            });
-                                        }
-
-                                        // Add new file
                                         dataTransfer.items.add(file);
                                         photoInput.files = dataTransfer.files;
 
@@ -553,62 +581,12 @@
                             setupCamera();
                         });
                         </script>
-                        <div id="camera-area" class="mb-2" style="display:none;">
-                            <video id="video" width="320" height="240" autoplay style="border-radius:8px;"></video>
-                            <button type="button" id="snap" class="bg-green-600 text-white px-4 py-2 rounded-md mt-2">📸 Simpan Foto</button>
-                            <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-                            <input type="hidden" name="photo_data" id="photo_data">
-                        </div>
-                        <script>
-                        function showPhotoOptions() {
-                            if (confirm('Ambil foto dari kamera? Pilih "OK" untuk kamera, "Cancel" untuk upload file.')) {
-                                document.getElementById('camera-area').style.display = 'block';
-                                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                    navigator.mediaDevices.getUserMedia({ video: true })
-                                        .then(function(stream) {
-                                            document.getElementById('video').srcObject = stream;
-                                            document.getElementById('video').play();
-                                        });
-                                }
-                            } else {
-                                document.getElementById('photo').click();
-                            }
-                        }
-                        document.getElementById('snap').addEventListener('click', function() {
-                            var video = document.getElementById('video');
-                            var canvas = document.getElementById('canvas');
-                            var photoData = document.getElementById('photo_data');
-                            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                            var dataURL = canvas.toDataURL('image/png');
-                            photoData.value = dataURL;
-                            canvas.style.display = 'block';
-                        });
-                        </script>
+                        <!-- hidden field kept for compatibility with older camera method (setupCamera also uses file input) -->
+                        <input type="hidden" name="photo_data" id="photo_data">
                         <p class="text-xs text-gray-500 mt-1">PNG, JPG hingga 5MB. Bisa ambil langsung dari kamera (desktop & mobile) atau pilih file.</p>
                         @error('photo')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        <script>
-                        function showCamera() {
-                            document.getElementById('camera-area').style.display = 'block';
-                            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                                navigator.mediaDevices.getUserMedia({ video: true })
-                                    .then(function(stream) {
-                                        document.getElementById('video').srcObject = stream;
-                                        document.getElementById('video').play();
-                                    });
-                            }
-                        }
-                        document.getElementById('snap').addEventListener('click', function() {
-                            var video = document.getElementById('video');
-                            var canvas = document.getElementById('canvas');
-                            var photoData = document.getElementById('photo_data');
-                            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                            var dataURL = canvas.toDataURL('image/png');
-                            photoData.value = dataURL;
-                            canvas.style.display = 'block';
-                        });
-                        </script>
                     </div>
                 </div>
             </div>
@@ -779,9 +757,25 @@
 
             const reader = new FileReader();
             reader.onload = function(e) {
+                // Clear any camera-base64 data (we now use file input)
+                const photoDataEl = document.getElementById('photo_data');
+                if (photoDataEl) photoDataEl.value = '';
+
+                // If there was an existing stored photo, mark as not-removed (we're replacing it)
+                const removeFlag = document.getElementById('remove_existing_photo');
+                if (removeFlag) removeFlag.value = '0';
+
+                // Hide current-photo wrapper (existing server photo) because user uploaded a new file
+                const currentWrapper = document.getElementById('current-photo-wrapper');
+                if (currentWrapper) currentWrapper.style.display = 'none';
+
                 previewImg.src = e.target.result;
-                previewContainer.classList.remove('hidden');
-                uploadArea.classList.add('hidden');
+                // show preview container
+                if (previewContainer) previewContainer.style.display = 'block';
+                // set filename if available
+                const filenameEl = document.getElementById('photo-preview-filename');
+                if (filenameEl && file && file.name) filenameEl.innerText = file.name;
+                // keep upload area visible even when preview is shown so user can switch source
             };
             reader.readAsDataURL(file);
         }
@@ -816,16 +810,21 @@
         handlePhotoChange(this);
     });
 
-    // Remove photo preview
-    document.getElementById('remove-photo').addEventListener('click', function() {
-        const photoInput = document.getElementById('photo');
-        const previewContainer = document.getElementById('photo-preview-container');
-        const uploadArea = document.getElementById('upload-area');
+    // Remove photo preview (safe: only attach if element exists)
+    const _removePreviewBtn = document.getElementById('remove-photo-preview');
+    if (_removePreviewBtn) {
+        _removePreviewBtn.addEventListener('click', function() {
+            const photoInput = document.getElementById('photo');
+            const previewContainer = document.getElementById('photo-preview-container');
+            const uploadArea = document.getElementById('upload-area');
 
-        photoInput.value = '';
-        previewContainer.classList.add('hidden');
-        uploadArea.classList.remove('hidden');
-    });
+            if (photoInput) photoInput.value = '';
+            if (previewContainer) previewContainer.style.display = 'none';
+            if (uploadArea) uploadArea.classList.remove('hidden');
+            const filenameEl = document.getElementById('photo-preview-filename'); if(filenameEl) filenameEl.innerText = '';
+            const photoDataEl = document.getElementById('photo_data'); if(photoDataEl) photoDataEl.value = '';
+        });
+    }
 
     // Drag and drop functionality
     const uploadArea = document.getElementById('upload-area');

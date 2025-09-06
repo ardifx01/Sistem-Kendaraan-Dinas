@@ -64,6 +64,8 @@ class VehicleController extends Controller
             'document_notes' => 'required_if:document_status,tidak_lengkap|nullable|string',
             'driver_name' => 'nullable|string|max:255',
             'user_name' => 'nullable|string|max:255',
+            'kedudukan' => 'nullable|in:BMN,Sewa,Lainnya',
+            'kedudukan_detail' => 'required_if:kedudukan,BMN,Sewa,Lainnya|nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
             'bpkb_number' => 'required|string|max:100',
@@ -112,6 +114,8 @@ class VehicleController extends Controller
             'document_notes' => 'required_if:document_status,tidak_lengkap|nullable|string',
             'driver_name' => 'nullable|string|max:255',
             'user_name' => 'nullable|string|max:255',
+            'kedudukan' => 'nullable|in:BMN,Sewa,Lainnya',
+            'kedudukan_detail' => 'required_if:kedudukan,BMN,Sewa,Lainnya|nullable|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'availability_status' => 'required|in:tersedia,dipinjam,service,digunakan_pejabat',
             'bpkb_number' => 'required|string|max:100',
@@ -125,6 +129,11 @@ class VehicleController extends Controller
                 Storage::disk('public')->delete($vehicle->photo);
             }
             $validated['photo'] = $request->file('photo')->store('vehicles', 'public');
+        }
+
+        // If kedudukan is empty, ensure kedudukan_detail is cleared so DB reflects change
+        if (empty($validated['kedudukan'])) {
+            $validated['kedudukan_detail'] = null;
         }
 
         $vehicle->update($validated);

@@ -127,6 +127,57 @@
                         @error('user_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
 
+                    <!-- Kedudukan Kendaraan -->
+                    <div>
+                        <label for="kedudukan" class="block text-sm font-medium text-gray-700 mb-2">Kedudukan Kendaraan</label>
+                        <select name="kedudukan" id="kedudukan" class="w-full px-3 py-2 border border-gray-300 rounded-md" onchange="toggleKedudukan(this.value)">
+                            <option value="">Pilih Kedudukan</option>
+                            <option value="BMN" {{ old('kedudukan', $vehicle->kedudukan) == 'BMN' ? 'selected' : '' }}>BMN</option>
+                            <option value="Sewa" {{ old('kedudukan', $vehicle->kedudukan) == 'Sewa' ? 'selected' : '' }}>Sewa</option>
+                            <option value="Lainnya" {{ old('kedudukan', $vehicle->kedudukan) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                        @error('kedudukan')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div id="kedudukan_detail_container" style="display: {{ old('kedudukan', $vehicle->kedudukan) ? 'block' : 'none' }};" class="md:col-span-2">
+                        <label for="kedudukan_detail" class="block text-sm font-medium text-gray-700 mb-2">Rincian Kedudukan (Nomor BMN / Nama Penyewa / Keterangan lain)</label>
+                        <input type="text" name="kedudukan_detail" id="kedudukan_detail" value="{{ old('kedudukan_detail', $vehicle->kedudukan_detail) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        @error('kedudukan_detail')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <script>
+                    (function(){
+                        var sel = document.getElementById('kedudukan');
+                        var cont = document.getElementById('kedudukan_detail_container');
+                        var inp = document.getElementById('kedudukan_detail');
+                        function update(v){
+                            console.log('[kedudukan-edit] update called, value=', v);
+                            if(v){
+                                if(cont) cont.style.display = '';
+                                if(inp){ inp.setAttribute('required','required');
+                                    if(v === 'BMN') inp.placeholder = 'Nomor BMN atau Tahun BMN';
+                                    else if(v === 'Sewa') inp.placeholder = 'Nama perusahaan penyewa';
+                                    else inp.placeholder = 'Keterangan lain';
+                                }
+                            } else {
+                                if(cont) cont.style.display = 'none';
+                                if(inp){ inp.removeAttribute('required'); inp.value = ''; }
+                            }
+                        }
+                        if(sel){ sel.addEventListener('change', function(){ update(this.value); }); update(sel.value || ''); }
+                    })();
+                    </script>
+
+                    <script>
+                    // global helper so edit page can call toggleKedudukan directly
+                    window.toggleKedudukan = function(v){
+                        var cont = document.getElementById('kedudukan_detail_container');
+                        var inp = document.getElementById('kedudukan_detail');
+                        if(v){ if(cont) cont.style.display = ''; if(inp){ inp.setAttribute('required','required'); if(v==='BMN') inp.placeholder='Nomor BMN atau Tahun BMN'; else if(v==='Sewa') inp.placeholder='Nama perusahaan penyewa'; else inp.placeholder='Keterangan lain'; } }
+                        else { if(cont) cont.style.display = 'none'; if(inp){ inp.removeAttribute('required'); inp.value=''; } }
+                    };
+                    </script>
+
                     <div>
                         <label for="bpkb_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor BPKB</label>
                         <input type="text" name="bpkb_number" id="bpkb_number" value="{{ old('bpkb_number', $vehicle->bpkb_number) }}" required maxlength="100" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('bpkb_number') border-red-500 @enderror" placeholder="Nomor BPKB">
@@ -470,6 +521,27 @@ document.addEventListener('DOMContentLoaded', function(){
         if(usePhotoBtn) usePhotoBtn.addEventListener('click', function(){ addCapturedPhotoToInput(); stopCamera(); hideModal(); resetCameraModal(); });
     })();
 
+});
+// show/hide kedudukan detail (mirror document_status behavior)
+document.addEventListener('DOMContentLoaded', function(){
+    var kedSelect = document.getElementById('kedudukan');
+    var kedContainer = document.getElementById('kedudukan_detail_container');
+    var kedInput = document.getElementById('kedudukan_detail');
+    if(kedSelect){
+        if(kedSelect.value){ if(kedContainer) kedContainer.style.display = 'block'; if(kedInput) kedInput.setAttribute('required','required'); }
+        else { if(kedContainer) kedContainer.style.display = 'none'; if(kedInput) kedInput.removeAttribute('required'); }
+        kedSelect.addEventListener('change', function(){ if(this.value){ if(kedContainer) kedContainer.style.display = 'block'; if(kedInput) kedInput.setAttribute('required','required'); } else { if(kedContainer) kedContainer.style.display = 'none'; if(kedInput){ kedInput.removeAttribute('required'); kedInput.value = ''; } } });
+    }
+});
+// show/hide kedudukan detail
+document.addEventListener('DOMContentLoaded', function(){
+    var ked = document.getElementById('kedudukan');
+    if(ked){
+        ked.addEventListener('change', function(){
+            var c = document.getElementById('kedudukan_detail_container');
+            c.style.display = this.value ? 'block' : 'none';
+        });
+    }
 });
 </script>
 @endpush

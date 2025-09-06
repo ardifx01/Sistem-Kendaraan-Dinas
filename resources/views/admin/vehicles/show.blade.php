@@ -115,6 +115,12 @@
                             </span>
                         </p>
                     </div>
+                    @if($vehicle->kedudukan)
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kedudukan Kendaraan</label>
+                        <p class="text-gray-900 font-medium">{{ $vehicle->kedudukan }}@if($vehicle->kedudukan_detail) - {{ $vehicle->kedudukan_detail }}@endif</p>
+                    </div>
+                    @endif
                 </div>
             </div>
 

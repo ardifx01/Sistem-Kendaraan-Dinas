@@ -395,6 +395,18 @@
                     <span class="detail-value">{{ $vehicle->driver_name }}</span>
                 </div>
                 @endif
+                @if($vehicle->kedudukan)
+                <div class="detail-item">
+                    <span class="detail-label">Kedudukan Kendaraan:</span>
+                    <span class="detail-value">{{ $vehicle->kedudukan }}</span>
+                </div>
+                @endif
+                @if($vehicle->kedudukan_detail)
+                <div class="detail-item">
+                    <span class="detail-label">Rincian Kedudukan:</span>
+                    <span class="detail-value">{{ $vehicle->kedudukan_detail }}</span>
+                </div>
+                @endif
             </div>
         </div>
     </div>

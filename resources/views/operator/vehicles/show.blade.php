@@ -107,6 +107,12 @@
                         <th class="py-3 pr-6 font-medium text-gray-600">Nama Driver</th>
                         <td class="py-3">{{ $vehicle->driver_name ?? '-' }}</td>
                     </tr>
+                        @if($vehicle->kedudukan)
+                        <tr class="border-t">
+                            <th class="py-3 pr-6 font-medium text-gray-600">Kedudukan Kendaraan</th>
+                            <td class="py-3">{{ $vehicle->kedudukan }}@if($vehicle->kedudukan_detail) - {{ $vehicle->kedudukan_detail }}@endif</td>
+                        </tr>
+                        @endif
                     <tr class="border-t">
                         <th class="py-3 pr-6 font-medium text-gray-600">Nama Pengguna</th>
                         <td class="py-3">{{ $vehicle->user_name ?? '-' }}</td>

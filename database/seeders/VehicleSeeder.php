@@ -58,11 +58,32 @@ class VehicleSeeder extends Seeder
                     'Staff IT', 'Staff Humas', 'Kepala Bagian Umum'
                 ]),
                 'availability_status' => $faker->randomElement($availStatuses),
+                // optionally include kedudukan fields if DB column exists
+                // kedudukan: BMN | Sewa | Lainnya
+                // kedudukan_detail: nomor BMN / nama penyewa / keterangan
                 'bpkb_number' => strtoupper($faker->bothify('BPKB####??')),
                 'chassis_number' => strtoupper($faker->bothify('CHS####??')),
                 'engine_number' => strtoupper($faker->bothify('ENG####??')),
                 'cc_amount' => $faker->numberBetween(100, 2500),
             ]);
+
+            // If vehicles table has kedudukan columns, update them with sample data
+            if (\Illuminate\Support\Facades\Schema::hasColumn('vehicles', 'kedudukan')) {
+                $kedudukanOpt = $faker->randomElement(['BMN', 'Sewa', 'Lainnya']);
+                $kedudukanDetail = null;
+                if ($kedudukanOpt === 'BMN') {
+                    $kedudukanDetail = 'No BMN ' . strtoupper($faker->bothify('BMN-####'));
+                } elseif ($kedudukanOpt === 'Sewa') {
+                    $kedudukanDetail = $faker->company();
+                } else {
+                    $kedudukanDetail = $faker->sentence(4);
+                }
+
+                $vehicle->update([
+                    'kedudukan' => $kedudukanOpt,
+                    'kedudukan_detail' => $kedudukanDetail,
+                ]);
+            }
 
             // Ensure there is at least one user to associate with service/borrowing records
             $operator = User::inRandomOrder()->first();

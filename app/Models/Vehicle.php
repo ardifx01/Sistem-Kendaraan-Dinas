@@ -24,6 +24,8 @@ class Vehicle extends Model
         'user_name',
         'photo',
         'availability_status',
+    'kedudukan',
+    'kedudukan_detail',
         'bpkb_number',
         'chassis_number',
         'engine_number',

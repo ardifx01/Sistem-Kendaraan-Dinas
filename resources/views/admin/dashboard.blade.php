@@ -408,6 +408,14 @@
         .xl\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
     }
 
+    /* Dashboard grid tweaks to avoid cards stacking on larger screens */
+    .dashboard-grid { align-items: start; }
+    .dashboard-grid > * { min-width: 220px; }
+    @media (min-width: 1024px) {
+        .dashboard-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .dashboard-grid > * { min-width: 0; }
+    }
+
     @media (min-width: 1536px) {
         .\32xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
         .\32xl\:px-12 { padding-left: 3rem; padding-right: 3rem; }
@@ -477,8 +485,8 @@ Carbon::setLocale('id');
 
     {{-- Service due section removed — compact card is shown under Quick Actions. --}}
 
-        <!-- Stats Cards with Enhanced Responsive Design -->
-        <div class="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-6 mb-6 sm:mb-8">
+    <!-- Stats Cards with Enhanced Responsive Design -->
+    <div class="grid dashboard-grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 mb-6 sm:mb-8">
             <!-- Total Kendaraan -->
             <div class="group relative bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-300 hover:shadow-lg hover:border-blue-200 transition-all duration-300">
                 <div class="p-4 sm:p-6">

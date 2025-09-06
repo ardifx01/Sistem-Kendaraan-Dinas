@@ -186,6 +186,29 @@
                         @enderror
                     </div>
 
+                    <!-- Kedudukan Kendaraan -->
+                    <div>
+                        <label for="kedudukan" class="block text-sm font-medium text-gray-700 mb-2">Kedudukan Kendaraan</label>
+                        <select name="kedudukan" id="kedudukan" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            <option value="">Pilih Kedudukan</option>
+                            <option value="BMN" {{ old('kedudukan', $vehicle->kedudukan) == 'BMN' ? 'selected' : '' }}>BMN</option>
+                            <option value="Sewa" {{ old('kedudukan', $vehicle->kedudukan) == 'Sewa' ? 'selected' : '' }}>Sewa</option>
+                            <option value="Lainnya" {{ old('kedudukan', $vehicle->kedudukan) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                        </select>
+                        @error('kedudukan')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div id="kedudukan_detail_container" style="display: {{ old('kedudukan', $vehicle->kedudukan) ? 'block' : 'none' }};" class="md:col-span-2">
+                        <label for="kedudukan_detail" class="block text-sm font-medium text-gray-700 mb-2">Rincian Kedudukan (Nomor BMN / Nama Penyewa / Keterangan lain)</label>
+                        <input type="text" name="kedudukan_detail" id="kedudukan_detail" value="{{ old('kedudukan_detail', $vehicle->kedudukan_detail) }}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        @error('kedudukan_detail')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                         <!-- BPKB Number -->
                         <div>
                             <label for="bpkb_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor BPKB</label>
@@ -495,6 +518,37 @@
         this.value = this.value.toUpperCase();
     });
 
+    // Show/hide kedudukan detail field in edit (robust: placeholder + required + global helper)
+    document.addEventListener('DOMContentLoaded', function() {
+        var kedudukanSelect = document.getElementById('kedudukan');
+        var detailContainer = document.getElementById('kedudukan_detail_container');
+        var detailInput = document.getElementById('kedudukan_detail');
+
+        function updateKedudukan(v){
+            if(!detailContainer || !detailInput) return;
+            if(v){
+                detailContainer.style.display = '';
+                detailInput.setAttribute('required','required');
+                if(v === 'BMN') detailInput.placeholder = 'Nomor BMN atau Tahun BMN';
+                else if(v === 'Sewa') detailInput.placeholder = 'Nama perusahaan penyewa';
+                else detailInput.placeholder = 'Keterangan lain';
+            } else {
+                detailContainer.style.display = 'none';
+                detailInput.removeAttribute('required');
+                detailInput.value = '';
+            }
+        }
+
+        if(kedudukanSelect){
+            kedudukanSelect.addEventListener('change', function(){ updateKedudukan(this.value); });
+            // initialize based on current value
+            updateKedudukan(kedudukanSelect.value || '');
+        }
+
+        // expose global helper so other code can call toggleKedudukan
+        window.toggleKedudukan = updateKedudukan;
+    });
+
     // Photo preview function
     function handlePhotoChange(input) {
         const file = input.files[0];
@@ -537,7 +591,7 @@
                 // set filename if available
                 const filenameEl = document.getElementById('photo-preview-filename');
                 if (filenameEl && file && file.name) filenameEl.innerText = file.name;
-                uploadArea.classList.add('hidden');
+                // keep upload area visible so user can switch between upload and camera
             };
             reader.readAsDataURL(file);
         }
@@ -814,6 +868,38 @@
     document.addEventListener('DOMContentLoaded', function() {
         setupCamera();
     });
+</script>
+
+<script>
+// Defensive init: ensure kedudukan toggle works even if earlier scripts threw errors
+document.addEventListener('DOMContentLoaded', function(){
+    try{
+        var sel = document.getElementById('kedudukan');
+        var cont = document.getElementById('kedudukan_detail_container');
+        var inp = document.getElementById('kedudukan_detail');
+        if(!sel || !cont || !inp) return;
+
+        function setKedudukan(v){
+            if(v){
+                cont.style.display = '';
+                inp.setAttribute('required','required');
+                if(v === 'BMN') inp.placeholder = 'Nomor BMN atau Tahun BMN';
+                else if(v === 'Sewa') inp.placeholder = 'Nama perusahaan penyewa';
+                else inp.placeholder = 'Keterangan lain';
+            } else {
+                cont.style.display = 'none';
+                inp.removeAttribute('required');
+                inp.value = '';
+            }
+        }
+
+        sel.removeEventListener && sel.removeEventListener('change', setKedudukan);
+        sel.addEventListener('change', function(){ setKedudukan(this.value); });
+        setKedudukan(sel.value || '');
+        window.toggleKedudukan = setKedudukan;
+    }catch(e){ console.error('defensive kedudukan init failed', e); }
+});
+</script>
 </script>
 @endpush
 @endsection
